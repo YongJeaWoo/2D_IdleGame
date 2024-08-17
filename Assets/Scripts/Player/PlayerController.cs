@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -34,6 +32,9 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("isRun", !isAttack);
         animator.SetBool("isAttack", isAttack);
+
+        BackgroundController controller = FindAnyObjectByType<BackgroundController>();
+        controller.BG_Controll(isAttack);
     }
 
     private void DrawRay()
@@ -53,4 +54,3 @@ public class PlayerController : MonoBehaviour
         DetectEnemy();
     }
 }
-

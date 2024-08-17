@@ -11,6 +11,8 @@ public class ParallaxBackground : MonoBehaviour
     private float originSpeed;
     [Header("이동 방향")]
     [SerializeField] private Vector3 moveDirection;
+    [Header("스킬 영향을 받는 여부 Enum값")]
+    [SerializeField] private BG_OPTION option;
 
     private void Start()
     {
@@ -50,4 +52,6 @@ public class ParallaxBackground : MonoBehaviour
             return moveSpeed;
         }
     }
+
+    public BG_OPTION GetOption() => option;
 }
