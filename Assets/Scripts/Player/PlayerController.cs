@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // TODO : 공격 시 배경 타일을 멈추도록 추가 수정 필요
     private void DetectObject(bool isAttack)
     {
         animator.SetBool("isRun", !isAttack);
@@ -42,14 +43,11 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(rayPos, Vector2.right * detectionDistance, Color.red);
     }
 
-
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         DetectEnemy();

@@ -741,7 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a29358bacc820d498b3574c4e9e0756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startButtonSceneName: SampleScene_LoadingTest
+  startButtonSceneName: GameScene
 --- !u!4 &981141454
 Transform:
   m_ObjectHideFlags: 0

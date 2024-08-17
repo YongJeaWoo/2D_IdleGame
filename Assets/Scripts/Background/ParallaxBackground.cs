@@ -8,12 +8,23 @@ public class ParallaxBackground : MonoBehaviour
     [SerializeField] private float scrollAmount;
     [Header("배경 움직임 속도")]
     [SerializeField] private float moveSpeed;
+    private float originSpeed;
     [Header("이동 방향")]
     [SerializeField] private Vector3 moveDirection;
+
+    private void Start()
+    {
+        InitValue();
+    }
 
     private void Update()
     {
         MoveBackground();
+    }
+
+    private void InitValue()
+    {
+        originSpeed = moveSpeed;
     }
 
     private void MoveBackground()
@@ -23,6 +34,20 @@ public class ParallaxBackground : MonoBehaviour
         if (transform.position.x <= -scrollAmount)
         {
             transform.position = targetBG.position - moveDirection * scrollAmount;
+        }
+    }
+
+    public float PlayerAttackToSpeed(bool isAttack)
+    {
+        if (isAttack)
+        {
+            moveSpeed = 0;
+            return moveSpeed;
+        }
+        else
+        {
+            moveSpeed = originSpeed;
+            return moveSpeed;
         }
     }
 }
