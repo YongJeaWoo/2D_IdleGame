@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // TODO : 공격 시 배경 타일을 멈추도록 추가 수정 필요
+    // TODO : FindAnyObjectByType 위치 수정 필요
     private void DetectObject(bool isAttack)
     {
         animator.SetBool("isRun", !isAttack);
