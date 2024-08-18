@@ -11,6 +11,15 @@ public class PlayerController : MonoBehaviour
     // 탐지할 레이어
     [SerializeField] private LayerMask enemyLayer;
 
+    // 추후 BackgroundController 변경해야 할 필요가 있을 수 있음
+    private BackgroundController bgController;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        bgController = FindAnyObjectByType<BackgroundController>();
+    }
+
     private void DetectEnemy()
     {
         Vector2 rayPos = new Vector2(transform.position.x, transform.position.y + 0.25f);
@@ -27,26 +36,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // TODO : FindAnyObjectByType 위치 수정 필요
     private void DetectObject(bool isAttack)
     {
         animator.SetBool("isRun", !isAttack);
         animator.SetBool("isAttack", isAttack);
 
-        BackgroundController controller = FindAnyObjectByType<BackgroundController>();
-        controller.BG_Controll(isAttack);
-    }
-
-    private void DrawRay()
-    {
-        Vector2 rayPos = new Vector2(transform.position.x, transform.position.y + 0.25f);
-
-        Debug.DrawRay(rayPos, Vector2.right * detectionDistance, Color.red);
-    }
-
-    void Start()
-    {
-        animator = GetComponent<Animator>();
+        bgController.BG_Controll(isAttack);
     }
     
     void Update()
