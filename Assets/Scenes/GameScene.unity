@@ -1833,7 +1833,7 @@ GameObject:
   - component: {fileID: 284204007}
   - component: {fileID: 284204008}
   m_Layer: 0
-  m_Name: Grounds
+  m_Name: BG0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1889,7 +1889,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 547788579}
   scrollAmount: 12.6
-  moveSpeed: 1
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
 --- !u!1 &307417971
@@ -2746,7 +2745,7 @@ GameObject:
   - component: {fileID: 393512264}
   - component: {fileID: 393512263}
   m_Layer: 0
-  m_Name: Layer2
+  m_Name: BG2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2781,7 +2780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 2022808607}
   scrollAmount: 12.6
-  moveSpeed: 0.75
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
 --- !u!212 &393512264
@@ -3401,11 +3399,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1938443861}
-  - {fileID: 1313370044}
-  - {fileID: 2022808607}
-  - {fileID: 1608366231}
   - {fileID: 284204007}
+  - {fileID: 1938443861}
+  - {fileID: 2022808607}
+  - {fileID: 1313370044}
+  - {fileID: 1608366231}
   m_Father: {fileID: 39791233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &468051584
@@ -3724,7 +3722,7 @@ GameObject:
   - component: {fileID: 547788579}
   - component: {fileID: 547788580}
   m_Layer: 0
-  m_Name: Grounds
+  m_Name: BG0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3780,7 +3778,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 284204007}
   scrollAmount: 12.6
-  moveSpeed: 1
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
 --- !u!1 &552504140
@@ -3961,7 +3958,7 @@ GameObject:
   - component: {fileID: 559133784}
   - component: {fileID: 559133783}
   m_Layer: 0
-  m_Name: Layer3
+  m_Name: BG4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3996,7 +3993,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 1608366231}
   scrollAmount: 12.6
-  moveSpeed: 0.85
   moveDirection: {x: -1, y: 0, z: 0}
   option: 1
 --- !u!212 &559133784
@@ -7855,7 +7851,7 @@ GameObject:
   - component: {fileID: 1313370045}
   - component: {fileID: 1313370046}
   m_Layer: 0
-  m_Name: Layer1
+  m_Name: BG3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7942,7 +7938,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 1623995290}
   scrollAmount: 12.8
-  moveSpeed: 0.9
   moveDirection: {x: -1, y: 0, z: 0}
   option: 1
 --- !u!1 &1316253590
@@ -7958,6 +7953,7 @@ GameObject:
   - component: {fileID: 1316253592}
   - component: {fileID: 1316253594}
   - component: {fileID: 1316253595}
+  - component: {fileID: 1316253596}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -8113,6 +8109,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.44424832, y: 0.5587828}
   m_EdgeRadius: 0
+--- !u!114 &1316253596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316253590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0a289578366fc4b9292fb8b06ba74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 1
 --- !u!1 &1317211800
 GameObject:
   m_ObjectHideFlags: 0
@@ -8281,6 +8290,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1325424456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1325424458}
+  - component: {fileID: 1325424457}
+  m_Layer: 0
+  m_Name: Player System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1325424457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325424456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 409d8cf1dacb66a46b24aa00ebdb529d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1316253590}
+--- !u!4 &1325424458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325424456}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1328719626
 GameObject:
   m_ObjectHideFlags: 0
@@ -9544,7 +9598,7 @@ GameObject:
   - component: {fileID: 1608366232}
   - component: {fileID: 1608366233}
   m_Layer: 0
-  m_Name: Layer3
+  m_Name: BG4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9631,7 +9685,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 559133782}
   scrollAmount: 12.8
-  moveSpeed: 0.85
   moveDirection: {x: -1, y: 0, z: 0}
   option: 1
 --- !u!1 &1623995289
@@ -9646,7 +9699,7 @@ GameObject:
   - component: {fileID: 1623995292}
   - component: {fileID: 1623995291}
   m_Layer: 0
-  m_Name: Layer1
+  m_Name: BG3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9681,7 +9734,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 1313370044}
   scrollAmount: 12.6
-  moveSpeed: 0.9
   moveDirection: {x: -1, y: 0, z: 0}
   option: 1
 --- !u!212 &1623995292
@@ -11261,7 +11313,7 @@ GameObject:
   - component: {fileID: 1938443862}
   - component: {fileID: 1938443863}
   m_Layer: 0
-  m_Name: Layer0
+  m_Name: BG1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11348,7 +11400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 1954003918}
   scrollAmount: 12.6
-  moveSpeed: 0.5
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
 --- !u!1 &1954003917
@@ -11363,7 +11414,7 @@ GameObject:
   - component: {fileID: 1954003920}
   - component: {fileID: 1954003919}
   m_Layer: 0
-  m_Name: Layer0
+  m_Name: BG1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11398,7 +11449,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 1938443861}
   scrollAmount: 12.6
-  moveSpeed: 0.5
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
 --- !u!212 &1954003920
@@ -11956,7 +12006,7 @@ GameObject:
   - component: {fileID: 2022808608}
   - component: {fileID: 2022808609}
   m_Layer: 0
-  m_Name: Layer2
+  m_Name: BG2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12043,7 +12093,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBG: {fileID: 393512262}
   scrollAmount: 12.8
-  moveSpeed: 0.75
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
 --- !u!1 &2040402493
@@ -12647,11 +12696,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1954003918}
-  - {fileID: 1623995290}
-  - {fileID: 393512262}
-  - {fileID: 559133782}
   - {fileID: 547788579}
+  - {fileID: 1954003918}
+  - {fileID: 393512262}
+  - {fileID: 1623995290}
+  - {fileID: 559133782}
   m_Father: {fileID: 39791233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
@@ -12662,6 +12711,7 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 39791233}
   - {fileID: 143126929}
+  - {fileID: 1325424458}
   - {fileID: 1316253593}
   - {fileID: 192528943}
   - {fileID: 552504143}
