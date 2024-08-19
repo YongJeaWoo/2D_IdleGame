@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3263690822291673774}
   - component: {fileID: 2505626341769376447}
   - component: {fileID: 735117558306967327}
+  - component: {fileID: -3849881306879697517}
   m_Layer: 0
   m_Name: evo_bundle3
   m_TagString: Untagged
@@ -145,3 +146,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   direction: {x: 0, y: 1}
+--- !u!114 &-3849881306879697517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296958646851102578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a497488eede3a394c89706f00a166a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
