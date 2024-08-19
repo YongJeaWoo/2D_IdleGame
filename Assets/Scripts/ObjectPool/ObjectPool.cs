@@ -46,9 +46,20 @@ public class ObjectPool : MonoBehaviour
     #endregion
 
     #region Use Pool
-    public GameObject GetPoolObject()
+    public GameObject GetPoolObject(Transform pos = null)
     {
-        return poolList.Get();
+        var obj = poolList.Get();
+
+        if (pos != null)
+        {
+            obj.transform.SetParent(pos);
+        }
+        else
+        {
+            obj.transform.SetParent(null);
+        }
+
+        return obj;
     }
 
     public void ReleasePoolObject(GameObject _poolObject)
