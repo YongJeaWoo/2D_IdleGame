@@ -18,9 +18,7 @@ public class PlayerAttack : BaseAttack
     public override void AttackAnimation()
     {
         var objPool = ObjectPoolManager.Instance.FindObjectPool(weapon);
-        var knifeObj = objPool.GetPoolObject();
-
-        knifeObj.transform.SetParent(objPool.gameObject.transform);
+        var knifeObj = objPool.GetPoolObject(objPool.transform);
 
         knifeObj.transform.position = attackPos.position;
     }
