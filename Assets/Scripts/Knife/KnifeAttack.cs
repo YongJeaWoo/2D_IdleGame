@@ -10,7 +10,7 @@ public class KnifeAttack : MonoBehaviour
     {
         if(collision.CompareTag("Enemy"))
         {
-            //Release();
+            Release();
         }
     }
 

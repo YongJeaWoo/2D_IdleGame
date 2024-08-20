@@ -64,7 +64,10 @@ public class ObjectPool : MonoBehaviour
 
     public void ReleasePoolObject(GameObject _poolObject)
     {
-        poolList.Release(_poolObject);
+        if (_poolObject.activeInHierarchy)
+        {
+            poolList.Release(_poolObject);
+        }
     }
     #endregion
 

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BastMovement : MonoBehaviour
+public class BaseMovement : MonoBehaviour
 {
     [SerializeField] protected float moveSpeed;
 
