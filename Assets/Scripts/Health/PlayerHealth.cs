@@ -6,8 +6,6 @@ public class PlayerHealth : BaseHealth
     {
         //TODO : 강화 능력치 / 아이템 능력치 등 계산하여 MaxHp 설정
         //임시로 SerializeField된 maxHp를 currentHp로 설정
-        maxHp = BigInteger.Parse(maxHpString);
-        currentHp = maxHp;
     }
 
     protected override void Death()

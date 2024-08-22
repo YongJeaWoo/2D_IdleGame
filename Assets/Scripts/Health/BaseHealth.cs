@@ -1,15 +1,12 @@
 using System.Numerics;
 using UnityEngine;
 
-public abstract class BaseHealth : MonoBehaviour
+public class BaseHealth : MonoBehaviour
 {
     [SerializeField] protected string maxHpString;
     protected BigInteger currentHp;
     protected Animator anim;
     protected BigInteger maxHp;
-
-    protected string AnimatorHitText = "Hit";
-    protected string AnimatorDeathText = "Death";
 
     protected virtual void Start()
     {
@@ -17,22 +14,27 @@ public abstract class BaseHealth : MonoBehaviour
         SetHp();
     }
 
-    protected abstract void SetHp();
-
     public virtual void Hit(BigInteger attackPoint)
     {
         if (currentHp - attackPoint <= 0)
         {
-            //anim.SetTrigger(AnimatorDeathText);
             Death();
         }
         else
         {
-            //anim.SetTrigger(AnimatorHitText);
             currentHp -= attackPoint;
         }
     }
 
+    protected virtual void SetHp()
+    {
+        maxHp = BigInteger.Parse(maxHpString);
+        currentHp = maxHp;
+    }
+
     //TODO : »ç¸ÁÃ³¸®
-    protected abstract void Death();
+    protected virtual void Death()
+    {
+
+    }
 }

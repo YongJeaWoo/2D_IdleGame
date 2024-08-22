@@ -1687,6 +1687,7 @@ GameObject:
   - component: {fileID: 192528941}
   - component: {fileID: 192528944}
   - component: {fileID: 192528945}
+  - component: {fileID: 192528946}
   m_Layer: 3
   m_Name: Hog
   m_TagString: Enemy
@@ -1841,6 +1842,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   direction: {x: -1, y: 0}
+--- !u!114 &192528946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192528940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9983885ef7188e47867f753d2165f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHpString: 100
+  deathParticle: {fileID: 0}
 --- !u!1 &211045723
 GameObject:
   m_ObjectHideFlags: 0
@@ -3256,6 +3271,7 @@ GameObject:
   - component: {fileID: 335869682}
   - component: {fileID: 335869685}
   - component: {fileID: 335869686}
+  - component: {fileID: 335869687}
   m_Layer: 3
   m_Name: Wolf
   m_TagString: Enemy
@@ -3410,6 +3426,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.6
   direction: {x: -1, y: 0}
+--- !u!114 &335869687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335869681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9983885ef7188e47867f753d2165f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHpString: 100
+  deathParticle: {fileID: 0}
 --- !u!1 &337534159
 GameObject:
   m_ObjectHideFlags: 0
@@ -7230,6 +7260,7 @@ GameObject:
   - component: {fileID: 552504141}
   - component: {fileID: 552504144}
   - component: {fileID: 552504145}
+  - component: {fileID: 552504146}
   m_Layer: 3
   m_Name: Slime
   m_TagString: Enemy
@@ -7384,6 +7415,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.2
   direction: {x: -1, y: 0}
+--- !u!114 &552504146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552504140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9983885ef7188e47867f753d2165f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHpString: 100
+  deathParticle: {fileID: 0}
 --- !u!1 &559133781
 GameObject:
   m_ObjectHideFlags: 0
@@ -15088,6 +15133,7 @@ GameObject:
   - component: {fileID: 1316253596}
   - component: {fileID: 1316253597}
   - component: {fileID: 1316253598}
+  - component: {fileID: 1316253599}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -15272,6 +15318,19 @@ MonoBehaviour:
   attackPos: {fileID: 164277162}
   weapon: {fileID: 7511845092201265516, guid: 962950ca84c65d74f9c94594194d8da9, type: 3}
 --- !u!114 &1316253598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316253590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67cd6edc53d50843aadfb41e922aaad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHpString: 1000
+--- !u!114 &1316253599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20956,6 +21015,7 @@ GameObject:
   - component: {fileID: 1880446874}
   - component: {fileID: 1880446877}
   - component: {fileID: 1880446878}
+  - component: {fileID: 1880446879}
   m_Layer: 3
   m_Name: Troll
   m_TagString: Enemy
@@ -21110,6 +21170,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1.4
   direction: {x: -1, y: 0}
+--- !u!114 &1880446879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880446873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9983885ef7188e47867f753d2165f53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHpString: 100
+  deathParticle: {fileID: 0}
 --- !u!1 &1908850073
 GameObject:
   m_ObjectHideFlags: 0
@@ -23635,9 +23709,9 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 50571693}
   - {fileID: 519420032}
+  - {fileID: 148319622}
   - {fileID: 795886452}
   - {fileID: 1325424458}
-  - {fileID: 148319622}
   - {fileID: 271402006}
   - {fileID: 39791233}
   - {fileID: 143126929}
