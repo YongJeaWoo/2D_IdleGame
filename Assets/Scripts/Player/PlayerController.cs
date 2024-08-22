@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        GetComponents();
+    }
+
+    private void GetComponents()
+    {
         animator = GetComponent<Animator>();
         bgController = FindAnyObjectByType<BackgroundController>();
     }
