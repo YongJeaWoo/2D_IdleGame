@@ -30,5 +30,6 @@ public class EnemyHealth : BaseHealth
         maxHp = calHp;
 
         maxHpString = maxHp.ToString();
+        currentHp = maxHp;
     }
 }
