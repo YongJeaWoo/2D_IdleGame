@@ -5,9 +5,8 @@ public class KnifeAttack : MonoBehaviour
 {
     [SerializeField] private string attackPointString;
     private BigInteger attackPoint;
-    private ObjectPool pool;
 
-    private void Start()
+    private void OnEnable()
     {
         attackPoint = BigInteger.Parse(attackPointString);
     }
@@ -22,21 +21,8 @@ public class KnifeAttack : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Background"))
-        {
-            Release();
-        }
-    }
-
     private void Release()
     {
-        if(pool == null)
-        {
-            pool = ObjectPoolManager.Instance.FindObjectPool(gameObject);
-        }
-
-        pool.ReleasePoolObject(gameObject);
+        ObjectPoolManager.Instance.ReleaseToPool(gameObject);
     }
 }

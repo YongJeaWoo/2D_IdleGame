@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAttack : BaseAttack
@@ -8,16 +6,13 @@ public class PlayerAttack : BaseAttack
 
     [SerializeField] private GameObject weapon;
     
-    private ObjectPool pool;
-
     private void Start()
     {
-        ObjectPoolManager.Instance.InitObjectPool(weapon, ref pool);
+        ObjectPoolManager.Instance.InitObjectPool(weapon);
     }
 
     public override void AttackAnimation()
     {
-        var knifeObj = pool.GetPoolObject(pool.transform);
-        knifeObj.transform.position = attackPos.position;
+        ObjectPoolManager.Instance.GetToPool(weapon, attackPos);
     }
 }

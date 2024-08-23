@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using SingletonBase.DontDestroySingleton;
 using System;
 using UnityEngine;
-using SingletonBase.DontDestroySingleton;
 
 public class LevelManager : SingletonBase<LevelManager>
 {
@@ -10,27 +8,18 @@ public class LevelManager : SingletonBase<LevelManager>
     [SerializeField] private int currentRound;
 
     public event Action OnRoundChange;
-
-    private void Start()
-    {
-        StartCoroutine(TestCoroutine());
-    }
-
-    private IEnumerator TestCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(2);
-
-            CallChangeRound();
-        }
-    }
+    public event Action OnChangeHealth;
 
     // 라운드 변경 시 호출할 함수
     public void CallChangeRound()
     {
         currentRound++;
         OnRoundChange?.Invoke();
+    }
+
+    public void CallChangeHealth()
+    {
+        OnChangeHealth?.Invoke();
     }
 
     public int GetCurrentRound() => currentRound;

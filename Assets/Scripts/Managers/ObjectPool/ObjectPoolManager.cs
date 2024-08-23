@@ -1,38 +1,55 @@
 using SingletonBase.DestroySingleton;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 {
-    private List<GameObject> poolObjs = new();
+    private Dictionary<GameObject, ObjectPool> poolDict = new();
 
-    public void InitObjectPool(GameObject poolObj, ref ObjectPool usePool)
+    public void InitObjectPool(GameObject poolObj)
     {
-        GameObject poolingObj = new(poolObj.name);
+        if (poolDict.ContainsKey(poolObj)) return;
+
+        GameObject poolingObj = new GameObject(poolObj.name);
         poolingObj.transform.SetParent(transform);
-        poolObjs.Add(poolingObj);
-        usePool = poolingObj.AddComponent<ObjectPool>();
 
-        if (usePool != null)
-        {
-            usePool.SetPoolObject(poolObj);
-        }
+        var pool = poolingObj.AddComponent<ObjectPool>();
+        pool.SetPoolObject(poolObj);
+        poolDict[poolObj] = pool;
     }
 
-    public ObjectPool FindObjectPool(GameObject findPool)
+    public GameObject GetToPool(GameObject poolObj, Transform pos = null)
     {
-        string cleanName = findPool.name.Replace("(Clone)", "").Trim();
-        var poolObj = poolObjs.FirstOrDefault(n => n.name == cleanName);
+        var pool = GetPool(poolObj);
 
-        if (poolObj != null)
+        if (pool != null)
         {
-            var objectPool = poolObj.GetComponent<ObjectPool>();
-            return objectPool;
+            var obj = pool.GetPoolObject(pool.transform);
+            obj.transform.position = pos.position;
+            return obj;
         }
-        else
+
+        return null;
+    }
+
+    public void ReleaseToPool(GameObject poolObj)
+    {
+        string cleanName = poolObj.name.Replace("(Clone)", "").Trim();
+
+        foreach (var pool in poolDict)
         {
-            return null;
+            if (pool.Key.name == cleanName)
+            {
+                pool.Value.ReleasePoolObject(poolObj);
+                break;
+            }
         }
     }
+    
+    private ObjectPool GetPool(GameObject poolObj)
+    {
+        poolDict.TryGetValue(poolObj, out var pool);
+        return pool;
+    }
+
 }

@@ -9664,6 +9664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 805432725}
   - component: {fileID: 805432724}
+  - component: {fileID: 805432726}
   m_Layer: 0
   m_Name: BG Collider
   m_TagString: Background
@@ -9700,7 +9701,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -9731,6 +9732,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &805432726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805432723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ea4fea4f19bc3438cde3d69b73d314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &812682059
 GameObject:
   m_ObjectHideFlags: 0
@@ -14893,7 +14906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0a289578366fc4b9292fb8b06ba74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  speed: 0.8
 --- !u!114 &1316253597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16294,6 +16307,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemiesPrefab:
   - {fileID: 9088212495670167755, guid: 0e47200dfb94408478edc5b3501980ac, type: 3}
+  - {fileID: 1083988761517790897, guid: 1b2b79096386fc24ea3eef0c456a53b7, type: 3}
+  - {fileID: 3297682690185227200, guid: c099eb9461d70db4cade9f9fbfe7b5f6, type: 3}
+  - {fileID: 7203313434099276887, guid: 299b4d852931d3045a937f4fc219123d, type: 3}
   spawnPos: {fileID: 1097244491}
 --- !u!1 &1392684660
 GameObject:

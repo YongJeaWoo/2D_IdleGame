@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 public class SpeedComponent : MonoBehaviour
 {
-    [Header("움직이는 속도")]
-    [SerializeField] private float moveSpeed;
+    [Header("플레이어 관련 속도")]
+    [Range(0.8f, 2f)]
+    [SerializeField] private float speed;
 
-    public float GetMoveSpeed() => moveSpeed;
+    public float GetSpeed() => speed;
 }

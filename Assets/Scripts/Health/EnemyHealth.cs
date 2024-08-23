@@ -1,12 +1,40 @@
+using System;
+using System.Numerics;
 using UnityEngine;
 
 public class EnemyHealth : BaseHealth
 {
     [SerializeField] private GameObject deathParticle;
 
+    public event Action OnDeath;
+
+    protected void OnEnable()
+    {
+        LevelManager.Instance.OnChangeHealth += IncreaseHealthToRound;
+        IncreaseHealthToRound();
+    }
+
+    protected void OnDisable()
+    {
+        LevelManager.Instance.OnChangeHealth -= IncreaseHealthToRound;
+    }
+
     protected override void Death()
     {
-        //Instantiate(deathParticle, gameObject.transform.position, Quaternion.identity);
         base.Death();
+        OnDeath?.Invoke();
+    }
+
+    private void IncreaseHealthToRound()
+    {
+        var round = LevelManager.Instance.GetCurrentRound();
+
+        int ceilRoundHp = (int)(Mathf.Ceil(round * 1.4f));
+
+        BigInteger previousMaxHp = BigInteger.Parse(maxHpString);
+        BigInteger calHp = previousMaxHp + (round * ceilRoundHp);
+        maxHp = calHp;
+
+        maxHpString = maxHp.ToString();
     }
 }

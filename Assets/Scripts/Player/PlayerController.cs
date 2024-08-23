@@ -4,9 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     // 애니메이터 컴포넌트
     private Animator animator;
-
-    [Range(0.4f, 2f)]
-    [SerializeField] private float attackSpeed;
+    private SpeedComponent speed;
 
     // 탐지할 레이어
     [SerializeField] private LayerMask enemyLayer;
@@ -25,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private void GetComponents()
     {
         animator = GetComponent<Animator>();
+        speed = GetComponent<SpeedComponent>();
         bgController = FindAnyObjectByType<BackgroundController>();
     }
 
@@ -46,17 +45,15 @@ public class PlayerController : MonoBehaviour
 
     private void DetectObject(bool isAttack)
     {
-        if (isAttack)
-        {
-            animator.speed = attackSpeed;
-        }
+        var m_speed = speed.GetSpeed();
+        animator.speed = m_speed;
 
         animator.SetBool("isRun", !isAttack);
         animator.SetBool("isAttack", isAttack);
 
         bgController.BG_Controll(isAttack);
     }
-    
+
     void Update()
     {
         DetectEnemy();
