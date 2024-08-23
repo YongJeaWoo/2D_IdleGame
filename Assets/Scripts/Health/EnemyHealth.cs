@@ -10,13 +10,7 @@ public class EnemyHealth : BaseHealth
 
     protected void OnEnable()
     {
-        LevelManager.Instance.OnChangeHealth += IncreaseHealthToRound;
         IncreaseHealthToRound();
-    }
-
-    protected void OnDisable()
-    {
-        LevelManager.Instance.OnChangeHealth -= IncreaseHealthToRound;
     }
 
     protected override void Death()

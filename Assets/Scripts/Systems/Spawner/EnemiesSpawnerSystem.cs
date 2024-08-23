@@ -90,7 +90,6 @@ public class EnemiesSpawnerSystem : MonoBehaviour
     private void NextRound()
     {
         LevelManager.Instance.CallChangeRound();
-        LevelManager.Instance.CallChangeHealth();
         killCount = 0;
         spawnCount = 0;
     }
