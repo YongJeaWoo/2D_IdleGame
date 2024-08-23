@@ -8,7 +8,14 @@ public class BaseHealth : MonoBehaviour
     protected Animator anim;
     protected BigInteger maxHp;
 
-    protected virtual void Start()
+    protected ObjectPool pool;
+
+    protected virtual void OnEnable()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
     {
         anim = GetComponent<Animator>();
         SetHp();
@@ -35,6 +42,11 @@ public class BaseHealth : MonoBehaviour
     //TODO : ªÁ∏¡√≥∏Æ
     protected virtual void Death()
     {
+        if (pool == null)
+        {
+            pool = ObjectPoolManager.Instance.FindObjectPool(gameObject);
+        }
 
+        pool.ReleasePoolObject(gameObject);
     }
 }

@@ -7,6 +7,6 @@ public class EnemyHealth : BaseHealth
     protected override void Death()
     {
         //Instantiate(deathParticle, gameObject.transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        base.Death();
     }
 }

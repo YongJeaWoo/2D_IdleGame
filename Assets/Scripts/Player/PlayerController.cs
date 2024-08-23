@@ -5,11 +5,14 @@ public class PlayerController : MonoBehaviour
     // 애니메이터 컴포넌트
     private Animator animator;
 
-    // 탐지 거리
-    private float detectionDistance = 6f;
+    [Range(0.4f, 2f)]
+    [SerializeField] private float attackSpeed;
 
     // 탐지할 레이어
     [SerializeField] private LayerMask enemyLayer;
+
+    // 탐지 거리
+    private float detectionDistance = 6f;
 
     // 추후 BackgroundController 변경해야 할 필요가 있을 수 있음
     private BackgroundController bgController;
@@ -43,6 +46,11 @@ public class PlayerController : MonoBehaviour
 
     private void DetectObject(bool isAttack)
     {
+        if (isAttack)
+        {
+            animator.speed = attackSpeed;
+        }
+
         animator.SetBool("isRun", !isAttack);
         animator.SetBool("isAttack", isAttack);
 
