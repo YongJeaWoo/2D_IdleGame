@@ -149,4 +149,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dmgText: {fileID: 5608154539885898985}
   upSpeed: 10
-  duration: 1
+  duration: 0.5
