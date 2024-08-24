@@ -32,4 +32,10 @@ public class EnemyHealth : BaseHealth
         maxHpString = maxHp.ToString();
         currentHp = maxHp;
     }
+
+    public override void Hit(BigInteger attackPoint)
+    {
+        base.Hit(attackPoint);
+        UIManager.Instance.RefreshEnemyHp((int)currentHp, (int)maxHp);
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class BaseHealth : MonoBehaviour
 {
     [SerializeField] protected string maxHpString;
-    protected BigInteger currentHp;
+    public BigInteger currentHp;
     protected Animator anim;
     protected BigInteger maxHp;
 
@@ -22,6 +22,8 @@ public class BaseHealth : MonoBehaviour
     {
         if (currentHp - attackPoint <= 0)
         {
+            currentHp = 0;
+
             Death();
         }
         else

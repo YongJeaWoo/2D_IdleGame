@@ -1569,6 +1569,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundText: {fileID: 129657846}
+  payerHpBar: {fileID: 1691491799}
+  payerHpBarText: {fileID: 1793321250}
+  enemyHpBar: {fileID: 939683803}
+  enemyHpBarText: {fileID: 1499278352}
 --- !u!1 &164277161
 GameObject:
   m_ObjectHideFlags: 0
@@ -11951,7 +11955,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.95
+  m_fontSize: 28
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14732,15 +14736,15 @@ GameObject:
   - component: {fileID: 1316253593}
   - component: {fileID: 1316253591}
   - component: {fileID: 1316253592}
-  - component: {fileID: 1316253594}
   - component: {fileID: 1316253595}
+  - component: {fileID: 1316253594}
   - component: {fileID: 1316253596}
   - component: {fileID: 1316253597}
   - component: {fileID: 1316253598}
   - component: {fileID: 1316253599}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15721,7 +15725,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.6
+  m_fontSize: 35.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -16306,10 +16310,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesPrefab:
-  - {fileID: 9088212495670167755, guid: 0e47200dfb94408478edc5b3501980ac, type: 3}
-  - {fileID: 1083988761517790897, guid: 1b2b79096386fc24ea3eef0c456a53b7, type: 3}
-  - {fileID: 3297682690185227200, guid: c099eb9461d70db4cade9f9fbfe7b5f6, type: 3}
-  - {fileID: 7203313434099276887, guid: 299b4d852931d3045a937f4fc219123d, type: 3}
+  - {fileID: 1648373680444298973, guid: 22f3325bc3493fa4ab5c1d7a4ae17110, type: 3}
+  - {fileID: 1073367264969338197, guid: d75f7e54d0b0fab4593212e55cbe49b1, type: 3}
+  - {fileID: 4968314613008889539, guid: a6fef3fc7a3998146abb5e5ed507432d, type: 3}
   spawnPos: {fileID: 1097244491}
 --- !u!1 &1392684660
 GameObject:
@@ -18717,7 +18720,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.6
+  m_fontSize: 35.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -21104,7 +21107,6 @@ GameObject:
   - component: {fileID: 1938443861}
   - component: {fileID: 1938443862}
   - component: {fileID: 1938443863}
-  - component: {fileID: 1938443864}
   m_Layer: 0
   m_Name: BG1
   m_TagString: Untagged
@@ -21195,51 +21197,6 @@ MonoBehaviour:
   scrollAmount: 12.6
   moveDirection: {x: -1, y: 0, z: 0}
   option: 0
---- !u!61 &1938443864
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938443860}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 32, y: 16}
-    newSize: {x: 32, y: 16}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 32, y: 16}
-  m_EdgeRadius: 0
 --- !u!1 &1938484696
 GameObject:
   m_ObjectHideFlags: 0
