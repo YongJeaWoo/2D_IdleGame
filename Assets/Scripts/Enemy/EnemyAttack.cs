@@ -29,8 +29,6 @@ public class EnemyAttack : BaseAttack
             var health = collision.GetComponent<BaseHealth>();
             health.Hit(attackPoint);
 
-            Debug.Log(health.currentHp);
-
             UnityEngine.Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
 

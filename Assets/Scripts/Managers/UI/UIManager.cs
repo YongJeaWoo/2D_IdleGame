@@ -1,4 +1,5 @@
 using SingletonBase.DontDestroySingleton;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private Image enemyHpBar;
     [SerializeField] private TextMeshProUGUI enemyHpBarText;
 
+    private float lerpSpeed = 10f;
+
     private void Start()
     {
         payerHpBar.fillAmount = 1;
@@ -22,18 +25,21 @@ public class UIManager : SingletonBase<UIManager>
         enemyHpBarText.text = "";
     }
 
-    public void RefreshEnemyHp(int currentHp, int maxHp)
+    private void RefreshHpBar(Image hpBar, TextMeshProUGUI hpBarText, BigInteger currentHp, BigInteger maxHp)
     {
-        enemyHpBar.fillAmount = (float)currentHp / maxHp;
-
-        enemyHpBarText.text = currentHp.ToString();
+        float targetFillAmount = maxHp == 0 ? 0 : (float)(double)currentHp / (float)(double)maxHp;
+        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, Time.deltaTime * lerpSpeed);
+        hpBarText.text = currentHp.ToString();
     }
 
-    public void RefreshPlayerHp(int currentHp, int maxHp)
+    public void RefreshEnemyHp(BigInteger currentHp, BigInteger maxHp)
     {
-        payerHpBar.fillAmount = (float)currentHp / maxHp;
+        RefreshHpBar(enemyHpBar, enemyHpBarText, currentHp, maxHp);
+    }
 
-        payerHpBarText.text = currentHp.ToString();
+    public void RefreshPlayerHp(BigInteger currentHp, BigInteger maxHp)
+    {
+        RefreshHpBar(payerHpBar, payerHpBarText, currentHp, maxHp);
     }
 
     public TextMeshProUGUI GetRoundText() => roundText;

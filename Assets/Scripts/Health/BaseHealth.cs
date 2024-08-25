@@ -4,7 +4,7 @@ using UnityEngine;
 public class BaseHealth : MonoBehaviour
 {
     [SerializeField] protected string maxHpString;
-    public BigInteger currentHp;
+    protected BigInteger currentHp;
     protected Animator anim;
     protected BigInteger maxHp;
 
@@ -43,4 +43,7 @@ public class BaseHealth : MonoBehaviour
     {
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
     }
+
+    public BigInteger GatCurrentHp() => currentHp;
+    public BigInteger GetMaxHp() => maxHp;
 }

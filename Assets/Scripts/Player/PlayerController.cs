@@ -1,3 +1,4 @@
+using System.Numerics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -29,17 +30,32 @@ public class PlayerController : MonoBehaviour
 
     private void DetectEnemy()
     {
-        Vector2 rayPos = new Vector2(transform.position.x, transform.position.y + 0.25f);
+        UnityEngine.Vector2 rayPos = new UnityEngine.Vector2(transform.position.x, transform.position.y + 0.25f);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, Vector2.right, detectionDistance, enemyLayer);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, UnityEngine.Vector2.right, detectionDistance, enemyLayer);
 
         if (hits.Length > 0)
         {
             DetectObject(true);
+
+            BaseHealth enemyHealth = hits[0].collider.GetComponent<BaseHealth>();
+            BigInteger currentHp = (int)enemyHealth.GatCurrentHp();
+            BigInteger maxHp = (int)enemyHealth.GetMaxHp();
+
+            if (enemyHealth != null) 
+            {
+                UIManager.Instance.RefreshEnemyHp(currentHp, maxHp);
+            }
+            else
+            {
+                UIManager.Instance.RefreshEnemyHp(0, 0);
+            }
         }
         else
         {
             DetectObject(false);
+
+            UIManager.Instance.RefreshEnemyHp(0, 0);
         }
     }
 
