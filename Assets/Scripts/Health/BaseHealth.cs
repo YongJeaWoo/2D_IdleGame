@@ -22,6 +22,8 @@ public class BaseHealth : MonoBehaviour
     {
         if (currentHp - attackPoint <= 0)
         {
+            currentHp = 0;
+
             Death();
         }
         else
@@ -41,4 +43,7 @@ public class BaseHealth : MonoBehaviour
     {
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
     }
+
+    public BigInteger GatCurrentHp() => currentHp;
+    public BigInteger GetMaxHp() => maxHp;
 }
