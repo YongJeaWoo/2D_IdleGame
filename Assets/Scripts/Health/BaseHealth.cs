@@ -7,6 +7,7 @@ public class BaseHealth : MonoBehaviour
     protected BigInteger currentHp;
     protected Animator anim;
     protected BigInteger maxHp;
+    protected DamageTextPopup textPopup;
 
     protected virtual void Start()
     {
@@ -20,15 +21,19 @@ public class BaseHealth : MonoBehaviour
 
     public virtual void Hit(BigInteger attackPoint)
     {
+        currentHp -= attackPoint;
+
+        if (textPopup == null)
+        {
+            textPopup = UIManager.Instance.GetDamageText();
+        }
+        textPopup.ShowDamageText(attackPoint, transform.position);
+
         if (currentHp - attackPoint <= 0)
         {
             currentHp = 0;
-
             Death();
-        }
-        else
-        {
-            currentHp -= attackPoint;
+            return;
         }
     }
 

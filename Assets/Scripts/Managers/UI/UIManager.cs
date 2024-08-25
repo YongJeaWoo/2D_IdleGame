@@ -15,6 +15,9 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private Image enemyHpBar;
     [SerializeField] private TextMeshProUGUI enemyHpBarText;
 
+    [Header("데미지 Text 팝업 시스템")]
+    [SerializeField] private DamageTextPopup damageTextPopup;
+
     private float lerpSpeed = 10f;
 
     private void Start()
@@ -43,4 +46,5 @@ public class UIManager : SingletonBase<UIManager>
     }
 
     public TextMeshProUGUI GetRoundText() => roundText;
+    public DamageTextPopup GetDamageText() => damageTextPopup;
 }
