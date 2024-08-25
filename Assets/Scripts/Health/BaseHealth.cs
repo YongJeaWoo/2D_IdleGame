@@ -3,15 +3,24 @@ using UnityEngine;
 
 public class BaseHealth : MonoBehaviour
 {
+    [Header("데미지 텍스트 프리팹")]
+    [SerializeField] private GameObject damageTextPrefab;
+
+    [Header("최대 HP")]
     [SerializeField] protected string maxHpString;
+
+    private float plusValue = 0.6f;
+    private Transform canvasTransform;
+
     protected BigInteger currentHp;
     protected Animator anim;
     protected BigInteger maxHp;
-    protected DamageTextPopup textPopup;
 
     protected virtual void Start()
     {
         GetComponents();
+        ObjectPoolManager.Instance.InitObjectPool(damageTextPrefab);
+        canvasTransform = UIManager.Instance.GetCanvas().transform;
     }
 
     protected virtual void GetComponents()
@@ -23,11 +32,7 @@ public class BaseHealth : MonoBehaviour
     {
         currentHp -= attackPoint;
 
-        if (textPopup == null)
-        {
-            textPopup = UIManager.Instance.GetDamageText();
-        }
-        textPopup.ShowDamageText(attackPoint, transform.position);
+        ShowDamageText(attackPoint, transform.position);
 
         if (currentHp - attackPoint <= 0)
         {
@@ -35,6 +40,20 @@ public class BaseHealth : MonoBehaviour
             Death();
             return;
         }
+    }
+
+    protected void ShowDamageText(BigInteger damage, UnityEngine.Vector3 position)
+    {
+        position.y += plusValue;
+
+        GameObject damageText = ObjectPoolManager.Instance.GetToPool(damageTextPrefab, canvasTransform);
+        damageText.transform.SetParent(canvasTransform);
+
+        UnityEngine.Vector2 screenPosition = Camera.main.WorldToScreenPoint(position);
+        damageText.transform.position = screenPosition;
+
+        var text = damageText.GetComponent<DamageText>();
+        text.ShowText(damage);
     }
 
     protected virtual void SetHp()

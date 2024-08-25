@@ -1574,7 +1574,7 @@ MonoBehaviour:
   payerHpBarText: {fileID: 1793321250}
   enemyHpBar: {fileID: 939683803}
   enemyHpBarText: {fileID: 1499278352}
-  damageTextPopup: {fileID: 5933286198018843864}
+  UICanvas: {fileID: 242923003}
 --- !u!1 &164277161
 GameObject:
   m_ObjectHideFlags: 0
@@ -14939,6 +14939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d67cd6edc53d50843aadfb41e922aaad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageTextPrefab: {fileID: 6452942506768808087, guid: 601105e3a460e6d418a01fc3d3fbed37, type: 3}
   maxHpString: 1000
 --- !u!114 &1316253599
 MonoBehaviour:
