@@ -1,4 +1,5 @@
 using SingletonBase.DontDestroySingleton;
+using System.Collections;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -9,38 +10,34 @@ public class UIManager : SingletonBase<UIManager>
     [Header("라운드 표시 텍스트")]
     [SerializeField] private TextMeshProUGUI roundText;
 
-    [Header("Hp바")]
-    [SerializeField] private Image payerHpBar;
-    [SerializeField] private TextMeshProUGUI payerHpBarText;
-    [SerializeField] private Image enemyHpBar;
-    [SerializeField] private TextMeshProUGUI enemyHpBarText;
+    [Header("체력 관련 정보")]
+    [SerializeField] private Image[] hpBars;                                // 플레이어 0, 적 1
+    [SerializeField] private TextMeshProUGUI[] hpTexts;          // 플레이어 0, 적 1
 
     private float lerpSpeed = 10f;
 
-    private void Start()
+    public void InitHpImage()
     {
-        payerHpBar.fillAmount = 1;
-        payerHpBarText.text = "";
-        enemyHpBar.fillAmount = 1;
-        enemyHpBarText.text = "";
+        for (int i = 0; i < hpBars.Length; i++)
+        {
+            hpBars[i].fillAmount = 1;
+            hpTexts[i].text = string.Empty;
+        }
     }
 
-    private void RefreshHpBar(Image hpBar, TextMeshProUGUI hpBarText, BigInteger currentHp, BigInteger maxHp)
+    public void RefreshHpBar(BaseHealth targetHealth, BigInteger currentHp, BigInteger maxHp)
     {
+        if (targetHealth == null) return;
+
+        var healthImage = targetHealth.GetHealthImage();
+        var healthText = targetHealth.GetHealthText();
         float targetFillAmount = maxHp == 0 ? 0 : (float)(double)currentHp / (float)(double)maxHp;
-        hpBar.fillAmount = Mathf.Lerp(hpBar.fillAmount, targetFillAmount, Time.deltaTime * lerpSpeed);
-        hpBarText.text = currentHp.ToString();
+
+        healthImage.fillAmount = Mathf.Lerp(healthImage.fillAmount, targetFillAmount, Time.deltaTime * lerpSpeed);
+        healthText.text = currentHp.ToString();
     }
 
-    public void RefreshEnemyHp(BigInteger currentHp, BigInteger maxHp)
-    {
-        RefreshHpBar(enemyHpBar, enemyHpBarText, currentHp, maxHp);
-    }
-
-    public void RefreshPlayerHp(BigInteger currentHp, BigInteger maxHp)
-    {
-        RefreshHpBar(payerHpBar, payerHpBarText, currentHp, maxHp);
-    }
-
+    public Image[] GetHpBars() => hpBars;
+    public TextMeshProUGUI[] GetHpTexts() => hpTexts;
     public TextMeshProUGUI GetRoundText() => roundText;
 }

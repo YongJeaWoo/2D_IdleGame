@@ -18,14 +18,14 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
         poolDict[poolObj] = pool;
     }
 
-    public GameObject GetToPool(GameObject poolObj, Transform pos = null)
+    public GameObject GetToPool(GameObject poolObj, Transform createPos = null)
     {
         var pool = GetPool(poolObj);
 
         if (pool != null)
         {
             var obj = pool.GetPoolObject(pool.transform);
-            obj.transform.position = pos.position;
+            obj.transform.position = createPos.position;
             return obj;
         }
 
@@ -51,5 +51,4 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
         poolDict.TryGetValue(poolObj, out var pool);
         return pool;
     }
-
 }
