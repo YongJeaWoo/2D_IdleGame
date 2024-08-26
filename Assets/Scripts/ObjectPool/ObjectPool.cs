@@ -46,13 +46,13 @@ public class ObjectPool : MonoBehaviour
     #endregion
 
     #region Use Pool
-    public GameObject GetPoolObject(Transform pos = null)
+    public GameObject GetPoolObject(Transform parentPos = null)
     {
         var obj = poolList.Get();
 
-        if (pos != null)
+        if (parentPos != null)
         {
-            obj.transform.SetParent(pos);
+            obj.transform.SetParent(parentPos);
         }
         else
         {

@@ -8,7 +8,7 @@ public class BaseMovement : MonoBehaviour
 
     protected virtual void Move()
     {
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
+        transform.Translate(moveSpeed * Time.deltaTime * direction);
     }
 
     private void Update()

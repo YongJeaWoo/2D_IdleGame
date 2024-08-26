@@ -26,22 +26,27 @@ public class ParallaxBackground : MonoBehaviour
         MoveBackground();
     }
 
+    private void InitValue()
+    {
+        BackgroundSetSpeed();
+        originSpeed = moveSpeed;
+    }
+
     private void BackgroundSetSpeed()
     {
         playerSystem = FindObjectOfType<PlayerSystem>();
         var player = playerSystem.GetPlayer();
         var speed = player.GetComponent<SpeedComponent>();
 
-        float baseSpeed = speed.GetMoveSpeed();
+        UpdateSpeed(speed);
+    }
+
+    public void UpdateSpeed(SpeedComponent _speed)
+    {
+        float baseSpeed = _speed.GetSpeed();
         int objectIndex = int.Parse(gameObject.name.Substring(gameObject.name.Length - 1)) - 1;
 
         moveSpeed = baseSpeed - (objectIndex * 0.2f);
-    }
-
-    private void InitValue()
-    {
-        BackgroundSetSpeed();
-        originSpeed = moveSpeed;
     }
 
     private void MoveBackground()
