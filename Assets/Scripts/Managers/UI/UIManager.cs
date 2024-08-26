@@ -19,6 +19,35 @@ public class UIManager : SingletonBase<UIManager>
     [Header("이팩트용 UI 캔버스")]
     public Transform uiCanvas;
 
+    [Header("재화 관련 정보")]
+    [SerializeField] private TextMeshProUGUI[] possessText;
+    // gold, ore, other 순서로 관리
+    private BigInteger[] possess = new BigInteger[3];
+
+    private void Start()
+    {
+        InitPossess();
+    }
+
+    private void InitPossess()
+    {
+        // 초기 재화 값 설정
+        possess[0] = BigInteger.Zero; // Gold 초기화
+        possess[1] = BigInteger.Zero; // Ore 초기화
+        possess[2] = BigInteger.Zero; // Other 초기화
+
+        // UI 초기화
+        UpdatePossessText();
+    }
+
+    public void UpdatePossessText()
+    {
+        for (int i = 0; i < possessText.Length && i < possess.Length; i++)
+        {
+            possessText[i].text = $"{possess[i]}";
+        }
+    }
+
     public void InitHpImage()
     {
         for (int i = 0; i < hpBars.Length; i++)
@@ -40,7 +69,10 @@ public class UIManager : SingletonBase<UIManager>
         healthText.text = currentHp.ToString();
     }
 
+   
+
     public Image[] GetHpBars() => hpBars;
     public TextMeshProUGUI[] GetHpTexts() => hpTexts;
     public TextMeshProUGUI GetRoundText() => roundText;
+    public BigInteger[] GetPossess() => possess;
 }

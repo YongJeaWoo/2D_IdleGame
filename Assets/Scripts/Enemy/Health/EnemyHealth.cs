@@ -1,14 +1,17 @@
 using System;
 using System.Numerics;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class EnemyHealth : BaseHealth
 {
     public event Action OnDeath;
+    private Item item;
 
     protected override void Start()
     {
         base.Start();
+        item = GetComponent<Item>();
     }
 
     protected void OnEnable()
@@ -20,6 +23,7 @@ public class EnemyHealth : BaseHealth
     protected override void Death()
     {
         base.Death();
+        item.Drop();
         OnDeath?.Invoke();
     }
 
