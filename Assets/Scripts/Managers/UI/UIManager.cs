@@ -29,25 +29,6 @@ public class UIManager : SingletonBase<UIManager>
         InitPossess();
     }
 
-    private void InitPossess()
-    {
-        // 초기 재화 값 설정
-        possess[0] = BigInteger.Zero; // Gold 초기화
-        possess[1] = BigInteger.Zero; // Ore 초기화
-        possess[2] = BigInteger.Zero; // Other 초기화
-
-        // UI 초기화
-        UpdatePossessText();
-    }
-
-    public void UpdatePossessText()
-    {
-        for (int i = 0; i < possessText.Length && i < possess.Length; i++)
-        {
-            possessText[i].text = $"{possess[i]}";
-        }
-    }
-
     public void InitHpImage()
     {
         for (int i = 0; i < hpBars.Length; i++)
@@ -69,7 +50,27 @@ public class UIManager : SingletonBase<UIManager>
         healthText.text = currentHp.ToString();
     }
 
-   
+
+    private void InitPossess()
+    {
+        for (int i = 0; i < possessText.Length;i++)
+        {
+            // 초기 재화 값 설정
+            possess[i] = BigInteger.Zero; // Gold 초기화
+        }
+ 
+        // UI 초기화
+        UpdatePossessText();
+    }
+
+    public void UpdatePossessText()
+    {
+        for (int i = 0; i < possessText.Length && i < possess.Length; i++)
+        {
+            possessText[i].text = $"{possess[i]}";
+        }
+    }
+
 
     public Image[] GetHpBars() => hpBars;
     public TextMeshProUGUI[] GetHpTexts() => hpTexts;
