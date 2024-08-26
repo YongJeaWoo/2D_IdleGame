@@ -16,6 +16,9 @@ public class UIManager : SingletonBase<UIManager>
 
     private float lerpSpeed = 10f;
 
+    [Header("ÀÌÆÑÆ®¿ë UI Äµ¹ö½º")]
+    public Transform uiCanvas;
+
     public void InitHpImage()
     {
         for (int i = 0; i < hpBars.Length; i++)

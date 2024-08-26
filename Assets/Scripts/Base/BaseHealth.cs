@@ -3,10 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(TakeDamageTextComponent))]
 public class BaseHealth : MonoBehaviour
 {
+    [Header("Ã¼·Â ÃÖ´ñ°ª")]
     [SerializeField] protected string maxHpString;
 
+    protected TakeDamageTextComponent takeDamage;
     protected BigInteger currentHp;
     protected Animator anim;
     protected BigInteger maxHp;
@@ -22,11 +25,13 @@ public class BaseHealth : MonoBehaviour
     protected virtual void GetComponents()
     {
         anim = GetComponent<Animator>();
+        takeDamage = GetComponent<TakeDamageTextComponent>();
     }
 
     public virtual void Hit(BigInteger attackPoint)
     {
         currentHp -= attackPoint;
+        takeDamage.ShowDamagedText(attackPoint);
 
         if (currentHp <= 0)
         {
