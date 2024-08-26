@@ -11959,7 +11959,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14741,6 +14741,7 @@ GameObject:
   - component: {fileID: 1316253591}
   - component: {fileID: 1316253592}
   - component: {fileID: 1316253595}
+  - component: {fileID: 1316253601}
   - component: {fileID: 1316253599}
   - component: {fileID: 1316253596}
   - component: {fileID: 1316253597}
@@ -14958,6 +14959,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagedTextPrefab: {fileID: 6452942506768808087, guid: 7252f10ef16ce7142ab1b9d60a3112e5, type: 3}
   plusYValue: 0.8
+--- !u!50 &1316253601
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316253590}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1317211800
 GameObject:
   m_ObjectHideFlags: 0
@@ -15732,7 +15760,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.65
+  m_fontSize: 18.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -17015,7 +17043,7 @@ GameObject:
   - component: {fileID: 1489543663}
   - component: {fileID: 1489543662}
   - component: {fileID: 1489543661}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17093,16 +17121,16 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 101
   m_TargetDisplay: 0
 --- !u!1 &1493879306
 GameObject:
@@ -18829,7 +18857,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35.65
+  m_fontSize: 18.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
