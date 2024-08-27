@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using TMPro;
 using UnityEngine;
 
 public class CoinItem : DropPossessItem
@@ -8,11 +9,25 @@ public class CoinItem : DropPossessItem
     [SerializeField] private string dropGoldText;
     private BigInteger gold;
 
-    protected override int PossessIndex => 0;
+    protected void OnEnable()
+    {
+        gold = BigInteger.Parse(dropGoldText);
+    }
 
     public override void DropItem()
     {
-        DropPossess(gold);
-        UIManager.Instance.DropPossessEvent(this);
+        var hasGold = possessionsController.GetHasGold();
+
+        hasGold += gold;
+
+        UIManager.Instance.UpdatePossessText(PossessText, hasGold);
+
+        possessionsController.SetHasGold(hasGold);
+    }
+
+    protected override void InitPossess()
+    {
+        var possessText = UIManager.Instance.GetPossessText();
+        PossessText = possessText[0];
     }
 }

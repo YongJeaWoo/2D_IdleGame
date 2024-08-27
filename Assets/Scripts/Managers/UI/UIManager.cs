@@ -1,6 +1,8 @@
 using SingletonBase.DontDestroySingleton;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -24,8 +26,6 @@ public class UIManager : SingletonBase<UIManager>
     [SerializeField] private TextMeshProUGUI[] possessText;
     // gold, ore, other 순서로 관리
     private BigInteger[] possess = new BigInteger[3];
-
-    public event Action<IItemDropper> OnDrop;
 
     public void InitHpImage()
     {
@@ -54,25 +54,55 @@ public class UIManager : SingletonBase<UIManager>
         for (int i = 0; i < possess.Length; i++)
         {
             possess[i] = BigInteger.Zero;
-            UpdatePossessText(i, "0");
+            possessText[i].text = "0";
         }
     }
 
-    public void DropPossessEvent(IItemDropper item)
+    public void UpdatePossessText(TextMeshProUGUI showText, BigInteger amount)
     {
-        OnDrop.Invoke(item);
+        string formatText = FormatterText(amount);
+        showText.text = formatText;
     }
 
-    public void UpdatePossessText(int index, string formattedText)
+    public string FormatterText(BigInteger value)
     {
-        if (index >= 0 && index < possessText.Length)
+        string[] units = { "", "만", "억", "조", "경", "해", "자", "양", "구", "간", "정" };
+        List<string> parts = new List<string>();
+
+        int totalDigits = value.ToString().Length;
+
+        if (totalDigits > 8)
         {
-            possessText[index].text = formattedText;
+            value = value / BigInteger.Pow(10, totalDigits - 8);
         }
+
+        int startingUnitIndex = (totalDigits - 1) / 4;
+
+        int unitIndex = 0;
+        while (value > 0 && startingUnitIndex - unitIndex >= 0)
+        {
+            BigInteger currentValue = value % 10000;
+
+            if (currentValue > 0 || parts.Count > 0)
+            {
+                string formattedValue = currentValue.ToString();
+                if (formattedValue != "0000")
+                {
+                    string displayValue = formattedValue.TrimStart('0');
+                    parts.Insert(0, $"{displayValue}{units[startingUnitIndex - unitIndex]}");
+                }
+            }
+
+            value /= 10000;
+            unitIndex++;
+        }
+
+        string result = string.Join(" ", parts).Trim();
+        return result;
     }
 
     public Image[] GetHpBars() => hpBars;
     public TextMeshProUGUI[] GetHpTexts() => hpTexts;
     public TextMeshProUGUI GetRoundText() => roundText;
-    public BigInteger[] GetPossess() => possess;
+    public TextMeshProUGUI[] GetPossessText() => possessText;
 }

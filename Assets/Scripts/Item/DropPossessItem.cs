@@ -2,28 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Numerics;
+using TMPro;
 
-public abstract class DropPossessItem : NumberFormatterText, IItemDropper
+public abstract class DropPossessItem : MonoBehaviour, IItemDropper
 {
-    protected abstract int PossessIndex { get; }
+    // 재화 획득량
+    protected TextMeshProUGUI PossessText;
+    protected PlayerSystem playerSystem;
+    protected PlayerPossessionsController possessionsController;
 
-    protected void DropPossess(BigInteger amount)
+    protected virtual void Start()
     {
-        var possess = UIManager.Instance.GetPossess();
-
-        possess[PossessIndex] += amount;
-
-        if (possess[PossessIndex] < BigInteger.Zero)
-        {
-            possess[PossessIndex] = BigInteger.Zero;
-        }
-
-        // 포맷팅된 텍스트 생성
-        string formattedAmount = FormatterText(possess[PossessIndex]);
-
-        UIManager.Instance.UpdatePossessText(PossessIndex, formattedAmount); // 아이템 드랍 이벤트 호출
+        InitPossess();
+        playerSystem = FindObjectOfType<PlayerSystem>();
+        var player = playerSystem.GetPlayer();
+        possessionsController = player.GetComponent<PlayerPossessionsController>();
     }
 
     // 아이템 드랍
     public abstract void DropItem();
+
+    protected abstract void InitPossess();
 }

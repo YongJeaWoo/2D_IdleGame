@@ -8,11 +8,27 @@ public class OreItem : DropPossessItem
     [SerializeField] private string dropOreText;
     private BigInteger ore;
 
-    protected override int PossessIndex => 1; // 0¹ø ÀÎµ¦½º´Â °ñµå·Î °¡Á¤
+    protected void OnEnable()
+    {
+        ore = BigInteger.Parse(dropOreText);
+    }
 
     public override void DropItem()
     {
-        DropPossess(ore);
-        UIManager.Instance.DropPossessEvent(this);
+        var hasOre = possessionsController.GetHasOre();
+
+        hasOre += ore;
+
+        UIManager.Instance.UpdatePossessText(PossessText, hasOre);
+
+        possessionsController.SetHasOre(hasOre);
     }
+
+    protected override void InitPossess()
+    {
+        var possessText = UIManager.Instance.GetPossessText();
+        PossessText = possessText[1];
+    }
+
+
 }
