@@ -1,4 +1,5 @@
 using SingletonBase.DontDestroySingleton;
+using System;
 using System.Collections;
 using System.Numerics;
 using TMPro;
@@ -24,10 +25,7 @@ public class UIManager : SingletonBase<UIManager>
     // gold, ore, other 순서로 관리
     private BigInteger[] possess = new BigInteger[3];
 
-    private void Start()
-    {
-        InitPossess();
-    }
+    public event Action<IItemDropper> OnDrop;
 
     public void InitHpImage()
     {
@@ -50,27 +48,28 @@ public class UIManager : SingletonBase<UIManager>
         healthText.text = currentHp.ToString();
     }
 
-
-    private void InitPossess()
+    // 재화 초기화
+    public void InitializePossess()
     {
-        for (int i = 0; i < possessText.Length;i++)
+        for (int i = 0; i < possess.Length; i++)
         {
-            // 초기 재화 값 설정
-            possess[i] = BigInteger.Zero; // Gold 초기화
-        }
- 
-        // UI 초기화
-        UpdatePossessText();
-    }
-
-    public void UpdatePossessText()
-    {
-        for (int i = 0; i < possessText.Length && i < possess.Length; i++)
-        {
-            possessText[i].text = $"{possess[i]}";
+            possess[i] = BigInteger.Zero;
+            UpdatePossessText(i, "0");
         }
     }
 
+    public void DropPossessEvent(IItemDropper item)
+    {
+        OnDrop.Invoke(item);
+    }
+
+    public void UpdatePossessText(int index, string formattedText)
+    {
+        if (index >= 0 && index < possessText.Length)
+        {
+            possessText[index].text = formattedText;
+        }
+    }
 
     public Image[] GetHpBars() => hpBars;
     public TextMeshProUGUI[] GetHpTexts() => hpTexts;
