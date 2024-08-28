@@ -24,4 +24,12 @@ public class BackgroundController : MonoBehaviour
             }
         }
     }
+
+    public void BG_SpeedControll(SpeedComponent _speed)
+    {
+        foreach (var bgObject in bgObjects)
+        {
+            bgObject.UpdateSpeed(_speed);
+        }
+    }
 }

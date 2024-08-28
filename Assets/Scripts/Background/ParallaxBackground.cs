@@ -29,7 +29,6 @@ public class ParallaxBackground : MonoBehaviour
     private void InitValue()
     {
         BackgroundSetSpeed();
-        originSpeed = moveSpeed;
     }
 
     private void BackgroundSetSpeed()
@@ -47,6 +46,7 @@ public class ParallaxBackground : MonoBehaviour
         int objectIndex = int.Parse(gameObject.name.Substring(gameObject.name.Length - 1)) - 1;
 
         moveSpeed = baseSpeed - (objectIndex * 0.2f);
+        originSpeed = moveSpeed;
     }
 
     private void MoveBackground()
