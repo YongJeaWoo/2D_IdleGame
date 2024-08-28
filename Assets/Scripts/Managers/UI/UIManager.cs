@@ -71,30 +71,32 @@ public class UIManager : SingletonBase<UIManager>
 
         int totalDigits = value.ToString().Length;
 
-        if (totalDigits > 8)
+        // 표시할 최대 단위 인덱스 계산 (최대 2단위)
+        int maxUnitsToShow = 2;
+        int unitIndex = Math.Min((totalDigits - 1) / 4, units.Length - 1);
+
+        // 표시할 단위 인덱스 결정
+        int startUnitIndex = Math.Max(unitIndex - maxUnitsToShow + 1, 0);
+
+        // 현재 단위와 상위 단위까지 처리
+        while (unitIndex >= startUnitIndex && value > 0)
         {
-            value = value / BigInteger.Pow(10, totalDigits - 8);
-        }
+            // 현재 단위에 대한 값 추출
+            BigInteger divisor = BigInteger.Pow(10, unitIndex * 4);
+            BigInteger currentValue = value / divisor;
+            value %= divisor;
 
-        int startingUnitIndex = (totalDigits - 1) / 4;
-
-        int unitIndex = 0;
-        while (value > 0 && startingUnitIndex - unitIndex >= 0)
-        {
-            BigInteger currentValue = value % 10000;
-
-            if (currentValue > 0 || parts.Count > 0)
+            // 값이 0이 아니면 추가
+            if (currentValue > 0)
             {
                 string formattedValue = currentValue.ToString();
-                if (formattedValue != "0000")
+                if (formattedValue != "0")
                 {
-                    string displayValue = formattedValue.TrimStart('0');
-                    parts.Insert(0, $"{displayValue}{units[startingUnitIndex - unitIndex]}");
+                    parts.Add($"{formattedValue}{units[unitIndex]}");
                 }
             }
 
-            value /= 10000;
-            unitIndex++;
+            unitIndex--;
         }
 
         string result = string.Join(" ", parts).Trim();
