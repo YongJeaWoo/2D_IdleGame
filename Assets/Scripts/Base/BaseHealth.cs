@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(TakeDamageTextComponent))]
-public class BaseHealth : MonoBehaviour
+public class BaseHealth : MonoBehaviour, IRoundChanging
 {
     [Header("Ã¼·Â ÃÖ´ñ°ª")]
     [SerializeField] protected string maxHpString;
@@ -55,4 +55,9 @@ public class BaseHealth : MonoBehaviour
     public TextMeshProUGUI GetHealthText() => myHealthText;
     public BigInteger GetCurrentHp() => currentHp;
     public BigInteger GetMaxHp() => maxHp;
+
+    public virtual void IncreaseRoundToValue()
+    {
+        
+    }
 }
