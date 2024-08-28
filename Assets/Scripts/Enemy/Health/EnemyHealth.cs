@@ -8,13 +8,13 @@ public class EnemyHealth : BaseHealth
 
     protected override void Start()
     {
+        SetValues();
         base.Start();
     }
 
     protected void OnEnable()
     {
-        IncreaseHealthToRound();
-        SetValues();
+        IncreaseRoundToValue();
     }
 
     protected override void Death()
@@ -29,7 +29,7 @@ public class EnemyHealth : BaseHealth
         myHealthText = UIManager.Instance.GetHpTexts()[1];
     }
 
-    private void IncreaseHealthToRound()
+    public override void IncreaseRoundToValue()
     {
         var round = LevelManager.Instance.GetCurrentRound();
 
