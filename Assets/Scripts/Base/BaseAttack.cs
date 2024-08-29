@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BaseAttack : MonoBehaviour, IRoundChanging
+public class BaseAttack : MonoBehaviour
 {
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected float detectionDistance;
@@ -19,6 +19,10 @@ public abstract class BaseAttack : MonoBehaviour, IRoundChanging
         DetectEnemy();
     }
 
+    protected virtual void DetectEnemy()
+    {
+
+    }
 
     protected virtual void RefreshTargetHp(RaycastHit2D? target)
     {
@@ -30,11 +34,8 @@ public abstract class BaseAttack : MonoBehaviour, IRoundChanging
         }
     }
 
-    public abstract void AttackAnimation();
-    protected abstract void DetectEnemy();
-
-    public virtual void IncreaseRoundToValue()
+    public virtual void AttackAnimation()
     {
-        
+
     }
 }
