@@ -8,7 +8,7 @@ public class MeleeAttack : BaseAttack
 
     protected void OnEnable()
     {
-        IncreaseRoundToValue();
+        attackPoint = BigInteger.Parse(attackPointString);
     }
 
     protected override void DetectEnemy()
@@ -35,19 +35,6 @@ public class MeleeAttack : BaseAttack
     public override void AttackAnimation()
     {
         
-    }
-
-    public override void IncreaseRoundToValue()
-    {
-        var round = LevelManager.Instance.GetCurrentRound();
-
-        int ceilRoundHp = (int)(Mathf.Ceil(round * 1.4f));
-
-        BigInteger attackDamage = BigInteger.Parse(attackPointString);
-        BigInteger calDmg = attackDamage + (round * ceilRoundHp);
-
-        attackPointString = calDmg.ToString();
-        attackPoint = BigInteger.Parse(attackPointString);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

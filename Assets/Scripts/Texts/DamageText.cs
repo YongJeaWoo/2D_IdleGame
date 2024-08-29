@@ -19,7 +19,7 @@ public class DamageText : NumberFormatterText
 
     public void ShowTakeDamage(BigInteger damage)
     {
-        dmgText.text = FormatterText(damage);
+        dmgText.text = UIManager.Instance.FormatterText(damage);
         StartCoroutine(TextCoroutine());
     }
 
