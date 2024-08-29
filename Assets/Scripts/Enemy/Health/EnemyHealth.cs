@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyHealth : BaseHealth
@@ -20,6 +21,12 @@ public class EnemyHealth : BaseHealth
     protected override void Death()
     {
         base.Death();
+        var droppers = GetComponents<IItemDropper>();
+        foreach (var dropper in droppers)
+        {
+            dropper.DropItem();
+        }
+        // 재화 이벤트 등록
         OnDeath?.Invoke();
     }
 
