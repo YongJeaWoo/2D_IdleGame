@@ -8,68 +8,45 @@ public class SpeedComponent : MonoBehaviour
     [Range(0.8f, 2f)]
     [SerializeField] private float speed;
 
-    [Header("피버타임 스피드 증가 배수")]
-    [SerializeField] private float multipleSpeed;
-
-    [Header("피버타임 시간")]
-    [SerializeField] private float feverTime;
-
-    private BigInteger feverMulIndex = 2;
-
-    private BigInteger index;
-    private BigInteger lastFeverIndex = -1;
     private BackgroundController bgController;
     private Animator anim;
 
-    private float originalSpeed;
-    private float originAnimSpeed;
-    private bool feverActive = false;
+    private float saveSpeed, saveAnimSpeed;
 
     private void Start()
     {
         bgController = FindAnyObjectByType<BackgroundController>();
         anim = GetComponent<Animator>();
 
-        originalSpeed = speed;
-        originAnimSpeed = anim.speed;
+        saveSpeed = speed;
+        saveAnimSpeed = anim.speed;
     }
 
-    private void Update()
+    public void SpeedUp(float multipleSpeed, float time)
     {
-        index = LevelManager.Instance.GetCurrentRound();
-
-        if (!feverActive && index % feverMulIndex == 0 && index != lastFeverIndex)
-        {
-            SpeedUp();
-        }
-    }
-
-    private void SpeedUp()
-    {
-        feverActive = true;
-        lastFeverIndex = index;
-        speed *= multipleSpeed;
-
-        if (anim != null)
-        {
-            anim.speed *= multipleSpeed;
-        }
+        UpValue(multipleSpeed);
 
         bgController.BG_SpeedControll(this);
-        Invoke("SpeedDown", feverTime);
+        Invoke("SpeedDown", time);
     }
 
     private void SpeedDown()
     {
-        speed = originalSpeed;
-
-        if (anim != null)
-        {
-            anim.speed = originAnimSpeed;
-        }
+        RestoreValue();
 
         bgController.BG_SpeedControll(this);
-        feverActive = false;
+    }
+
+    private void UpValue(float upValue)
+    {
+        speed *= upValue;
+        anim.speed *= upValue;
+    }
+
+    private void RestoreValue()
+    {
+        speed = saveSpeed;
+        anim.speed = saveAnimSpeed;
     }
 
     public float GetSpeed() => speed;
