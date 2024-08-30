@@ -11,7 +11,7 @@ public class BackgroundController : MonoBehaviour
 
     private void SetValue()
     {
-        bgObjects = FindObjectsOfType<ParallaxBackground>();
+        bgObjects = GetComponentsInChildren<ParallaxBackground>();
     }
 
     public void BG_Controll(bool isAttack)
