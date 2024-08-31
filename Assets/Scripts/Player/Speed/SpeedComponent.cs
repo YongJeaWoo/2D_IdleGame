@@ -37,7 +37,7 @@ public class SpeedComponent : MonoBehaviour
         bgController.BG_SpeedControll(this);
     }
 
-    private void UpValue(float upValue)
+    public void UpValue(float upValue)
     {
         speed *= upValue;
         anim.speed *= upValue;

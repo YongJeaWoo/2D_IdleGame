@@ -1,3 +1,4 @@
+using System.Numerics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -8,11 +9,15 @@ public class PlayerAttack : BaseAttack
 
     private SpeedComponent speed;
     private BackgroundController bgController;
-    
+
+    [SerializeField] private string atkString;
+    private BigInteger atk;
+
     protected override void Awake()
     {
         base.Awake();
         GetComponents();
+        atk = BigInteger.Parse(atkString);
     }
 
     private void Start()
@@ -30,8 +35,8 @@ public class PlayerAttack : BaseAttack
 
     protected override void DetectEnemy()
     {
-        Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, Vector2.right, detectionDistance, enemyLayer);
+        UnityEngine.Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, UnityEngine.Vector2.right, detectionDistance, enemyLayer);
 
         if (hits.Length > 0)
         {
@@ -59,7 +64,7 @@ public class PlayerAttack : BaseAttack
     private void DetectObject(bool isAttack)
     {
         var m_speed = speed.GetSpeed();
-        animator.speed = m_speed;
+        animator.speed = m_speed * 0.5f;
 
         animator.SetBool("isRun", !isAttack);
         animator.SetBool("isAttack", isAttack);
@@ -69,6 +74,16 @@ public class PlayerAttack : BaseAttack
 
     public override void AttackAnimation()
     {
-        ObjectPoolManager.Instance.GetToPool(weapon, attackPos);
+        GameObject knife = ObjectPoolManager.Instance.GetToPool(weapon, attackPos);
+
+        if (knife != null)
+        {
+            var knifeAkt = knife.GetComponent<KnifeAttack>().GetAttackPoint();
+            var totalAkt = knifeAkt + atk;
+            knife.GetComponent<KnifeAttack>().SetAttackPoint(totalAkt);
+        }
     }
+
+    public BigInteger GetAtk() => atk;
+    public BigInteger SetAtk(BigInteger value) => atk = value;
 }
