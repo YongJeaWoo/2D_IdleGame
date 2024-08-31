@@ -36,4 +36,6 @@ public class PlayerHealth : BaseHealth
 
         // TODO : 페이드 아웃처리하고 그 라운드 재시작
     }
+
+    public BigInteger SetMaxHp(BigInteger value) => maxHp = value;
 }

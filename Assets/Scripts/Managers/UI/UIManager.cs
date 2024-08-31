@@ -66,6 +66,11 @@ public class UIManager : SingletonBase<UIManager>
 
     public string FormatterText(BigInteger value)
     {
+        if (value == 0)
+        {
+            return "0";
+        }
+
         string[] units = { "", "만", "억", "조", "경", "해", "자", "양", "구", "간", "정" };
         List<string> parts = new List<string>();
 

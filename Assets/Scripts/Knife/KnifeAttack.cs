@@ -25,4 +25,8 @@ public class KnifeAttack : MonoBehaviour
     {
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
     }
+
+    public BigInteger GetAttackPoint() => attackPoint;
+
+    public BigInteger SetAttackPoint(BigInteger value) => attackPoint = value;
 }
