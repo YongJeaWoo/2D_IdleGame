@@ -25,8 +25,7 @@ public class Cell : MonoBehaviour
     public void EnhanceStat()
     {
         cost += 100;
-        costText.text = cost.ToString();
-        statIncreaseAmountText.text = statIncreaseAmount.ToString();
+        UpdateInfo();
     }
 
     public void InitSall(SallSOJ sallData)

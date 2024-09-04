@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +8,9 @@ public class ClickButtonComponent : MonoBehaviour
 
     protected BottomDivisionComponent bottomDivision;
     protected Button myButton;
-
     protected ClickEffectButton effectButton;
+    protected ExitButtonComponent exitButton;
+    protected GameObject targetPanel;
 
     protected virtual void Start()
     {
@@ -27,7 +27,8 @@ public class ClickButtonComponent : MonoBehaviour
     {
         var initParentObj = transform.parent.parent.parent.gameObject;
         bottomDivision = initParentObj.GetComponent<BottomDivisionComponent>();
-
+        exitButton = GetComponent<ExitButtonComponent>();
+        exitButton.SetBottomDivision(bottomDivision);
         myButton = GetComponent<Button>();
         effectButton = GetComponent<ClickEffectButton>();
     }
@@ -48,30 +49,26 @@ public class ClickButtonComponent : MonoBehaviour
         {
             var objs = function.GetOtherObjects();
 
-            GameObject isPanel = null;
+            targetPanel = null;
 
             foreach (var obj in objs)
             {
                 if (obj.name == panelName)
                 {
-                    isPanel = obj;
+                    targetPanel = obj;
                     break;
                 }
             }
 
-            if (isPanel != null)
+            if (targetPanel != null)
             {
-                bool isActive = !isPanel.activeSelf;
+                exitButton.InitExitButton();
 
-                foreach (var obj in objs)
-                {
-                    if (obj != isPanel && obj.activeSelf)
-                    {
-                        obj.SetActive(false);
-                    }
-                }
+                bool isActive = !targetPanel.activeSelf;
 
-                isPanel.SetActive(isActive);
+                function.PanelOffButton(targetPanel);
+
+                targetPanel.SetActive(isActive);
 
                 if (isActive)
                 {
@@ -81,7 +78,13 @@ public class ClickButtonComponent : MonoBehaviour
                 {
                     effectButton.DeSelectButton(myButton);
                 }
+
+                function.ActiveObjectKnifeUIObject();
             }
         }
     }
+
+    public BottomDivisionComponent GetBottomDivisionComponent() => bottomDivision;
+    public GameObject SetTargetPanel(GameObject obj) => targetPanel = obj;
+    public GameObject GetTargetPanel() => targetPanel;
 }

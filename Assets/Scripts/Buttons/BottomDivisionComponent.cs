@@ -12,7 +12,7 @@ public class BottomDivisionComponent : MonoBehaviour
 
     private void InitBar()
     {
-        functionBar.GetKnifeInfoBar().SetActive(true);
+        functionBar.GetKnifeCollectBar().gameObject.SetActive(true);
     }
 
     public FunctionBarComponent GetFunctionBar() => functionBar;
