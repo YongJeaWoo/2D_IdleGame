@@ -22,16 +22,6 @@ public class MeleeAttack : BaseAttack
         }
     }
 
-    protected override void RefreshTargetHp(RaycastHit2D? target)
-    {
-        if (target.HasValue)
-        {
-            var targetObj = target.Value.collider.gameObject;
-            targetHealth = targetObj.GetComponent<BaseHealth>();
-            UIManager.Instance.RefreshHpBar(targetHealth, targetHealth.GetCurrentHp(), targetHealth.GetMaxHp());
-        }
-    }
-
     public override void AttackAnimation()
     {
         

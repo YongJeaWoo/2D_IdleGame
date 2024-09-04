@@ -10,10 +10,27 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
     {
         if (poolDict.ContainsKey(poolObj)) return;
 
-        GameObject poolingObj = new GameObject(poolObj.name);
-        poolingObj.transform.SetParent(transform);
+        Transform existingPool = transform.Find(poolObj.name);
 
-        var pool = poolingObj.AddComponent<ObjectPool>();
+        ObjectPool pool;
+
+        if (existingPool != null)
+        {
+            pool = existingPool.GetComponent<ObjectPool>();
+
+            if (pool == null)
+            {
+                pool = existingPool.gameObject.AddComponent<ObjectPool>();
+            }
+        }
+        else
+        {
+            GameObject poolingObj = new GameObject(poolObj.name);
+            poolingObj.transform.SetParent(transform);
+
+            pool = poolingObj.AddComponent<ObjectPool>();
+        }
+
         pool.SetPoolObject(poolObj);
         poolDict[poolObj] = pool;
     }
@@ -24,8 +41,13 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 
         if (pool != null)
         {
-            var obj = pool.GetPoolObject(pool.transform);
-            obj.transform.position = createPos.position;
+            var obj = pool.GetPoolObject(createPos);
+            
+            if (createPos != null)
+            {
+                obj.transform.localPosition = Vector3.zero;
+            }
+
             return obj;
         }
 
@@ -50,5 +72,10 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
     {
         poolDict.TryGetValue(poolObj, out var pool);
         return pool;
+    }
+
+    public bool IsPoolInitialized(GameObject poolObj)
+    {
+        return poolDict.ContainsKey(poolObj);
     }
 }

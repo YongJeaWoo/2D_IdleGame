@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerSystem : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    private PlayerPossessionsController possessionsController;
 
     public PlayerPossessionsController GetPossessionsController()
     {

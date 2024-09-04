@@ -1,15 +1,27 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerAttack : BaseAttack
 {
+    private readonly string runText = $"isRun";
+    private readonly string attackText = $"isAttack";
+
+
     [SerializeField] private Transform attackPos;
-    [SerializeField] private GameObject weapon;
+
+    [Header("실제 공격할 칼 정보")]
+    [SerializeField] private List<GameObject> knifesInfos;
 
     private SpeedComponent speed;
     private BackgroundController bgController;
+    private KnifeCollectionBar knifeBar;
 
+    private List<GameObject> knifes;
+    private List<GameObject> sortedKnifes = new List<GameObject>();
+
+    [Header("공격력")]
     [SerializeField] private string atkString;
     private BigInteger atk;
 
@@ -20,16 +32,20 @@ public class PlayerAttack : BaseAttack
         atk = BigInteger.Parse(atkString);
     }
 
-    private void Start()
+    protected void OnEnable()
     {
-        ObjectPoolManager.Instance.InitObjectPool(weapon);
+        CreateKnifeButton.OnKnifeCreated += GetknifeInfo;
+    }
+
+    protected void OnDisable()
+    {
+        CreateKnifeButton.OnKnifeCreated -= GetknifeInfo;
     }
 
     private void GetComponents()
     {
         speed = GetComponent<SpeedComponent>();
         bgController = FindAnyObjectByType<BackgroundController>();
-
         UIManager.Instance.InitHpImage();
     }
 
@@ -63,25 +79,73 @@ public class PlayerAttack : BaseAttack
 
     private void DetectObject(bool isAttack)
     {
+        if (sortedKnifes.Count == 0)
+        {
+            animator.SetBool(runText, true);
+            return;
+        }
+
         var m_speed = speed.GetSpeed();
         animator.speed = m_speed * 0.5f;
 
-        animator.SetBool("isRun", !isAttack);
-        animator.SetBool("isAttack", isAttack);
+        animator.SetBool(runText, !isAttack);
+        animator.SetBool(attackText, isAttack);
 
         bgController.BG_Controll(isAttack);
     }
 
+    public void GetknifeInfo()
+    {
+        knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
+        knifes = knifeBar.GetAttackKnifes();
+
+        sortedKnifes = knifes
+            .Select(knife =>
+            {
+                return knifesInfos.FirstOrDefault(info => info.name == knife.name);
+            })
+            .Where(info => info != null) .ToList();
+
+        foreach (var knife in sortedKnifes)
+        {
+            if (!ObjectPoolManager.Instance.IsPoolInitialized(knife))
+            {
+                ObjectPoolManager.Instance.InitObjectPool(knife);
+            }
+        }
+    }
+
+    private int currentKnifeIndex = 0;
+
     public override void AttackAnimation()
     {
-        GameObject knife = ObjectPoolManager.Instance.GetToPool(weapon, attackPos);
+        if (sortedKnifes.Count == 0) return;
 
-        if (knife != null)
-        {
-            var knifeAkt = knife.GetComponent<KnifeAttack>().GetAttackPoint();
-            var totalAkt = knifeAkt + atk;
-            knife.GetComponent<KnifeAttack>().SetAttackPoint(totalAkt);
-        }
+        sortedKnifes = sortedKnifes
+            .OrderByDescending(knife =>
+            {
+                var knifeAttack = knife.GetComponent<KnifeAttack>();
+
+                if (knifeAttack != null)
+                {
+                    var stringAtk = knifeAttack.GetAttackPointString();
+                    return BigInteger.Parse(stringAtk);
+                }
+
+                return BigInteger.Zero;
+            })
+            .ToList();
+
+        GameObject matchKnifeInfo = sortedKnifes[currentKnifeIndex];
+        var knife = ObjectPoolManager.Instance.GetToPool(matchKnifeInfo, attackPos);
+
+        if (knife == null) return;
+
+        var knifeAkt = knife.GetComponent<KnifeAttack>().GetAttackPoint();
+        var totalAkt = knifeAkt + atk;
+        knife.GetComponent<KnifeAttack>().SetAttackPoint(totalAkt);
+
+        currentKnifeIndex = (currentKnifeIndex + 1) % sortedKnifes.Count;
     }
 
     public BigInteger GetAtk() => atk;
