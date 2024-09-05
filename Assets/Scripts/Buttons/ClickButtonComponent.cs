@@ -9,8 +9,8 @@ public class ClickButtonComponent : MonoBehaviour
     protected BottomDivisionComponent bottomDivision;
     protected Button myButton;
     protected ClickEffectButton effectButton;
-    protected ExitButtonComponent exitButton;
     protected GameObject targetPanel;
+    private static ClickButtonComponent lastSelectButtonComponent = null;
 
     protected virtual void Start()
     {
@@ -27,8 +27,6 @@ public class ClickButtonComponent : MonoBehaviour
     {
         var initParentObj = transform.parent.parent.parent.gameObject;
         bottomDivision = initParentObj.GetComponent<BottomDivisionComponent>();
-        exitButton = GetComponent<ExitButtonComponent>();
-        exitButton.SetBottomDivision(bottomDivision);
         myButton = GetComponent<Button>();
         effectButton = GetComponent<ClickEffectButton>();
     }
@@ -48,22 +46,10 @@ public class ClickButtonComponent : MonoBehaviour
         if (function != null)
         {
             var objs = function.GetOtherObjects();
-
-            targetPanel = null;
-
-            foreach (var obj in objs)
-            {
-                if (obj.name == panelName)
-                {
-                    targetPanel = obj;
-                    break;
-                }
-            }
+            targetPanel = FindPanelByName(objs, panelName);
 
             if (targetPanel != null)
             {
-                exitButton.InitExitButton();
-
                 bool isActive = !targetPanel.activeSelf;
 
                 function.PanelOffButton(targetPanel);
@@ -72,16 +58,36 @@ public class ClickButtonComponent : MonoBehaviour
 
                 if (isActive)
                 {
+                    if (lastSelectButtonComponent != null && lastSelectButtonComponent != this)
+                    {
+                        lastSelectButtonComponent.effectButton.DeSelectButton(lastSelectButtonComponent.myButton);
+                    }
+
                     effectButton.SelectButton(myButton);
+
+                    lastSelectButtonComponent = this;
                 }
                 else
                 {
                     effectButton.DeSelectButton(myButton);
+                    lastSelectButtonComponent = null;
                 }
 
                 function.ActiveObjectKnifeUIObject();
             }
         }
+    }
+
+    private GameObject FindPanelByName(GameObject[] panels, string panelName)
+    {
+        foreach (var panel in panels)
+        {
+            if (panel.name == panelName)
+            {
+                return panel;
+            }
+        }
+        return null;
     }
 
     public BottomDivisionComponent GetBottomDivisionComponent() => bottomDivision;

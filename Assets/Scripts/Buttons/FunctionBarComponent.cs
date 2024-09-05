@@ -22,18 +22,20 @@ public class FunctionBarComponent : MonoBehaviour
 
     public void ActiveObjectKnifeUIObject()
     {
-        bool isAnyPanelActive = false;
+        bool isAnyPanelActive = IsAnyPanelActive();
+        knifeScrollView.SetActive(!isAnyPanelActive);
+    }
 
+    private bool IsAnyPanelActive()
+    {
         foreach (var obj in otherObjects)
         {
             if (obj.activeSelf)
             {
-                isAnyPanelActive = true;
-                break;
+                return true;
             }
         }
-
-        knifeScrollView.SetActive(!isAnyPanelActive);
+        return false;
     }
 
     public KnifeCollectionBar GetKnifeCollectBar()

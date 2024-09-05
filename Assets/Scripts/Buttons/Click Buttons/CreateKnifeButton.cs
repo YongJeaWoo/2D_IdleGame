@@ -53,7 +53,7 @@ public class CreateKnifeButton : MonoBehaviour
         var knifeData = player.GetComponent<KnifeData>();
         uiKnifeObjs = knifeData.GetUIKnifes();
 
-        bottomDivisionComponent = transform.parent.parent.GetComponent<BottomDivisionComponent>();
+        bottomDivisionComponent = transform.parent.parent.parent.GetComponent<BottomDivisionComponent>();
 
         barComponent = bottomDivisionComponent.GetFunctionBar();
         knifeCollectBar = barComponent.GetKnifeCollectBar();
