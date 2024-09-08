@@ -35,6 +35,16 @@ public class CreateKnifeButton : MonoBehaviour
         UpdateCreatedText();
     }
 
+    private void OnEnable()
+    {
+        KnifeUIActivator.OnMerge += UpdateCreatedText;
+    }
+
+    private void OnDisable()
+    {
+        KnifeUIActivator.OnMerge -= UpdateCreatedText;
+    }
+
     private void GetComponents()
     {
         playerSystem = FindObjectOfType<PlayerSystem>();

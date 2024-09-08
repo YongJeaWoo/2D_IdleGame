@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -34,12 +35,14 @@ public class PlayerAttack : BaseAttack
 
     protected void OnEnable()
     {
-        CreateKnifeButton.OnKnifeCreated += GetknifeInfo;
+        CreateKnifeButton.OnKnifeCreated += GetKnifeInfo;
+        KnifeCollectionBar.OnUpdateKnife += GetKnifeInfo;
     }
 
     protected void OnDisable()
     {
-        CreateKnifeButton.OnKnifeCreated -= GetknifeInfo;
+        CreateKnifeButton.OnKnifeCreated -= GetKnifeInfo;
+        KnifeCollectionBar.OnUpdateKnife -= GetKnifeInfo;
     }
 
     private void GetComponents()
@@ -94,7 +97,7 @@ public class PlayerAttack : BaseAttack
         bgController.BG_Controll(isAttack);
     }
 
-    public void GetknifeInfo()
+    public void GetKnifeInfo()
     {
         knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
         knifes = knifeBar.GetAttackKnifes();
@@ -102,7 +105,14 @@ public class PlayerAttack : BaseAttack
         sortedKnifes = knifes
             .Select(knife =>
             {
-                return knifesInfos.FirstOrDefault(info => info.name == knife.name);
+                var info = knifesInfos.FirstOrDefault(k => k.name == knife.name);
+
+                if (info == null)
+                {
+                    Debug.LogError($"칼 정보를 찾지 못함");
+                }
+
+                return info;
             })
             .Where(info => info != null) .ToList();
 
@@ -124,15 +134,23 @@ public class PlayerAttack : BaseAttack
         sortedKnifes = sortedKnifes
             .OrderByDescending(knife =>
             {
-                var knifeAttack = knife.GetComponent<KnifeAttack>();
-
-                if (knifeAttack != null)
+                if (knife.TryGetComponent<KnifeAttack>(out var knifeAttack))
                 {
                     var stringAtk = knifeAttack.GetAttackPointString();
-                    return BigInteger.Parse(stringAtk);
-                }
 
-                return BigInteger.Zero;
+                    if (BigInteger.TryParse(stringAtk, out var attackPoint))
+                    {
+                        return attackPoint;
+                    }
+                    else
+                    {
+                        return BigInteger.Zero;
+                    }
+                }
+                else
+                {
+                    return BigInteger.Zero;
+                }
             })
             .ToList();
 

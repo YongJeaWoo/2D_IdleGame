@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5911486964069334607}
   - component: {fileID: -4561518083132627442}
   - component: {fileID: 9175935121925859806}
-  - component: {fileID: 234194331170239982}
+  - component: {fileID: -7632376572353690632}
+  - component: {fileID: 7128783825258700789}
   m_Layer: 3
   m_Name: evo_bundle18_UI
   m_TagString: Untagged
@@ -159,7 +160,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.21, y: 0.75}
   m_EdgeRadius: 0
---- !u!114 &234194331170239982
+--- !u!114 &-7632376572353690632
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,15 +169,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 6603212214582145694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c76ebb05956be94ea968d74129f8cba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls: []
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls: []
+--- !u!114 &7128783825258700789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6603212214582145694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c86b0f3bd08e64d9b7eed5fa00fce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextPrefab: {fileID: 749760773846219738, guid: 8ed17ea546de02449a1877f7a5877818, type: 3}
