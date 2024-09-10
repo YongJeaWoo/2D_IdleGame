@@ -18,9 +18,9 @@ public class CreateKnifeButton : MonoBehaviour
     private Button myButton;
     private TextMeshProUGUI createdText;
 
-    private int currentSortingOrder = 0;
+    public static event Action OnCreateButton;
 
-    public static event Action OnKnifeCreated;
+    private int currentSortingOrder = 0;
 
     private void Awake()
     {
@@ -84,8 +84,8 @@ public class CreateKnifeButton : MonoBehaviour
 
     public void CreateButton()
     {
-        var knife = CreateRandomKnifes();
-        OnKnifeCreated?.Invoke();
+        CreateRandomKnifes();
+        OnCreateButton?.Invoke();
     }
 
     private GameObject CreateRandomKnifes()
@@ -135,6 +135,7 @@ public class CreateKnifeButton : MonoBehaviour
             return null;
         }
 
+        finalKnife.AddComponent<KnifeUIActivator>();
         knifeCollectBar.AddAttackKnifes(finalKnife);
         knifeCollectBar.AddCreatedCount();
 

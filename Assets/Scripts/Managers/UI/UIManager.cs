@@ -1,8 +1,6 @@
 using SingletonBase.DontDestroySingleton;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -13,9 +11,10 @@ public class UIManager : SingletonBase<UIManager>
     [Header("라운드 표시 텍스트")]
     [SerializeField] private TextMeshProUGUI roundText;
 
-    [Header("체력 관련 정보")]
-    [SerializeField] private Image[] hpBars;                                // 플레이어 0, 적 1
-    [SerializeField] private TextMeshProUGUI[] hpTexts;          // 플레이어 0, 적 1
+    [Header("UI 정보들")]
+    [SerializeField] private Image[] hpBars;                                    // 플레이어 0, 적 1
+    [SerializeField] private TextMeshProUGUI[] hpTexts;             // 플레이어 0, 적 1
+    [SerializeField] private TextMeshProUGUI[] nameTexts;         // 플레이어 0, 적 1 
 
     private float lerpSpeed = 10f;
 
@@ -112,4 +111,5 @@ public class UIManager : SingletonBase<UIManager>
     public TextMeshProUGUI[] GetHpTexts() => hpTexts;
     public TextMeshProUGUI GetRoundText() => roundText;
     public TextMeshProUGUI[] GetPossessText() => possessText;
+    public TextMeshProUGUI[] GetNameText() => nameTexts;
 }

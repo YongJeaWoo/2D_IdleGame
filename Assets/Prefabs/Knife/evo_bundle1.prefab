@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 395127398428903349}
   - component: {fileID: 4800163487183889550}
   - component: {fileID: 3208067647702833747}
-  - component: {fileID: 5684187037869865812}
+  - component: {fileID: -7415575359753923379}
   m_Layer: 3
   m_Name: evo_bundle1
   m_TagString: Untagged
@@ -29,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7511845092201265516}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1690321294993330264
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPointString: 20
---- !u!114 &5684187037869865812
+--- !u!114 &-7415575359753923379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,8 +182,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7511845092201265516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9de6329ef30b054f8925e4565dd0ac1, type: 3}
+  m_Script: {fileID: 11500000, guid: a1c86b0f3bd08e64d9b7eed5fa00fce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  direction: {x: 0, y: 1}
+  nextPrefab: {fileID: 940186901715575610, guid: 65b9000cc86b0924babe0c4069650c1a, type: 3}

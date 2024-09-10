@@ -73,9 +73,4 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
         poolDict.TryGetValue(poolObj, out var pool);
         return pool;
     }
-
-    public bool IsPoolInitialized(GameObject poolObj)
-    {
-        return poolDict.ContainsKey(poolObj);
-    }
 }

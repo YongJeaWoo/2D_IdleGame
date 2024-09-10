@@ -10,7 +10,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private Transform myTransform;
     private Vector2 originPosition;
 
-    private bool isDragging;
     private bool isClicked = false;
 
     private RectTransform contentArea;
@@ -37,7 +36,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        isDragging = true;
         if (!isClicked) return;
 
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(eventData.position);
@@ -63,20 +61,15 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isDragging = false;
         isClicked = false;
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(myTransform.position, 0.5f);
-
-        Debug.Log($"마우스를 놓았는가?");
 
         foreach (Collider2D hitCollider in colliders)
         {
             if (hitCollider != null && hitCollider.gameObject != gameObject && hitCollider.gameObject.name == gameObject.name)
             {
-                Debug.Log($"물체가 닿았나?");
                 MergeObjects(hitCollider.gameObject);
-                Debug.Log($"함수 실행 되었는가?");
                 return;
             }
         }
@@ -86,16 +79,10 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         if (nextPrefab == null)
         {
-            Debug.LogWarning($"null 인가?");
             return;
         }
 
-        Debug.Log($"MergeObjects 함수에 들어왔다");
-
-        if (!ObjectPoolManager.Instance.IsPoolInitialized(nextPrefab))
-        {
-            ObjectPoolManager.Instance.InitObjectPool(nextPrefab);
-        }
+        ObjectPoolManager.Instance.InitObjectPool(nextPrefab);
 
         GameObject mergedObj = ObjectPoolManager.Instance.GetToPool(nextPrefab, contentArea);
 

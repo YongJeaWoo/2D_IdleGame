@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -19,7 +18,6 @@ public class PlayerAttack : BaseAttack
     private BackgroundController bgController;
     private KnifeCollectionBar knifeBar;
 
-    private List<GameObject> knifes;
     private List<GameObject> sortedKnifes = new List<GameObject>();
 
     [Header("°ø°Ý·Â")]
@@ -35,13 +33,11 @@ public class PlayerAttack : BaseAttack
 
     protected void OnEnable()
     {
-        CreateKnifeButton.OnKnifeCreated += GetKnifeInfo;
         KnifeCollectionBar.OnUpdateKnife += GetKnifeInfo;
     }
 
     protected void OnDisable()
     {
-        CreateKnifeButton.OnKnifeCreated -= GetKnifeInfo;
         KnifeCollectionBar.OnUpdateKnife -= GetKnifeInfo;
     }
 
@@ -52,7 +48,7 @@ public class PlayerAttack : BaseAttack
         UIManager.Instance.InitHpImage();
     }
 
-    protected override void DetectEnemy()
+    protected override void DetectObject()
     {
         UnityEngine.Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
         RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, UnityEngine.Vector2.right, detectionDistance, enemyLayer);
@@ -60,6 +56,8 @@ public class PlayerAttack : BaseAttack
         if (hits.Length > 0)
         {
             var nearByTarget = hits[0];
+            var cleanName = nearByTarget.collider.gameObject.name.Replace("(Clone)", "").Trim();
+            UIManager.Instance.GetNameText()[1].text = cleanName;
 
             DetectObject(true);
             RefreshTargetHp(nearByTarget);
@@ -100,9 +98,9 @@ public class PlayerAttack : BaseAttack
     public void GetKnifeInfo()
     {
         knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
-        knifes = knifeBar.GetAttackKnifes();
+        sortedKnifes = knifeBar.GetAttackKnifes();
 
-        sortedKnifes = knifes
+        sortedKnifes = sortedKnifes
             .Select(knife =>
             {
                 var info = knifesInfos.FirstOrDefault(k => k.name == knife.name);
@@ -116,20 +114,10 @@ public class PlayerAttack : BaseAttack
             })
             .Where(info => info != null) .ToList();
 
-        foreach (var knife in sortedKnifes)
+        if (currentKnifeIndex >= sortedKnifes.Count)
         {
-            if (!ObjectPoolManager.Instance.IsPoolInitialized(knife))
-            {
-                ObjectPoolManager.Instance.InitObjectPool(knife);
-            }
+            currentKnifeIndex = 0;
         }
-    }
-
-    private int currentKnifeIndex = 0;
-
-    public override void AttackAnimation()
-    {
-        if (sortedKnifes.Count == 0) return;
 
         sortedKnifes = sortedKnifes
             .OrderByDescending(knife =>
@@ -154,10 +142,30 @@ public class PlayerAttack : BaseAttack
             })
             .ToList();
 
+
+        foreach (var knife in sortedKnifes)
+        {
+            ObjectPoolManager.Instance.InitObjectPool(knife);
+        }
+    }
+
+    private int currentKnifeIndex = 0;
+
+    public override void AttackAnimation()
+    {
+        if (sortedKnifes.Count == 0) return;
+
         GameObject matchKnifeInfo = sortedKnifes[currentKnifeIndex];
         var knife = ObjectPoolManager.Instance.GetToPool(matchKnifeInfo, attackPos);
 
         if (knife == null) return;
+
+        var movement = knife.GetComponent<KnifeMovement>();
+        
+        if (movement == null)
+        {
+            knife.AddComponent<KnifeMovement>();
+        }
 
         var knifeAkt = knife.GetComponent<KnifeAttack>().GetAttackPoint();
         var totalAkt = knifeAkt + atk;

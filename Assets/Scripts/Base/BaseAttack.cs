@@ -16,12 +16,20 @@ public class BaseAttack : MonoBehaviour
 
     protected virtual void Update()
     {
-        DetectEnemy();
+        DetectObject();
     }
 
-    protected virtual void DetectEnemy()
+    protected virtual void DetectObject()
     {
+        Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, Vector2.left, detectionDistance, enemyLayer);
 
+        if (hits.Length > 0)
+        {
+            var nearByTarget = hits[0];
+            RefreshTargetHp(nearByTarget);
+            UIManager.Instance.GetNameText()[0].text = nearByTarget.collider.gameObject.name;
+        }
     }
 
     protected virtual void RefreshTargetHp(RaycastHit2D? target)

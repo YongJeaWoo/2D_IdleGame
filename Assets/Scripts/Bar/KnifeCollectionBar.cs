@@ -17,7 +17,7 @@ public class KnifeCollectionBar : MonoBehaviour
 
     public void AddAttackKnifes(GameObject addKnife)
     {
-        string trimName = addKnife.name.Replace("_UI(Clone)", "");
+        string trimName = addKnife.name.Replace("(Clone)", "");
         addKnife.name = trimName;
         attackKnifes.Add(addKnife);
         OnUpdateKnife?.Invoke();
