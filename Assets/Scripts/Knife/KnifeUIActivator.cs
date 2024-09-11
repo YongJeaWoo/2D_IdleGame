@@ -77,10 +77,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private void MergeObjects(GameObject otherObj)
     {
-        if (nextPrefab == null)
-        {
-            return;
-        }
+        if (nextPrefab == null) return;
 
         ObjectPoolManager.Instance.InitObjectPool(nextPrefab);
 
@@ -91,6 +88,12 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         knifeCollectionBar.AddAttackKnifes(mergedObj);
         knifeCollectionBar.RemoveAttackKnifes(otherObj);
         knifeCollectionBar.RemoveAttackKnifes(gameObject);
+
+        var uiActivator = mergedObj.GetComponent<KnifeUIActivator>();
+        if (uiActivator == null)
+        {
+            mergedObj.AddComponent<KnifeUIActivator>();
+        }
 
         knifeCollectionBar.RemoveCreatedCount();
 

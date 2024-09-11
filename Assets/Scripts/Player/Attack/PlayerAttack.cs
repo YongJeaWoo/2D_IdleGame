@@ -8,15 +8,12 @@ public class PlayerAttack : BaseAttack
     private readonly string runText = $"isRun";
     private readonly string attackText = $"isAttack";
 
-
     [SerializeField] private Transform attackPos;
-
-    [Header("실제 공격할 칼 정보")]
-    [SerializeField] private List<GameObject> knifesInfos;
 
     private SpeedComponent speed;
     private BackgroundController bgController;
     private KnifeCollectionBar knifeBar;
+    private KnifeData knifeData;
 
     private List<GameObject> sortedKnifes = new List<GameObject>();
 
@@ -44,6 +41,7 @@ public class PlayerAttack : BaseAttack
     private void GetComponents()
     {
         speed = GetComponent<SpeedComponent>();
+        knifeData = GetComponent<KnifeData>();
         bgController = FindAnyObjectByType<BackgroundController>();
         UIManager.Instance.InitHpImage();
     }
@@ -98,12 +96,12 @@ public class PlayerAttack : BaseAttack
     public void GetKnifeInfo()
     {
         knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
-        sortedKnifes = knifeBar.GetAttackKnifes();
+        sortedKnifes =  knifeBar.GetAttackKnifes();
 
         sortedKnifes = sortedKnifes
             .Select(knife =>
             {
-                var info = knifesInfos.FirstOrDefault(k => k.name == knife.name);
+                var info = knifeData.GetUIKnifes().FirstOrDefault(k => k.name == knife.name);
 
                 if (info == null)
                 {
@@ -141,12 +139,6 @@ public class PlayerAttack : BaseAttack
                 }
             })
             .ToList();
-
-
-        foreach (var knife in sortedKnifes)
-        {
-            ObjectPoolManager.Instance.InitObjectPool(knife);
-        }
     }
 
     private int currentKnifeIndex = 0;
@@ -156,12 +148,12 @@ public class PlayerAttack : BaseAttack
         if (sortedKnifes.Count == 0) return;
 
         GameObject matchKnifeInfo = sortedKnifes[currentKnifeIndex];
-        var knife = ObjectPoolManager.Instance.GetToPool(matchKnifeInfo, attackPos);
 
+        var knife = ObjectPoolManager.Instance.GetToPool(matchKnifeInfo, attackPos);
+        
         if (knife == null) return;
 
         var movement = knife.GetComponent<KnifeMovement>();
-        
         if (movement == null)
         {
             knife.AddComponent<KnifeMovement>();
