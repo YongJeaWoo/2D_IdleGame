@@ -44,4 +44,5 @@ public class FunctionBarComponent : MonoBehaviour
         return knifeCollectBar;
     }
     public GameObject[] GetOtherObjects() => otherObjects;
+    public GameObject GetKnifeScrollView() => knifeScrollView;
 }

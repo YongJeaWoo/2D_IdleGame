@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class KnifeCollectionBar : MonoBehaviour
 {
+    [Header("Ä® ÃÖ´ë »ý¼º °¹¼ö")]
+    [SerializeField]private int createdMaxCount = 30;
+
     private List<GameObject> attackKnifes = new List<GameObject>();
 
     private int currentCreatedCount = 0;
-    private int createdMaxCount = 10;
 
     private bool isAutoPlay = false;
     public bool IsAutoPlay { get => isAutoPlay; set => isAutoPlay = value; }

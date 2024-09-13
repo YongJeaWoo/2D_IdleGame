@@ -143,15 +143,4 @@ public class CreateKnifeButton : MonoBehaviour
 
         return finalKnife;
     }
-
-    private IEnumerator AutoCreatedButtonCoroutine()
-    {
-        while (knifeCollectBar.IsAutoPlay)
-        {
-            yield return new WaitForSeconds(2f);
-
-            CreateButton();
-            yield return null;
-        }
-    }
 }
