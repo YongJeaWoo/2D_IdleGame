@@ -137,7 +137,6 @@ public class CreateKnifeButton : MonoBehaviour
 
         finalKnife.AddComponent<KnifeUIActivator>();
         knifeCollectBar.AddAttackKnifes(finalKnife);
-        knifeCollectBar.AddCreatedCount();
 
         UpdateCreatedText();
 

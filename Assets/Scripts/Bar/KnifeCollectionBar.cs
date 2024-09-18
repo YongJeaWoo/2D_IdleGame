@@ -9,11 +9,6 @@ public class KnifeCollectionBar : MonoBehaviour
 
     private List<GameObject> attackKnifes = new List<GameObject>();
 
-    private int currentCreatedCount = 0;
-
-    private bool isAutoPlay = false;
-    public bool IsAutoPlay { get => isAutoPlay; set => isAutoPlay = value; }
-
     public static event Action OnUpdateKnife;
 
     public void AddAttackKnifes(GameObject addKnife)
@@ -32,28 +27,7 @@ public class KnifeCollectionBar : MonoBehaviour
 
     public List<GameObject> GetAttackKnifes() => attackKnifes;
 
-    public int AddCreatedCount()
-    {
-        if (currentCreatedCount  > createdMaxCount)
-        {
-            currentCreatedCount = createdMaxCount;
-            return currentCreatedCount;
-        }
-
-        return currentCreatedCount++;
-    }
-    public int RemoveCreatedCount()
-    {
-        if (currentCreatedCount <= 0)
-        {
-            currentCreatedCount = 0;
-            return currentCreatedCount;
-        }
-
-        return currentCreatedCount--;
-    }
-
-    public int GetCreatedCurrentCount() => currentCreatedCount;
+    public int GetCreatedCurrentCount() => attackKnifes.Count;
     public int GetCreatedMaxCount() => createdMaxCount;
     public int UpgradeMaxCount() => createdMaxCount++;
 }

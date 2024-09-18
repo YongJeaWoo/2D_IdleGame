@@ -438,6 +438,7 @@ GameObject:
   - component: {fileID: 31923112}
   - component: {fileID: 31923111}
   - component: {fileID: 31923109}
+  - component: {fileID: 31923114}
   m_Layer: 5
   m_Name: Auto Merge Knife Button
   m_TagString: Untagged
@@ -580,6 +581,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 31923107}
   m_CullTransparentMesh: 1
+--- !u!114 &31923114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31923107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f1f9dd45ff1ae1449e0a6d7e68cf015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &39791232
 GameObject:
   m_ObjectHideFlags: 0
@@ -7645,8 +7658,8 @@ GameObject:
   - component: {fileID: 651854775}
   - component: {fileID: 651854774}
   - component: {fileID: 651854773}
-  - component: {fileID: 651854776}
   - component: {fileID: 651854777}
+  - component: {fileID: 651854776}
   m_Layer: 5
   m_Name: Auto Make Knife Button
   m_TagString: Untagged

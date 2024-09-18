@@ -1,44 +1,27 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class AutoMakeButton : MonoBehaviour
+public class AutoMakeButton : AutoTextButton
 {
-    private Button myButton;
-    private KnifeCollectionBar knifeBar;
-    private TextMeshProUGUI toggleText;
-
     private CreateKnifeButton createButton;
-
     private Coroutine autoMakeCoroutine;
 
-    private void Awake()
+    protected override void Awake()
     {
-        InitButton();
+        base.Awake();
+        GetComponents();
     }
 
-    private void InitButton()
+    private void GetComponents()
     {
-        myButton = GetComponent<Button>();
-        myButton.onClick.AddListener(ToggleActiveButton);
-
-        var obj = UIManager.Instance.gameObject;
-        createButton = obj.GetComponentInChildren<CreateKnifeButton>();
-        var division = obj.GetComponentInChildren<BottomDivisionComponent>();
-        var function = division.GetFunctionBar();
-        knifeBar = function.GetKnifeCollectBar();
-
-        toggleText = GetComponentInChildren<TextMeshProUGUI>();
-        toggleText.text = $"OFF";
+        createButton = UIManager.Instance.gameObject.GetComponentInChildren<CreateKnifeButton>();
     }
 
-    public void ToggleActiveButton()
+    public override void ToggleActiveButton()
     {
-        knifeBar.IsAutoPlay = !knifeBar.IsAutoPlay;
-        toggleText.text = knifeBar.IsAutoPlay ? $"ON" : $"OFF";
+        base.ToggleActiveButton();
 
-        if (knifeBar.IsAutoPlay)
+        if (isAutoPlay)
         {
             autoMakeCoroutine = StartCoroutine(AutoCreatedButtonCoroutine());
         }
@@ -54,7 +37,7 @@ public class AutoMakeButton : MonoBehaviour
 
     private IEnumerator AutoCreatedButtonCoroutine()
     {
-        while (knifeBar.IsAutoPlay)
+        while (isAutoPlay)
         {
             yield return new WaitForSeconds(2f);
 

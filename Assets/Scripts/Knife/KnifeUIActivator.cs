@@ -75,7 +75,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-    private void MergeObjects(GameObject otherObj)
+    public void MergeObjects(GameObject otherObj)
     {
         if (nextPrefab == null) return;
 
@@ -94,8 +94,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             mergedObj.AddComponent<KnifeUIActivator>();
         }
-
-        knifeCollectionBar.RemoveCreatedCount();
 
         Transform mergedPos = mergedObj.GetComponent<Transform>();
         mergedPos.position = myTransform.position;
