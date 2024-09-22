@@ -13,13 +13,15 @@ public class PlayerAttack : BaseAttack
     private SpeedComponent speed;
     private BackgroundController bgController;
     private KnifeCollectionBar knifeBar;
-    private KnifeData knifeData;
 
+    [SerializeField] private List<GameObject> attackKnifes;
     private List<GameObject> sortedKnifes = new List<GameObject>();
 
     [Header("공격력")]
     [SerializeField] private string atkString;
     private BigInteger atk;
+
+    private int currentKnifeIndex = 0;
 
     protected override void Awake()
     {
@@ -41,9 +43,9 @@ public class PlayerAttack : BaseAttack
     private void GetComponents()
     {
         speed = GetComponent<SpeedComponent>();
-        knifeData = GetComponent<KnifeData>();
         bgController = FindAnyObjectByType<BackgroundController>();
         UIManager.Instance.InitHpImage();
+        knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
     }
 
     protected override void DetectObject()
@@ -95,73 +97,34 @@ public class PlayerAttack : BaseAttack
 
     public void GetKnifeInfo()
     {
-        knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
-        sortedKnifes =  knifeBar.GetAttackKnifes();
-
-        sortedKnifes = sortedKnifes
-            .Select(knife =>
-            {
-                var info = knifeData.GetUIKnifes().FirstOrDefault(k => k.name == knife.name);
-
-                if (info == null)
-                {
-                    Debug.LogError($"칼 정보를 찾지 못함");
-                }
-
-                return info;
-            })
-            .Where(info => info != null) .ToList();
-
-        if (currentKnifeIndex >= sortedKnifes.Count)
+        var knifeList = knifeBar.GetKnifesList();
+        var matchingKnifes = attackKnifes.Where(knife =>
         {
-            currentKnifeIndex = 0;
+            var knifeNextData = knife.GetComponent<KnifeNextData>();
+            return knifeNextData != null && knifeList.Any(k => 
+            k.GetComponent<KnifeNextData>().NextID == knifeNextData.NextID);
+        });
+
+        sortedKnifes = matchingKnifes
+            .Select(knife => knife.GetComponent<KnifeAttack>())
+            .OrderByDescending(knifeAttack => BigInteger.Parse(knifeAttack.GetAttackPointString()))
+            .Select(knifeAttack => knifeAttack.gameObject)
+            .ToList();
+
+        foreach (var knife in sortedKnifes)
+        {
+            ObjectPoolManager.Instance.InitObjectPool(knife);
         }
 
-        sortedKnifes = sortedKnifes
-            .OrderByDescending(knife =>
-            {
-                if (knife.TryGetComponent<KnifeAttack>(out var knifeAttack))
-                {
-                    var stringAtk = knifeAttack.GetAttackPointString();
-
-                    if (BigInteger.TryParse(stringAtk, out var attackPoint))
-                    {
-                        return attackPoint;
-                    }
-                    else
-                    {
-                        return BigInteger.Zero;
-                    }
-                }
-                else
-                {
-                    return BigInteger.Zero;
-                }
-            })
-            .ToList();
+        currentKnifeIndex = 0;
     }
-
-    private int currentKnifeIndex = 0;
 
     public override void AttackAnimation()
     {
         if (sortedKnifes.Count == 0) return;
 
-        GameObject matchKnifeInfo = sortedKnifes[currentKnifeIndex];
-
-        var knife = ObjectPoolManager.Instance.GetToPool(matchKnifeInfo, attackPos);
-        
-        if (knife == null) return;
-
-        var movement = knife.GetComponent<KnifeMovement>();
-        if (movement == null)
-        {
-            knife.AddComponent<KnifeMovement>();
-        }
-
-        var knifeAkt = knife.GetComponent<KnifeAttack>().GetAttackPoint();
-        var totalAkt = knifeAkt + atk;
-        knife.GetComponent<KnifeAttack>().SetAttackPoint(totalAkt);
+        var currentKnife = sortedKnifes[currentKnifeIndex];
+        ObjectPoolManager.Instance.GetToPool(currentKnife, attackPos);
 
         currentKnifeIndex = (currentKnifeIndex + 1) % sortedKnifes.Count;
     }

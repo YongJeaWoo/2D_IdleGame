@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class KnifeNextData : MonoBehaviour
 {
-    [Header("업그레이드 칼 프리팹")]
-    [SerializeField] private GameObject nextPrefab;
+    [Header("업그레이드 ID")]
+    [SerializeField] private int nextID;
+    public int NextID { get => nextID; set => nextID = value; }
 
-    public GameObject GetNextPrefab() => nextPrefab;
+    public int GetNextID(int currentID)
+    {
+        return currentID + 1;
+    }
 }
