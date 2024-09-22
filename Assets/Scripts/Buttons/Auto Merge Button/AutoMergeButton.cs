@@ -8,9 +8,9 @@ public class AutoMergeButton : AutoTextButton
     private FunctionBarComponent functionBar;
     private Coroutine autoMergeCoroutine;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         InitFunction();
     }
 
@@ -48,40 +48,56 @@ public class AutoMergeButton : AutoTextButton
 
     public void AutoMerging()
     {
-        var scrollView = functionBar.GetKnifeScrollView();
-        var content = scrollView.transform.GetChild(0).GetChild(0);
-        RectTransform contentRect = content.GetComponent<RectTransform>();
+        var knifeCollectionBar = functionBar.GetKnifeCollectBar();
+        var knifeList = knifeCollectionBar.GetKnifesList();
 
-        List<Transform> sortedKnifes = content.Cast<Transform>()
-            .OrderByDescending(c => c.GetComponent<KnifeAttack>().GetAttackPoint())
+        if (knifeList.Count <= 1) return;
+
+        List<GameObject> sortedKnifes = knifeList
+            .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
             .ToList();
 
-        if (sortedKnifes.Count == 0) return;
+        if (sortedKnifes.Count < 2) return;  
 
-        for (int i = 0; i < sortedKnifes.Count - 1; i++)
+        bool merged = true;
+
+        while (merged)
         {
-            Transform firstKnife = sortedKnifes[i];
+            merged = false; 
 
-            for (int j = i + 1; j < sortedKnifes.Count; j++)
+            for (int i = 0; i < sortedKnifes.Count - 1; i++)
             {
-                Transform secondKnife = sortedKnifes[j];
+                GameObject firstKnife = sortedKnifes[i];
+                var firstData = firstKnife.GetComponent<KnifeNextData>();
 
-                if (firstKnife.name == secondKnife.name)
+                for (int j = i + 1; j < sortedKnifes.Count; j++)
                 {
-                    var firstActivator = firstKnife.GetComponent<KnifeUIActivator>();
-                    var secondActivator = secondKnife.GetComponent<KnifeUIActivator>();
+                    GameObject secondKnife = sortedKnifes[j];
+                    var secondData = secondKnife.GetComponent<KnifeNextData>();
 
-                    if (firstActivator != null && secondActivator != null)
+                    if (firstData != null && secondData != null && firstData.NextID == secondData.NextID)
                     {
-                        firstActivator.MergeObjects(secondKnife.gameObject);
+                        var firstActivator = firstKnife.GetComponent<KnifeUIActivator>();
+                        var secondActivator = secondKnife.GetComponent<KnifeUIActivator>();
 
-                        sortedKnifes.RemoveAt(j);
-                        sortedKnifes.RemoveAt(i);
+                        if (firstActivator != null && secondActivator != null)
+                        {
+                            firstActivator.MergeObjects(secondKnife);
 
-                        i = -1;  
-                        break;
+                            sortedKnifes.RemoveAt(j);
+                            sortedKnifes.RemoveAt(i);
+
+                            sortedKnifes = sortedKnifes
+                                .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
+                                .ToList();
+
+                            merged = true; 
+                            break; 
+                        }
                     }
                 }
+
+                if (merged) break; 
             }
         }
     }

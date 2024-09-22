@@ -1,19 +1,19 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    private GameObject nextPrefab;
     private KnifeNextData nextData;
 
-    private Transform myTransform;
-    private Vector2 originPosition;
+    private RectTransform myTransform;
 
     private bool isClicked = false;
 
     private RectTransform contentArea;
     private KnifeCollectionBar knifeCollectionBar;
+    private PlayerSystem playerSystem;
 
     public static event Action OnMerge;
 
@@ -24,14 +24,12 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private void InitActivator()
     {
-        myTransform = GetComponent<Transform>();
+        myTransform = GetComponent<RectTransform>();
         contentArea = transform.parent.GetComponent<RectTransform>();
 
         knifeCollectionBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
         nextData = GetComponent<KnifeNextData>();
-
-        nextPrefab = nextData.GetNextPrefab();
-        if (nextPrefab == null) return;
+        playerSystem = FindObjectOfType<PlayerSystem>();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -39,7 +37,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (!isClicked) return;
 
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(eventData.position);
-        worldPosition.z = myTransform.position.z; 
+        worldPosition.z = myTransform.position.z;
 
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(contentArea, eventData.position, Camera.main, out localPoint);
@@ -54,8 +52,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        originPosition = myTransform.position;
-
         isClicked = true;
     }
 
@@ -63,40 +59,90 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         isClicked = false;
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(myTransform.position, 0.5f);
+        RectTransform myRect = myTransform.GetComponent<RectTransform>();
 
-        foreach (Collider2D hitCollider in colliders)
+        foreach (var knifeObj in knifeCollectionBar.GetKnifesList())
         {
-            if (hitCollider != null && hitCollider.gameObject != gameObject && hitCollider.gameObject.name == gameObject.name)
+            if (knifeObj == gameObject) continue;
+
+            var otherData = knifeObj.GetComponent<KnifeNextData>();
+
+            if (otherData != null && otherData.NextID == nextData.NextID)
             {
-                MergeObjects(hitCollider.gameObject);
-                return;
+                Debug.Log($"Comparing ID: {nextData.NextID} with {otherData.NextID}");
+
+                RectTransform otherRect = knifeObj.GetComponent<RectTransform>();
+
+                float distance = Vector3.Distance(myRect.position, otherRect.position);
+                Debug.Log($"Checking distance: {distance}");
+
+                if (distance < 0.2f) 
+                {
+                    Debug.Log($"진입");
+                    MergeObjects(knifeObj);
+                    return;
+                }
             }
         }
     }
 
     public void MergeObjects(GameObject otherObj)
     {
-        if (nextPrefab == null) return;
+        Debug.Log($"머지 함수 진입");
+
+        var otherData = otherObj.GetComponent<KnifeNextData>();
+        if (otherData == null)
+        {
+            Debug.LogError("다른 오브젝트에 KnifeNextData가 없습니다.");
+            return;
+        }
+
+        if (nextData.NextID != otherData.NextID)
+        {
+            Debug.LogError("다른 오브젝트와 NextID가 다릅니다.");
+            return;
+        }
+
+        int newNextID = nextData.GetNextID(nextData.NextID);
+
+        var player = playerSystem.GetPlayer();
+        var knifeData = player.GetComponent<KnifeData>();
+        var knifeList = knifeData.GetUIKnifes();
+
+        var nextPrefab = knifeList.FirstOrDefault(k => k.GetComponent<KnifeNextData>().NextID == newNextID);
+        if (nextPrefab == null)
+        {
+            Debug.LogError("nextPrefab이 null입니다.");
+            return;
+        }
 
         ObjectPoolManager.Instance.InitObjectPool(nextPrefab);
-
         GameObject mergedObj = ObjectPoolManager.Instance.GetToPool(nextPrefab, contentArea);
 
-        if (mergedObj == null) return;
+        if (mergedObj == null)
+        {
+            Debug.LogError("병합된 오브젝트가 풀에서 가져와지지 않았습니다.");
+            return;
+        }
+
+        var mergedData = mergedObj.GetComponent<KnifeNextData>();
+        if (mergedData != null)
+        {
+            mergedData.NextID = newNextID;
+        }
+        else
+        {
+            Debug.LogError("병합된 오브젝트에 KnifeNextData가 없습니다.");
+            return;
+        }
+
+        mergedObj.transform.localScale = Vector3.one;
+        RectTransform mergedPos = mergedObj.GetComponent<RectTransform>();
+        mergedPos.position = myTransform.position;
 
         knifeCollectionBar.AddAttackKnifes(mergedObj);
         knifeCollectionBar.RemoveAttackKnifes(otherObj);
         knifeCollectionBar.RemoveAttackKnifes(gameObject);
-
-        var uiActivator = mergedObj.GetComponent<KnifeUIActivator>();
-        if (uiActivator == null)
-        {
-            mergedObj.AddComponent<KnifeUIActivator>();
-        }
-
-        Transform mergedPos = mergedObj.GetComponent<Transform>();
-        mergedPos.position = myTransform.position;
 
         ObjectPoolManager.Instance.ReleaseToPool(otherObj);
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);

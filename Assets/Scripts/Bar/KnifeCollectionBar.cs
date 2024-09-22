@@ -7,27 +7,25 @@ public class KnifeCollectionBar : MonoBehaviour
     [Header("Ä® ÃÖ´ë »ý¼º °¹¼ö")]
     [SerializeField]private int createdMaxCount = 30;
 
-    private List<GameObject> attackKnifes = new List<GameObject>();
+    private List<GameObject> knifeList = new List<GameObject>();
 
     public static event Action OnUpdateKnife;
 
     public void AddAttackKnifes(GameObject addKnife)
     {
-        string trimName = addKnife.name.Replace("(Clone)", "");
-        addKnife.name = trimName;
-        attackKnifes.Add(addKnife);
+        knifeList.Add(addKnife);
         OnUpdateKnife?.Invoke();
     }
 
     public void RemoveAttackKnifes(GameObject removeKnife)
     {
-        attackKnifes.Remove(removeKnife);
+        knifeList.Remove(removeKnife);
         OnUpdateKnife?.Invoke();
     }
 
-    public List<GameObject> GetAttackKnifes() => attackKnifes;
+    public List<GameObject> GetKnifesList() => knifeList;
 
-    public int GetCreatedCurrentCount() => attackKnifes.Count;
+    public int GetCreatedCurrentCount() => knifeList.Count;
     public int GetCreatedMaxCount() => createdMaxCount;
     public int UpgradeMaxCount() => createdMaxCount++;
 }

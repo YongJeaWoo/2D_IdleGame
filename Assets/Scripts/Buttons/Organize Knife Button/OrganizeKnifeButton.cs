@@ -80,7 +80,8 @@ public class OrganizeKnifeButton : MonoBehaviour
         float contentWidth = contentRect.rect.width;
         float contentHeight = contentRect.rect.height;
 
-        int childCount = content.childCount;
+        var knifeCollectionBar = functionBar.GetKnifeCollectBar();
+        var knifeList = knifeCollectionBar.GetKnifesList();
 
         float spacing = 0.5f;
 
@@ -90,12 +91,12 @@ public class OrganizeKnifeButton : MonoBehaviour
         float cellWidth = (contentWidth - (columnCount - 1) * spacing) / columnCount;
         float cellHeight = cellWidth + 70;
 
-        List<Transform> sortedKnifes = content.Cast<Transform>().OrderByDescending(c => c.GetComponent<KnifeAttack>().GetAttackPoint()).ToList();
+        List<Transform> sortedKnifes = knifeList.Cast<Transform>().OrderByDescending(c => c.GetComponent<KnifeAttack>().GetAttackPoint()).ToList();
 
         float startX = -contentWidth / 2 + cellWidth / 2;
         float startY = contentHeight / 2 - cellHeight / 2;
 
-        for (int i = 0; i < childCount; i++)
+        for (int i = 0; i < knifeList.Count; i++)
         {
             Transform child = sortedKnifes[i];
 

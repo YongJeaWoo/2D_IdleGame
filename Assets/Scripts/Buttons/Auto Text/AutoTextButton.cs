@@ -8,7 +8,7 @@ public class AutoTextButton : MonoBehaviour
     protected TextMeshProUGUI toggleText;
     protected bool isAutoPlay;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         InitButton();
     }

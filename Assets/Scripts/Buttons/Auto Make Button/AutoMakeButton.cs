@@ -6,9 +6,9 @@ public class AutoMakeButton : AutoTextButton
     private CreateKnifeButton createButton;
     private Coroutine autoMakeCoroutine;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         GetComponents();
     }
 

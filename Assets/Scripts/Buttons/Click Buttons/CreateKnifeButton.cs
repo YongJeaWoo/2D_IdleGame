@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -19,8 +18,6 @@ public class CreateKnifeButton : MonoBehaviour
     private TextMeshProUGUI createdText;
 
     public static event Action OnCreateButton;
-
-    private int currentSortingOrder = 0;
 
     private void Awake()
     {
@@ -109,9 +106,10 @@ public class CreateKnifeButton : MonoBehaviour
         float randomX = UnityEngine.Random.Range(-contentRect.rect.width / 2, contentRect.rect.width / 2);
         float randomY = UnityEngine.Random.Range(-contentRect.rect.height / 2, contentRect.rect.height / 2);
 
-        Vector3 randomPos = new(randomX, randomY, 0f);
+        Vector3 randomPos = new(randomX, randomY, selectedKnife.transform.position.z);
 
         GameObject finalKnife = poolManager.GetToPool(selectedKnife, createPos);
+        finalKnife.transform.localScale = Vector3.one;
 
         if (finalKnife == null)
         {
@@ -121,21 +119,12 @@ public class CreateKnifeButton : MonoBehaviour
 
         finalKnife.transform.localPosition = randomPos;
 
-        SpriteRenderer spriteRenderer = finalKnife.GetComponent<SpriteRenderer>();
-
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.sortingOrder = currentSortingOrder;
-            currentSortingOrder++;
-        }
-
         if (knifeCollectBar == null)
         {
             Debug.LogError("KnifeCollectionBar 컴포넌트가 존재하지 않습니다.");
             return null;
         }
 
-        finalKnife.AddComponent<KnifeUIActivator>();
         knifeCollectBar.AddAttackKnifes(finalKnife);
 
         UpdateCreatedText();
