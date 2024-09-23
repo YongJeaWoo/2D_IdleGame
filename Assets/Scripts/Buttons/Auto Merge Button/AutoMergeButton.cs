@@ -77,28 +77,48 @@ public class AutoMergeButton : AutoTextButton
 
                     if (firstData != null && secondData != null && firstData.NextID == secondData.NextID)
                     {
-                        var firstActivator = firstKnife.GetComponent<KnifeUIActivator>();
-                        var secondActivator = secondKnife.GetComponent<KnifeUIActivator>();
+                        StartCoroutine(MoveToCenterAndMerge(firstKnife, secondKnife));
 
-                        if (firstActivator != null && secondActivator != null)
-                        {
-                            firstActivator.MergeObjects(secondKnife);
+                        sortedKnifes.RemoveAt(j);
+                        sortedKnifes.RemoveAt(i);
 
-                            sortedKnifes.RemoveAt(j);
-                            sortedKnifes.RemoveAt(i);
+                        sortedKnifes = sortedKnifes
+                            .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
+                            .ToList();
 
-                            sortedKnifes = sortedKnifes
-                                .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
-                                .ToList();
-
-                            merged = true; 
-                            break; 
-                        }
+                        merged = true; 
+                        break; 
                     }
                 }
 
                 if (merged) break; 
             }
         }
+    }
+
+    private IEnumerator MoveToCenterAndMerge(GameObject firstKnife, GameObject secondKnife)
+    {
+        Vector3 firstPos = firstKnife.transform.position;
+        Vector3 secondPos = secondKnife.transform.position;
+        Vector3 middlePos = (firstPos + secondPos) / 2;
+
+        float duration = 0.8f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            float easeOut = Mathf.Pow(t, 0.5f);
+
+            firstKnife.transform.position = Vector3.Lerp(firstPos, middlePos, easeOut);
+            secondKnife.transform.position = Vector3.Lerp(secondPos, middlePos, easeOut);
+
+            yield return null;
+        }
+
+        var firstActivator = firstKnife.GetComponent<KnifeUIActivator>();
+
+        firstActivator.MergeObjects(secondKnife);
     }
 }
