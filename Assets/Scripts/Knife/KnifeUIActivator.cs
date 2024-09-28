@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    [SerializeField]
+    private float mergeDistanceThreshold = 0.2f;
+
     private KnifeNextData nextData;
 
     private RectTransform myTransform;
@@ -69,16 +72,12 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
             if (otherData != null && otherData.NextID == nextData.NextID)
             {
-                Debug.Log($"Comparing ID: {nextData.NextID} with {otherData.NextID}");
-
                 RectTransform otherRect = knifeObj.GetComponent<RectTransform>();
 
                 float distance = Vector3.Distance(myRect.position, otherRect.position);
-                Debug.Log($"Checking distance: {distance}");
 
-                if (distance < 0.2f) 
+                if (distance < mergeDistanceThreshold) 
                 {
-                    Debug.Log($"진입");
                     MergeObjects(knifeObj);
                     return;
                 }
@@ -88,8 +87,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void MergeObjects(GameObject otherObj)
     {
-        Debug.Log($"머지 함수 진입");
-
         var otherData = otherObj.GetComponent<KnifeNextData>();
         if (otherData == null)
         {
@@ -112,7 +109,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         var nextPrefab = knifeList.FirstOrDefault(k => k.GetComponent<KnifeNextData>().NextID == newNextID);
         if (nextPrefab == null)
         {
-            Debug.LogError("nextPrefab이 null입니다.");
+            Debug.LogWarning("현재 최대 레벨치 입니다. 더 이상 병합할 오브젝트가 없습니다.");
             return;
         }
 

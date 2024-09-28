@@ -7,6 +7,7 @@ public class AutoMergeButton : AutoTextButton
 {
     private FunctionBarComponent functionBar;
     private Coroutine autoMergeCoroutine;
+    private bool isMerging = false;
 
     protected override void Start()
     {
@@ -41,8 +42,11 @@ public class AutoMergeButton : AutoTextButton
     {
         while (isAutoPlay)
         {
-            AutoMerging();
-            yield return new WaitForSeconds(2f);
+            if (!isMerging)
+            {
+                AutoMerging();
+            }
+            yield return new WaitForSeconds(2f); 
         }
     }
 
@@ -57,41 +61,33 @@ public class AutoMergeButton : AutoTextButton
             .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
             .ToList();
 
-        if (sortedKnifes.Count < 2) return;  
+        if (sortedKnifes.Count < 2) return;
 
-        bool merged = true;
-
-        while (merged)
+        for (int i = 0; i < sortedKnifes.Count - 1; i++)
         {
-            merged = false; 
+            GameObject firstKnife = sortedKnifes[i];
+            var firstData = firstKnife.GetComponent<KnifeNextData>();
 
-            for (int i = 0; i < sortedKnifes.Count - 1; i++)
+            for (int j = i + 1; j < sortedKnifes.Count; j++)
             {
-                GameObject firstKnife = sortedKnifes[i];
-                var firstData = firstKnife.GetComponent<KnifeNextData>();
+                GameObject secondKnife = sortedKnifes[j];
+                var secondData = secondKnife.GetComponent<KnifeNextData>();
 
-                for (int j = i + 1; j < sortedKnifes.Count; j++)
+                if (firstData != null && secondData != null && firstData.NextID == secondData.NextID)
                 {
-                    GameObject secondKnife = sortedKnifes[j];
-                    var secondData = secondKnife.GetComponent<KnifeNextData>();
+                    isMerging = true;
 
-                    if (firstData != null && secondData != null && firstData.NextID == secondData.NextID)
-                    {
-                        StartCoroutine(MoveToCenterAndMerge(firstKnife, secondKnife));
+                    StartCoroutine(MoveToCenterAndMerge(firstKnife, secondKnife));
 
-                        sortedKnifes.RemoveAt(j);
-                        sortedKnifes.RemoveAt(i);
+                    sortedKnifes.RemoveAt(j);
+                    sortedKnifes.RemoveAt(i);
 
-                        sortedKnifes = sortedKnifes
-                            .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
-                            .ToList();
+                    sortedKnifes = sortedKnifes
+                        .OrderByDescending(k => k.GetComponent<KnifeAttack>().GetAttackPointString())
+                        .ToList();
 
-                        merged = true; 
-                        break; 
-                    }
+                    return;  
                 }
-
-                if (merged) break; 
             }
         }
     }
@@ -120,5 +116,7 @@ public class AutoMergeButton : AutoTextButton
         var firstActivator = firstKnife.GetComponent<KnifeUIActivator>();
 
         firstActivator.MergeObjects(secondKnife);
+
+        isMerging = false;
     }
 }
