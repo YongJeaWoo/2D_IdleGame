@@ -19,8 +19,7 @@ public class AutoTextButton : MonoBehaviour
         button.onClick.AddListener(ToggleActiveButton);
 
         var obj = UIManager.Instance.gameObject;
-        var division = obj.GetComponentInChildren<BottomDivisionComponent>();
-        var function = division.GetFunctionBar();
+        obj.GetComponentInChildren<FunctionBarComponent>();
 
         toggleText = GetComponentInChildren<TextMeshProUGUI>();
         toggleText.text = $"OFF";

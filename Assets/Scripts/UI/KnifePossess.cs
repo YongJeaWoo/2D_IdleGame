@@ -29,8 +29,7 @@ public class KnifePossess : MonoBehaviour
 
     private void FindFunctionBar()
     {
-        BottomDivisionComponent division = UIManager.Instance.GetComponentInChildren<BottomDivisionComponent>();
-        var functionBar = division.GetFunctionBar();
+        var functionBar = UIManager.Instance.gameObject.GetComponentInChildren<FunctionBarComponent>();
         knifeBar = functionBar.GetKnifeCollectBar();
     }
 

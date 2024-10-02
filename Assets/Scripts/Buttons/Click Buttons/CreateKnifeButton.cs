@@ -10,8 +10,7 @@ public class CreateKnifeButton : MonoBehaviour
 
     private ObjectPoolManager poolManager;
     private PlayerSystem playerSystem;
-    private BottomDivisionComponent bottomDivisionComponent;
-    private FunctionBarComponent barComponent;
+    private FunctionBarComponent functionBar;
     private KnifeCollectionBar knifeCollectBar;
     private Transform createPos;
     private Button myButton;
@@ -60,10 +59,9 @@ public class CreateKnifeButton : MonoBehaviour
         var knifeData = player.GetComponent<KnifeData>();
         uiKnifeObjs = knifeData.GetUIKnifes();
 
-        bottomDivisionComponent = transform.parent.parent.parent.GetComponent<BottomDivisionComponent>();
-
-        barComponent = bottomDivisionComponent.GetFunctionBar();
-        knifeCollectBar = barComponent.GetKnifeCollectBar();
+        var uiObj = UIManager.Instance.gameObject;
+        functionBar = uiObj.GetComponentInChildren<FunctionBarComponent>();
+        knifeCollectBar = functionBar.GetKnifeCollectBar();
 
         createPos = knifeCollectBar.transform.GetChild(1).GetChild(0).GetChild(0);
 
