@@ -27,6 +27,10 @@ public class PlayerAttack : BaseAttack
     {
         base.Awake();
         GetComponents();
+    }
+
+    private void Start()
+    {
         atk = BigInteger.Parse(atkString);
     }
 
@@ -130,5 +134,10 @@ public class PlayerAttack : BaseAttack
     }
 
     public BigInteger GetAtk() => atk;
-    public BigInteger SetAtk(BigInteger value) => atk = value;
+    public BigInteger SetAtk(BigInteger value)
+    {
+        atk = value;
+        atkString = atk.ToString();
+        return atk;
+    }
 }
