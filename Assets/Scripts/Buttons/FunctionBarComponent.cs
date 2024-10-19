@@ -8,6 +8,8 @@ public class FunctionBarComponent : MonoBehaviour
     [SerializeField] private GameObject[] otherObjects;
     [Header("나이프 스크롤 뷰")]
     [SerializeField] private GameObject knifeScrollView;
+    [Header("스킬 콜랙터")]
+    [SerializeField] private SkillCollector skillCollector;
 
     public void PanelOffButton(GameObject excludePanel = null)
     {
@@ -45,4 +47,5 @@ public class FunctionBarComponent : MonoBehaviour
     }
     public GameObject[] GetOtherObjects() => otherObjects;
     public GameObject GetKnifeScrollView() => knifeScrollView;
+    public SkillCollector GetSkillCollector() => skillCollector;
 }
