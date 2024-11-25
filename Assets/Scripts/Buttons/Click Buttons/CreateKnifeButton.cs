@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class CreateKnifeButton : MonoBehaviour
 {
+    private readonly string maxCountAlramText = $"Max Count Info Panel";
+
     private List<GameObject> uiKnifeObjs;
 
     private ObjectPoolManager poolManager;
@@ -87,6 +89,7 @@ public class CreateKnifeButton : MonoBehaviour
     {
         if (knifeCollectBar.GetCreatedCurrentCount() >= knifeCollectBar.GetCreatedMaxCount())
         {
+            PopupManager.Instance.InstantPopup(maxCountAlramText);
             return null;
         }
 

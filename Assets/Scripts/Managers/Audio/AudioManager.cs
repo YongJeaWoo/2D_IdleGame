@@ -9,35 +9,40 @@ public class AudioManager : SingletonBase<AudioManager>
     [Header("사용될 오디오 리스트")]
     [SerializeField] private List<AudioClip> clipList = new List<AudioClip>();
 
-    public AudioSource audioSource;
+    private List<AudioSource> audioSources = new List<AudioSource>();
+    private AudioSource loopAudioSource;
 
-    #region Utils
-    public void Play()
+    public AudioSource CreateNewAudioSource()
     {
-        audioSource.Play();
+        GameObject newAudioName = new();
+        ObjectPoolManager.Instance.InitObjectPool(newAudioName);
+        var audioObj = ObjectPoolManager.Instance.GetToPool(newAudioName);
+        AudioSource newSource = audioObj.AddComponent<AudioSource>();
+        audioSources.Add(newSource);
+        return newSource;
     }
 
-    public void Play(AudioClip _clip)
+    private AudioSource GetAvailableAudioSource()
     {
-        audioSource.clip = _clip;
-        audioSource.Play();
+        foreach (var source in audioSources)
+        {
+            if (!source.isPlaying)
+            {
+                return source;
+            }
+
+        }
+
+         return CreateNewAudioSource();
     }
 
-    public void Stop()
+    public void Play(AudioClip _clip, bool _loop = false)
     {
-        audioSource.Stop();
+        AudioSource source = _loop ? loopAudioSource : GetAvailableAudioSource();
+        source.clip = _clip;
+        source.loop = _loop;
+        source.Play();
     }
-
-    public void Pause()
-    {
-        audioSource.Pause();
-    }
-
-    public void UnPause()
-    {
-        audioSource.UnPause();
-    }
-    #endregion
 
     public AudioClip LoadClip(string _loadClipName)
     {

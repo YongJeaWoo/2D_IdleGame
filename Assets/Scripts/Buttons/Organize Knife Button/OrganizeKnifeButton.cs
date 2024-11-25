@@ -51,19 +51,20 @@ public class OrganizeKnifeButton : CoolTimeDisplay
 
         gridLayoutGroup.enabled = true;
 
-        List<RectTransform> sortedKnifes = new List<RectTransform>();
+        knifeList = knifeList
+            .Where(knife => knife.TryGetComponent<KnifeAttack>(out var knifeAttack))
+            .OrderByDescending(knife => knife.GetComponent<KnifeAttack>().GetAttackPoint()) 
+            .ToList();
 
-        foreach (var knife in knifeList)
+        for (int i = 0; i < knifeList.Count; i++)
         {
-            if (knife.TryGetComponent<RectTransform>(out var knifeRectTransform))
+            var knife = knifeList[i];
+            var rectTransform = knife.GetComponent<RectTransform>();
+            if (rectTransform != null)
             {
-                sortedKnifes.Add(knifeRectTransform);
+                rectTransform.SetSiblingIndex(i); 
             }
         }
-
-        sortedKnifes = sortedKnifes
-            .OrderByDescending(c => c.GetComponent<KnifeAttack>().GetAttackPoint())
-            .ToList();
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(gridLayoutGroup.GetComponent<RectTransform>());
 

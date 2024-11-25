@@ -6,13 +6,14 @@ public class SkillCollector : MonoBehaviour
     [Header("스킬 버튼 모음")]
     [SerializeField] private GameObject[] skillButtons;
     [Header("스킬 해제 기준")]
-    [SerializeField] private BigInteger[] requiredAttackPoint = { 2000, 8000 };
+    [SerializeField] private BigInteger[] requiredAttackPoint = { 10, 15, 20 , 25 };
 
     private PlayerSystem playerSystem;
 
     private void Start()
     {
         FindSystem();
+        InitSkillSetting();
     }
 
     private void FindSystem()
@@ -20,7 +21,7 @@ public class SkillCollector : MonoBehaviour
         playerSystem = FindObjectOfType<PlayerSystem>();
     }
 
-    public void InitSkillSetting()
+    private void InitSkillSetting()
     {
         for (int i = 0; i< skillButtons.Length; i++)
         {

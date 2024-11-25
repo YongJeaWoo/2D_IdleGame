@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -8,10 +9,13 @@ public class BaseHealth : MonoBehaviour
 {
     [Header("체력 최댓값")]
     [SerializeField] protected string maxHpString;
+    [Header("피격 시 이팩트")]
+    [SerializeField] protected GameObject hitEffectPrefab;
 
     protected TakeDamageTextComponent takeDamage;
-    protected BigInteger currentHp;
     protected Animator anim;
+    protected Renderer myRender;
+    protected BigInteger currentHp;
     protected BigInteger maxHp;
 
     protected Image myHealthBar;
@@ -20,18 +24,29 @@ public class BaseHealth : MonoBehaviour
     protected virtual void Start()
     {
         GetComponents();
+        HitPoolObject();
     }
 
     protected virtual void GetComponents()
     {
         anim = GetComponent<Animator>();
         takeDamage = GetComponent<TakeDamageTextComponent>();
+        myRender = GetComponent<Renderer>();
+    }
+
+    protected virtual void HitPoolObject()
+    {
+        ObjectPoolManager.Instance.InitObjectPool(hitEffectPrefab);
     }
 
     public virtual void Hit(BigInteger attackPoint)
     {
         currentHp -= attackPoint;
         takeDamage.ShowDamagedText(attackPoint);
+        var hitEffect = ObjectPoolManager.Instance.GetToPool(hitEffectPrefab);
+        UnityEngine.Vector3 effectPosition = transform.position;
+        effectPosition.y += 0.5f;
+        hitEffect.transform.position = effectPosition;
 
         if (currentHp <= 0)
         {

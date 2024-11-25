@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class AutoMergeButton : AutoTextButton
 {
@@ -68,12 +69,19 @@ public class AutoMergeButton : AutoTextButton
             GameObject firstKnife = sortedKnifes[i];
             var firstData = firstKnife.GetComponent<KnifeNextData>();
 
+            if (firstData.IsAtMaxLevelID(firstData.NextID)) continue;
+
             for (int j = i + 1; j < sortedKnifes.Count; j++)
             {
                 GameObject secondKnife = sortedKnifes[j];
                 var secondData = secondKnife.GetComponent<KnifeNextData>();
 
-                if (firstData != null && secondData != null && firstData.NextID == secondData.NextID)
+                if (secondData.IsAtMaxLevelID(secondData.NextID)) continue;
+
+                if (firstData == null || secondData == null) return;
+
+                // 위치 옮기면서 합체 시작
+                if (firstData.NextID == secondData.NextID)
                 {
                     isMerging = true;
 

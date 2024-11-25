@@ -122,8 +122,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return;
         }
 
-        var mergedData = mergedObj.GetComponent<KnifeNextData>();
-        if (mergedData != null)
+        if (mergedObj.TryGetComponent<KnifeNextData>(out var mergedData))
         {
             mergedData.NextID = newNextID;
         }
