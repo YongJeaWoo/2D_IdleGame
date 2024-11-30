@@ -37,7 +37,7 @@ public class PlayerSystem : MonoBehaviour
 
     public void SetSpeed(float newSpeed)
     {
-        player.GetComponent<SpeedComponent>().UpValue(newSpeed);
+        player.GetComponent<SpeedComponent>().SetSpeed(newSpeed);
     }
 
     public GameObject GetPlayer() => player;

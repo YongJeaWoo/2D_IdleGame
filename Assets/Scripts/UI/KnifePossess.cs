@@ -9,12 +9,16 @@ public class KnifePossess : MonoBehaviour
 
     private void OnEnable()
     {
-        CreateKnifeButton.OnKnifeCreated += ChangeText;
+        KnifeUIActivator.OnMerge += ChangeText;
+        KnifeCollectionBar.OnUpdateKnife += ChangeText;
+        CreateKnifeButton.OnCreateButton += ChangeText;
     }
 
     private void OnDisable()
     {
-        CreateKnifeButton.OnKnifeCreated += ChangeText;
+        KnifeUIActivator.OnMerge -= ChangeText;
+        KnifeCollectionBar.OnUpdateKnife -= ChangeText;
+        CreateKnifeButton.OnCreateButton -= ChangeText;
     }
 
     private void Awake()
@@ -25,8 +29,7 @@ public class KnifePossess : MonoBehaviour
 
     private void FindFunctionBar()
     {
-        BottomDivisionComponent division = UIManager.Instance.GetComponentInChildren<BottomDivisionComponent>();
-        var functionBar = division.GetFunctionBar();
+        var functionBar = UIManager.Instance.gameObject.GetComponentInChildren<FunctionBarComponent>();
         knifeBar = functionBar.GetKnifeCollectBar();
     }
 

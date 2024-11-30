@@ -8,38 +8,40 @@ public class PlayerAttack : BaseAttack
     private readonly string runText = $"isRun";
     private readonly string attackText = $"isAttack";
 
-
     [SerializeField] private Transform attackPos;
-
-    [Header("실제 공격할 칼 정보")]
-    [SerializeField] private List<GameObject> knifesInfos;
 
     private SpeedComponent speed;
     private BackgroundController bgController;
     private KnifeCollectionBar knifeBar;
 
-    private List<GameObject> knifes;
+    [SerializeField] private List<GameObject> attackKnifes;
     private List<GameObject> sortedKnifes = new List<GameObject>();
 
     [Header("공격력")]
     [SerializeField] private string atkString;
     private BigInteger atk;
 
+    private int currentKnifeIndex = 0;
+
     protected override void Awake()
     {
         base.Awake();
         GetComponents();
+    }
+
+    private void Start()
+    {
         atk = BigInteger.Parse(atkString);
     }
 
     protected void OnEnable()
     {
-        CreateKnifeButton.OnKnifeCreated += GetknifeInfo;
+        KnifeCollectionBar.OnUpdateKnife += GetKnifeInfo;
     }
 
     protected void OnDisable()
     {
-        CreateKnifeButton.OnKnifeCreated -= GetknifeInfo;
+        KnifeCollectionBar.OnUpdateKnife -= GetKnifeInfo;
     }
 
     private void GetComponents()
@@ -47,9 +49,10 @@ public class PlayerAttack : BaseAttack
         speed = GetComponent<SpeedComponent>();
         bgController = FindAnyObjectByType<BackgroundController>();
         UIManager.Instance.InitHpImage();
+        knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
     }
 
-    protected override void DetectEnemy()
+    protected override void DetectObject()
     {
         UnityEngine.Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
         RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, UnityEngine.Vector2.right, detectionDistance, enemyLayer);
@@ -57,6 +60,8 @@ public class PlayerAttack : BaseAttack
         if (hits.Length > 0)
         {
             var nearByTarget = hits[0];
+            var cleanName = nearByTarget.collider.gameObject.name.Replace("(Clone)", "").Trim();
+            UIManager.Instance.GetNameText()[1].text = cleanName;
 
             DetectObject(true);
             RefreshTargetHp(nearByTarget);
@@ -94,60 +99,45 @@ public class PlayerAttack : BaseAttack
         bgController.BG_Controll(isAttack);
     }
 
-    public void GetknifeInfo()
+    public void GetKnifeInfo()
     {
-        knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
-        knifes = knifeBar.GetAttackKnifes();
+        var knifeList = knifeBar.GetKnifesList();
+        var matchingKnifes = attackKnifes.Where(knife =>
+        {
+            var knifeNextData = knife.GetComponent<KnifeNextData>();
+            return knifeNextData != null && knifeList.Any(k => 
+            k.GetComponent<KnifeNextData>().NextID == knifeNextData.NextID);
+        });
 
-        sortedKnifes = knifes
-            .Select(knife =>
-            {
-                return knifesInfos.FirstOrDefault(info => info.name == knife.name);
-            })
-            .Where(info => info != null) .ToList();
+        sortedKnifes = matchingKnifes
+            .Select(knife => knife.GetComponent<KnifeAttack>())
+            .OrderByDescending(knifeAttack => BigInteger.Parse(knifeAttack.GetAttackPointString()))
+            .Select(knifeAttack => knifeAttack.gameObject)
+            .ToList();
 
         foreach (var knife in sortedKnifes)
         {
-            if (!ObjectPoolManager.Instance.IsPoolInitialized(knife))
-            {
-                ObjectPoolManager.Instance.InitObjectPool(knife);
-            }
+            ObjectPoolManager.Instance.InitObjectPool(knife);
         }
-    }
 
-    private int currentKnifeIndex = 0;
+        currentKnifeIndex = 0;
+    }
 
     public override void AttackAnimation()
     {
         if (sortedKnifes.Count == 0) return;
 
-        sortedKnifes = sortedKnifes
-            .OrderByDescending(knife =>
-            {
-                var knifeAttack = knife.GetComponent<KnifeAttack>();
-
-                if (knifeAttack != null)
-                {
-                    var stringAtk = knifeAttack.GetAttackPointString();
-                    return BigInteger.Parse(stringAtk);
-                }
-
-                return BigInteger.Zero;
-            })
-            .ToList();
-
-        GameObject matchKnifeInfo = sortedKnifes[currentKnifeIndex];
-        var knife = ObjectPoolManager.Instance.GetToPool(matchKnifeInfo, attackPos);
-
-        if (knife == null) return;
-
-        var knifeAkt = knife.GetComponent<KnifeAttack>().GetAttackPoint();
-        var totalAkt = knifeAkt + atk;
-        knife.GetComponent<KnifeAttack>().SetAttackPoint(totalAkt);
+        var currentKnife = sortedKnifes[currentKnifeIndex];
+        ObjectPoolManager.Instance.GetToPool(currentKnife, attackPos);
 
         currentKnifeIndex = (currentKnifeIndex + 1) % sortedKnifes.Count;
     }
 
     public BigInteger GetAtk() => atk;
-    public BigInteger SetAtk(BigInteger value) => atk = value;
+    public BigInteger SetAtk(BigInteger value)
+    {
+        atk = value;
+        atkString = atk.ToString();
+        return atk;
+    }
 }

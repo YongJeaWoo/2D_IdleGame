@@ -49,4 +49,5 @@ public class SpeedComponent : MonoBehaviour
     }
 
     public float GetSpeed() => speed;
+    public float SetSpeed(float value) => speed = value;
 }

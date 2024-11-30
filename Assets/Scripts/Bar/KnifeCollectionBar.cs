@@ -1,35 +1,31 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KnifeCollectionBar : MonoBehaviour
 {
-    private List<GameObject> attackKnifes = new List<GameObject>();
+    [Header("Ä® ÃÖ´ë »ý¼º °¹¼ö")]
+    [SerializeField]private int createdMaxCount = 30;
 
-    private int currentCreatedCount = 0;
-    private int createdMaxCount = 10;
+    private List<GameObject> knifeList = new List<GameObject>();
 
-    private bool isAutoPlay = false;
-    public bool IsAutoPlay { get => isAutoPlay; set => isAutoPlay = value; }
+    public static event Action OnUpdateKnife;
 
     public void AddAttackKnifes(GameObject addKnife)
     {
-        string trimName = addKnife.name.Replace("_UI(Clone)", "");
-        addKnife.name = trimName;
-        attackKnifes.Add(addKnife);
+        knifeList.Add(addKnife);
+        OnUpdateKnife?.Invoke();
     }
 
-    public List<GameObject> GetAttackKnifes() => attackKnifes;
-    public int AddCreatedCount()
+    public void RemoveAttackKnifes(GameObject removeKnife)
     {
-        if (currentCreatedCount  > createdMaxCount)
-        {
-            currentCreatedCount = createdMaxCount;
-            return currentCreatedCount;
-        }
-
-        return currentCreatedCount++;
+        knifeList.Remove(removeKnife);
+        OnUpdateKnife?.Invoke();
     }
-    public int GetCreatedCurrentCount() => currentCreatedCount;
+
+    public List<GameObject> GetKnifesList() => knifeList;
+
+    public int GetCreatedCurrentCount() => knifeList.Count;
     public int GetCreatedMaxCount() => createdMaxCount;
     public int UpgradeMaxCount() => createdMaxCount++;
 }

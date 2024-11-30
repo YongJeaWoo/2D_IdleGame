@@ -6,7 +6,7 @@ public class ClickButtonComponent : MonoBehaviour
     [Header("연결된 패널 이름")]
     [SerializeField] protected string panelName;
 
-    protected BottomDivisionComponent bottomDivision;
+    protected FunctionBarComponent functionBar;
     protected Button myButton;
     protected ClickEffectButton effectButton;
     protected GameObject targetPanel;
@@ -25,8 +25,8 @@ public class ClickButtonComponent : MonoBehaviour
 
     protected virtual void InitButton()
     {
-        var initParentObj = transform.parent.parent.parent.gameObject;
-        bottomDivision = initParentObj.GetComponent<BottomDivisionComponent>();
+        var UIObj = UIManager.Instance.gameObject;
+        functionBar = UIObj.GetComponentInChildren<FunctionBarComponent>();
         myButton = GetComponent<Button>();
         effectButton = GetComponent<ClickEffectButton>();
     }
@@ -41,18 +41,16 @@ public class ClickButtonComponent : MonoBehaviour
 
     public virtual void ClickButton()
     {
-        var function = bottomDivision.GetFunctionBar();
-
-        if (function != null)
+        if (functionBar != null)
         {
-            var objs = function.GetOtherObjects();
+            var objs = functionBar.GetOtherObjects();
             targetPanel = FindPanelByName(objs, panelName);
 
             if (targetPanel != null)
             {
                 bool isActive = !targetPanel.activeSelf;
 
-                function.PanelOffButton(targetPanel);
+                functionBar.PanelOffButton(targetPanel);
 
                 targetPanel.SetActive(isActive);
 
@@ -73,7 +71,7 @@ public class ClickButtonComponent : MonoBehaviour
                     lastSelectButtonComponent = null;
                 }
 
-                function.ActiveObjectKnifeUIObject();
+                functionBar.ActiveObjectKnifeUIObject();
             }
         }
     }
@@ -90,7 +88,6 @@ public class ClickButtonComponent : MonoBehaviour
         return null;
     }
 
-    public BottomDivisionComponent GetBottomDivisionComponent() => bottomDivision;
     public GameObject SetTargetPanel(GameObject obj) => targetPanel = obj;
     public GameObject GetTargetPanel() => targetPanel;
 }

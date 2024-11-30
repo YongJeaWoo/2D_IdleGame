@@ -14,6 +14,4 @@ public class BottomDivisionComponent : MonoBehaviour
     {
         functionBar.GetKnifeCollectBar().gameObject.SetActive(true);
     }
-
-    public FunctionBarComponent GetFunctionBar() => functionBar;
 }
