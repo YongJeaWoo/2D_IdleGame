@@ -19,6 +19,8 @@ public abstract class DataCell : MonoBehaviour
 
     public static event Action ClickButton;
 
+    private readonly string NoMoney = $"No Money Panel";
+
     protected virtual void Awake()
     {
         InitInfo();
@@ -54,7 +56,11 @@ public abstract class DataCell : MonoBehaviour
 
     public virtual void OnButtonClick()
     {
-        if (!possessionController.SpendGold(upgradeCost)) return;
+        if (!possessionController.SpendGold(upgradeCost))
+        {
+            PopupManager.Instance.InstantPopup(NoMoney);
+            return;
+        }
 
         ExecuteClick();
         UpgradeCost();
