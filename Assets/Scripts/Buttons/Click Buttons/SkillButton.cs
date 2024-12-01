@@ -1,4 +1,4 @@
-public class ItemButton : ClickButtonComponent
+public class SkillButton : ClickButtonComponent
 {
     private readonly string NotImplement = $"Not Implement Panel";
 
