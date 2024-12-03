@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +20,6 @@ public class OrganizeKnifeButton : CoolTimeDisplay
         var scrollView = functionBar.GetKnifeScrollView();
         content = scrollView.transform.GetChild(0).GetChild(0);
         gridLayoutGroup = content.GetComponent<GridLayoutGroup>();
-
         gridLayoutGroup.enabled = false;
     }
 
