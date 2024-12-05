@@ -6,7 +6,7 @@ public class SkillCollector : MonoBehaviour
     [Header("스킬 버튼 모음")]
     [SerializeField] private GameObject[] skillButtons;
     [Header("스킬 해제 기준")]
-    [SerializeField] private BigInteger[] requiredAttackPoint = { 10, 15, 200 , 250 };
+    [SerializeField] private BigInteger[] requiredAttackPoint = { 10, 12, 12 , 12 };
 
     private PlayerSystem playerSystem;
 

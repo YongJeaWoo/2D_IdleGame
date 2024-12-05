@@ -1,0 +1,633 @@
+fileFormatVersion: 2
+guid: 4a4202f4d350dbc4ba2c4e03d283ff31
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_0
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 21
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4274ef3f00b7ff74483f37a9dec30e95
+      internalID: 1834190253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_1
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 21
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5b53cf83a6e07e4abd99d0b15a01c32
+      internalID: 1499554287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_2
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 21
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f25fb0ef30e83994f94ff8ae79876747
+      internalID: -64008732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_3
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 21
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b499270e80409e64e91a1d71debc02c7
+      internalID: -1072859220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_4
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 0
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93cb33caf74bf454fad55d41c4ef0c1a
+      internalID: -1665738987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_5
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 0
+        width: 22
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34b8a5c547c837347a4d63fc071be781
+      internalID: -1352173472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_6
+      rect:
+        serializedVersion: 2
+        x: 932
+        y: 0
+        width: 54
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fbd4a265b3938e43b312691f8d91550
+      internalID: 1922203668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_7
+      rect:
+        serializedVersion: 2
+        x: 1043
+        y: 0
+        width: 86
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c152e0b457c870540bf5ead4ae4aaa41
+      internalID: 927006363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_8
+      rect:
+        serializedVersion: 2
+        x: 1165
+        y: 0
+        width: 97
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5098676de346f8643a292eda395d33f9
+      internalID: 413403651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_9
+      rect:
+        serializedVersion: 2
+        x: 1285
+        y: 9
+        width: 112
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2024dd0213f54ed41990ce1cd9913024
+      internalID: -1906759493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_10
+      rect:
+        serializedVersion: 2
+        x: 1412
+        y: 5
+        width: 141
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb009883a6c1a2a49a6bfecf42cade36
+      internalID: -894166017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_11
+      rect:
+        serializedVersion: 2
+        x: 1675
+        y: 0
+        width: 1396
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0407c433ccad4a4f9d36efc1c2072c4
+      internalID: 1920328407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_12
+      rect:
+        serializedVersion: 2
+        x: 1541
+        y: 0
+        width: 120
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8a5c127a65aef54b89ecaddf16ed58f
+      internalID: 1294304868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_13
+      rect:
+        serializedVersion: 2
+        x: 1675
+        y: 0
+        width: 115
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e0bc3fae027b1e4aa0acfbbe9af47b0
+      internalID: 66388183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_14
+      rect:
+        serializedVersion: 2
+        x: 1804
+        y: 0
+        width: 111
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a924fcad75ae74a42af0ef7bdd4ca8b9
+      internalID: 2080505818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_15
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 0
+        width: 121
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac326b35ed6ed8e4eac82c49b653c1a5
+      internalID: -1496750031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_16
+      rect:
+        serializedVersion: 2
+        x: 2054
+        y: 0
+        width: 122
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71f9e316f72a3d847bd14ddc2e89deaa
+      internalID: -211494987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_17
+      rect:
+        serializedVersion: 2
+        x: 2183
+        y: 0
+        width: 120
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d3926f94c168d240a4c0c52ff09def4
+      internalID: -2040632509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_18
+      rect:
+        serializedVersion: 2
+        x: 2311
+        y: 0
+        width: 121
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9675a8ea7bd07e94abe570462800dd69
+      internalID: -2099341118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_19
+      rect:
+        serializedVersion: 2
+        x: 2440
+        y: 0
+        width: 120
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26ba66904f786fe41be2c1c876d69966
+      internalID: -333706308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_20
+      rect:
+        serializedVersion: 2
+        x: 2566
+        y: 0
+        width: 121
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a8784b58bb1db94bafb409336b0b71c
+      internalID: 465341086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_21
+      rect:
+        serializedVersion: 2
+        x: 2695
+        y: 0
+        width: 120
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47e5166248e96d241a4d56b5f6012589
+      internalID: 509760418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_Napalm_Spread_128x32_22
+      rect:
+        serializedVersion: 2
+        x: 2824
+        y: 0
+        width: 120
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f111f1166c2ce24db7b7a94f1bfaa79
+      internalID: -619181852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Fire_Napalm_Spread_128x32_0: 1834190253
+      Fire_Napalm_Spread_128x32_1: 1499554287
+      Fire_Napalm_Spread_128x32_10: -894166017
+      Fire_Napalm_Spread_128x32_11: 1920328407
+      Fire_Napalm_Spread_128x32_12: 1294304868
+      Fire_Napalm_Spread_128x32_13: 66388183
+      Fire_Napalm_Spread_128x32_14: 2080505818
+      Fire_Napalm_Spread_128x32_15: -1496750031
+      Fire_Napalm_Spread_128x32_16: -211494987
+      Fire_Napalm_Spread_128x32_17: -2040632509
+      Fire_Napalm_Spread_128x32_18: -2099341118
+      Fire_Napalm_Spread_128x32_19: -333706308
+      Fire_Napalm_Spread_128x32_2: -64008732
+      Fire_Napalm_Spread_128x32_20: 465341086
+      Fire_Napalm_Spread_128x32_21: 509760418
+      Fire_Napalm_Spread_128x32_22: -619181852
+      Fire_Napalm_Spread_128x32_3: -1072859220
+      Fire_Napalm_Spread_128x32_4: -1665738987
+      Fire_Napalm_Spread_128x32_5: -1352173472
+      Fire_Napalm_Spread_128x32_6: 1922203668
+      Fire_Napalm_Spread_128x32_7: 927006363
+      Fire_Napalm_Spread_128x32_8: 413403651
+      Fire_Napalm_Spread_128x32_9: -1906759493
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

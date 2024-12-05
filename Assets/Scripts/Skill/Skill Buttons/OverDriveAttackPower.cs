@@ -18,7 +18,7 @@ public class OverDriveAttackPower : CoolTimeDisplay
 
     public override void BehaviourButtonClick()
     {
-        if (isCoolTime || isExplainActive) return;
+        if (isCoolTime) return;
 
         isCoolTime = true;
         var attack = playerSystem.GetAttack();
