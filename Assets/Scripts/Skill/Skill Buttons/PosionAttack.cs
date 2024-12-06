@@ -7,7 +7,7 @@ public class PosionAttack : CoolTimeDisplay
     [Header("던지는 힘")]
     [SerializeField] private float launchForce = 10f;
     [Header("던지는 방향")]
-    [SerializeField] private Vector2 launchAngle = new Vector2(1, 1);
+    [SerializeField] private Vector2 launchAngle = new(1, 1);
     private readonly float arrangeTime = 10f;
     private PlayerSystem playerSystem;
 
@@ -16,7 +16,7 @@ public class PosionAttack : CoolTimeDisplay
         base.Start();
         playerSystem = FindObjectOfType<PlayerSystem>();
         ObjectPoolManager.Instance.InitObjectPool(posionBallPrefab);
-        explainDetail = $"플레이어 앞 방향으로 스킬을 날려 \n 범위 안의 적들을 {arrangeTime}동안 대미지를 입힙니다.";
+        explainDetail = $"플레이어 앞 방향으로 스킬을 날려 \n 범위 안의 적들을 {arrangeTime} 초 동안 대미지를 입힙니다.";
     }
 
     public override void BehaviourButtonClick()
@@ -24,6 +24,7 @@ public class PosionAttack : CoolTimeDisplay
         if (isCoolTime) return;
 
         isCoolTime = true;
+        StartCoroutine(CoolTime());
         LaunchSkill();
     }
 
@@ -43,5 +44,4 @@ public class PosionAttack : CoolTimeDisplay
         Vector2 direction = launchAngle.normalized;
         rb.AddForce(direction * launchForce, ForceMode2D.Impulse);
     }
-
 }

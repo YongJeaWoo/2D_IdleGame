@@ -140,4 +140,6 @@ public class PlayerAttack : BaseAttack
         atkString = atk.ToString();
         return atk;
     }
+
+    public Transform GetAttackPos() => attackPos;
 }

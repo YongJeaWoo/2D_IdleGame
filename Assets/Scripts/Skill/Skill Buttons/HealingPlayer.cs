@@ -1,5 +1,4 @@
 using System.Numerics;
-using UnityEngine.EventSystems;
 
 public class HealingPlayer : CoolTimeDisplay
 {
@@ -21,19 +20,5 @@ public class HealingPlayer : CoolTimeDisplay
         isCoolTime = true;
         playerSystem.SetCurrentHp(healAmount);
         StartCoroutine(CoolTime());
-    }
-
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        base.OnPointerDown(eventData);
-
-        explainText.text = explainDetail;
-    }
-
-    public override void OnPointerUp(PointerEventData eventData)
-    {
-        base.OnPointerUp(eventData);
-
-        explainText.text = string.Empty;
     }
 }

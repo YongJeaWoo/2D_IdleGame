@@ -36,18 +36,4 @@ public class OverDriveAttackPower : CoolTimeDisplay
 
         playerSystem.SetAttack(originAttack);
     }
-
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        base.OnPointerDown(eventData);
-        
-        explainText.text = explainDetail;
-    }
-
-    public override void OnPointerUp(PointerEventData eventData)
-    {
-        explainText.text = string.Empty;
-
-        base.OnPointerUp(eventData);
-    }
 }

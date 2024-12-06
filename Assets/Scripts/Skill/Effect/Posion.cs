@@ -14,6 +14,11 @@ public class Posion : MonoBehaviour
         GetComponents();
     }
 
+    private void OnDisable()
+    {
+        hasTriggered = false;
+    }
+
     private void GetComponents()
     {
         animator = GetComponent<Animator>();
@@ -39,14 +44,15 @@ public class Posion : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.isKinematic = true;
         }
-
-        animator.SetTrigger("isGround");
+        
         StartCoroutine(HandleNapalmAnimation());
     }
 
     private IEnumerator HandleNapalmAnimation()
     {
-        yield return WaitForNextAnimation("isGround");
+        animator.SetTrigger("isGround");
+
+        yield return WaitForNextAnimation("Spread");
 
         animator.SetTrigger("Napalm");
 
@@ -62,8 +68,15 @@ public class Posion : MonoBehaviour
 
     private IEnumerator WaitForNextAnimation(string currentStateName)
     {
-        while (animator.GetCurrentAnimatorStateInfo(0).IsName(currentStateName))
+        while (true)
         {
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (stateInfo.IsName(currentStateName) && stateInfo.normalizedTime >= 0.6f)
+            {
+                break; 
+            }
+
             yield return null;
         }
     }

@@ -94,6 +94,7 @@ public abstract class CoolTimeDisplay : MonoBehaviour, IPointerDownHandler, IPoi
     {
         if (explainPanel == null) return;
 
+        explainText.text = explainDetail;
         isHolding = true;
         isClickActionAllowed = true;
         holdTimer = 0;
@@ -103,6 +104,7 @@ public abstract class CoolTimeDisplay : MonoBehaviour, IPointerDownHandler, IPoi
     {
         if (explainPanel == null) return;
 
+        explainText.text = string.Empty;
         isHolding = false;
 
         if (isExplainActive)
