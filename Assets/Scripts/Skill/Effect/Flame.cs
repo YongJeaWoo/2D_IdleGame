@@ -1,26 +1,40 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Flame : MonoBehaviour
 {
+    [SerializeField] private GameObject colObj;
+
+    private readonly float damageInterval = 0.3f;
     private readonly float arrangeTime = 5f;
     private Animator animator;
-    private bool hasTriggered;
+    private bool isDamaged = true;
 
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
+    private PlayerSystem playerSystem;
+
+    private WaitForSeconds waitArrangeTime;
+    private WaitForSeconds waitDamageInterval;
 
     private void OnEnable()
     {
-        hasTriggered = true;
+        InitValues();
         StartCoroutine(FlamingCoroutine());
     }
 
     private void OnDisable()
     {
-        hasTriggered = false;
+        ChangeColliderArea(false);
+    }
+
+
+    private void InitValues()
+    {
+        animator = GetComponent<Animator>();
+        playerSystem = FindObjectOfType<PlayerSystem>();
+
+        waitArrangeTime = new WaitForSeconds(arrangeTime);
+        waitDamageInterval = new WaitForSeconds(damageInterval);
     }
 
     private IEnumerator FlamingCoroutine()
@@ -28,7 +42,7 @@ public class Flame : MonoBehaviour
         yield return WaitForAnimationState("FlameStart", 1f);
         animator.SetTrigger("Start");
 
-        yield return new WaitForSeconds(arrangeTime);
+        yield return waitArrangeTime;
 
         yield return WaitForAnimationState("Flaming", 1f);
         animator.SetTrigger("End");
@@ -48,12 +62,40 @@ public class Flame : MonoBehaviour
             {
                 break;
             }
+
             yield return null;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnAttackEnemy(Collider2D collider)
     {
-        
+        if (collider.CompareTag("Enemy"))
+        {
+            ChangeColliderArea(true);
+
+            if (isDamaged)
+            {
+                var health = collider.GetComponent<BaseHealth>();
+                health.Hit(playerSystem.GetAttack());
+                StartCoroutine(DamageCooldownCoroutine());
+            }
+        }
+    }
+
+    private IEnumerator DamageCooldownCoroutine()
+    {
+        isDamaged = false;
+        yield return waitDamageInterval;
+        isDamaged = true;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        OnAttackEnemy(collision);
+    }
+
+    private void ChangeColliderArea(bool isOn)
+    {
+        colObj.SetActive(isOn);
     }
 }

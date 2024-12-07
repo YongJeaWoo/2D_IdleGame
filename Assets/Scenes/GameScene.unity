@@ -5894,7 +5894,7 @@ MonoBehaviour:
   coolTime: 12
   coolImage: {fileID: 404601808}
   posionBallPrefab: {fileID: 5806115981599855894, guid: 74be608029c21884ea20ee72211376dc, type: 3}
-  launchForce: 6
+  launchForce: 5.5
   launchAngle: {x: 1, y: 1}
 --- !u!1 &387703503
 GameObject:
@@ -11767,7 +11767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explainPanel: {fileID: 167836889}
   explainText: {fileID: 222612016}
-  coolTime: 50
+  coolTime: 2
   coolImage: {fileID: 31973763}
 --- !u!1 &884160687
 GameObject:
@@ -19566,7 +19566,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1624581583}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bc245d7a34bb1d44a8524a24b134d78, type: 3}
   m_Name: 

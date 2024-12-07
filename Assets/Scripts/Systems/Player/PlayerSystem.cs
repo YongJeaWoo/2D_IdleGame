@@ -22,7 +22,12 @@ public class PlayerSystem : MonoBehaviour
 
     public BigInteger SetCurrentHp(BigInteger newHp)
     {
-        return player.GetComponent<PlayerHealth>().GetCurrentHp() + newHp;
+        var pHealth = player.GetComponent<PlayerHealth>();
+        var currentHp = pHealth.GetCurrentHp();
+        var finalHealth = currentHp + newHp;
+        var currentHpChanging = pHealth.SetCurrentHp(finalHealth);
+        
+        return currentHpChanging;
     }
 
     public BigInteger GetMaxHp()
