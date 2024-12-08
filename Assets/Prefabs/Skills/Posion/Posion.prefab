@@ -57,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,11 +75,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -688088845
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 1390765190, guid: 58c7a015161aba24a8236d6d002b46d0, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.020182133, a: 1}
+  m_Color: {r: 0.2216981, g: 1, b: 0.23695888, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -169,8 +169,8 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 0
-  m_CollisionDetection: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &8168738714901742914
 MonoBehaviour:
@@ -185,6 +185,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colObj: {fileID: 8341699930733412430}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &8341699930733412430
 GameObject:
   m_ObjectHideFlags: 0

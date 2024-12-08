@@ -1,16 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Flame : MonoBehaviour
 {
     [SerializeField] private GameObject colObj;
+    [SerializeField] private LayerMask enemyLayer;
 
-    private readonly float damageInterval = 0.3f;
     private readonly float arrangeTime = 5f;
-    private Animator animator;
-    private bool isDamaged = true;
+    private readonly float damageInterval = 0.5f;
 
+    private Animator animator;
     private PlayerSystem playerSystem;
 
     private WaitForSeconds waitArrangeTime;
@@ -20,21 +19,16 @@ public class Flame : MonoBehaviour
     {
         InitValues();
         StartCoroutine(FlamingCoroutine());
+        StartCoroutine(AttackEnemiesCoroutine());
     }
-
-    private void OnDisable()
-    {
-        ChangeColliderArea(false);
-    }
-
 
     private void InitValues()
     {
         animator = GetComponent<Animator>();
         playerSystem = FindObjectOfType<PlayerSystem>();
 
-        waitArrangeTime = new WaitForSeconds(arrangeTime);
-        waitDamageInterval = new WaitForSeconds(damageInterval);
+        waitArrangeTime = new(arrangeTime);
+        waitDamageInterval = new(damageInterval);
     }
 
     private IEnumerator FlamingCoroutine()
@@ -48,17 +42,16 @@ public class Flame : MonoBehaviour
         animator.SetTrigger("End");
 
         yield return WaitForAnimationState("FlameEnd", 1f);
-
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
     }
 
-    private IEnumerator WaitForAnimationState(string stateName, float _normalizedTime)
+    private IEnumerator WaitForAnimationState(string stateName, float _normalized)
     {
         while (true)
         {
             var state = animator.GetCurrentAnimatorStateInfo(0);
 
-            if (state.IsName(stateName) && state.normalizedTime >= _normalizedTime)
+            if (state.IsName(stateName) && state.normalizedTime >= _normalized)
             {
                 break;
             }
@@ -67,35 +60,42 @@ public class Flame : MonoBehaviour
         }
     }
 
-    private void OnAttackEnemy(Collider2D collider)
+    private IEnumerator AttackEnemiesCoroutine()
     {
-        if (collider.CompareTag("Enemy"))
+        while (true)
         {
-            ChangeColliderArea(true);
+            var collider = colObj.GetComponent<BoxCollider2D>();
 
-            if (isDamaged)
+            if (collider != null)
             {
-                var health = collider.GetComponent<BaseHealth>();
-                health.Hit(playerSystem.GetAttack());
-                StartCoroutine(DamageCooldownCoroutine());
+                Vector2 center = (Vector2)colObj.transform.position + collider.offset;
+                Vector2 size = collider.size;
+
+                Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, 0f, enemyLayer);
+
+                foreach (var hit in hits)
+                {
+                    var health = hit.GetComponent<BaseHealth>();
+                    health.Hit(playerSystem.GetAttack() * 2);
+                }
+
+                yield return waitDamageInterval;
             }
         }
     }
 
-    private IEnumerator DamageCooldownCoroutine()
+    private void OnDrawGizmos()
     {
-        isDamaged = false;
-        yield return waitDamageInterval;
-        isDamaged = true;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        OnAttackEnemy(collision);
-    }
-
-    private void ChangeColliderArea(bool isOn)
-    {
-        colObj.SetActive(isOn);
+        if (colObj != null)
+        {
+            var collider = colObj.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                Gizmos.color = Color.red;
+                Vector2 center = (Vector2)colObj.transform.position + collider.offset;
+                Vector2 size = collider.size;
+                Gizmos.DrawWireCube(center, size); // 디버그용 탐지 범위 표시
+            }
+        }
     }
 }

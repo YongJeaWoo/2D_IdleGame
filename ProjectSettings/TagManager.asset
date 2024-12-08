@@ -46,5 +46,8 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Knife
-    uniqueID: 614401277
+    uniqueID: 3067673463
+    locked: 0
+  - name: Skill
+    uniqueID: 3606878451
     locked: 0

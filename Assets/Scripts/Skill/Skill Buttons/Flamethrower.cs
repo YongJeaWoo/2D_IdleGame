@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Flamethrower : CoolTimeDisplay
@@ -25,10 +24,10 @@ public class Flamethrower : CoolTimeDisplay
 
         isCoolTime = true;
         StartCoroutine(CoolTime());
-        StartCoroutine(FlameThrowerCoroutine());
+        FlameThrowerEffect();
     }
 
-    private IEnumerator FlameThrowerCoroutine()
+    private void FlameThrowerEffect()
     {
         var player = playerSystem.GetPlayer();
         var attackComponent = player.GetComponent<PlayerAttack>();
@@ -37,7 +36,5 @@ public class Flamethrower : CoolTimeDisplay
         GameObject skill = ObjectPoolManager.Instance.GetToPool(flamePrefab);
 
         skill.transform.position = pos.transform.position;
-
-        yield return null;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Posion : MonoBehaviour
 {
     [SerializeField] private GameObject colObj;
+    [SerializeField] private LayerMask enemyLayer;
 
     private readonly float arrangeTime = 10f;
     private readonly float damagedInterval = 1f;
@@ -27,13 +28,11 @@ public class Posion : MonoBehaviour
     private void OnDisable()
     {
         hasTriggered = false;
-        ChangeColliderArea(false);
     }
 
     private void GetComponents()
     {
         animator = GetComponent<Animator>();
-
         rb = GetComponent<Rigidbody2D>();
         playerSystem = FindObjectOfType<PlayerSystem>();
 
@@ -48,28 +47,6 @@ public class Posion : MonoBehaviour
             hasTriggered = true;
             TriggerOnGround(collision);
         }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        OnAttackEnemy(collision);
-    }
-
-    private void OnAttackEnemy(Collider2D collider)
-    {
-        if (collider.CompareTag("Enemy") && isDamaged)
-        {
-            var health = collider.GetComponent<BaseHealth>();
-            health.Hit(playerSystem.GetAttack() * 2);
-            StartCoroutine(DamageCooldownCoroutine());
-        }
-    }
-
-    private IEnumerator DamageCooldownCoroutine()
-    {
-        isDamaged = false;
-        yield return waitDamageInterval;
-        isDamaged = true;
     }
 
     private void TriggerOnGround(Collider2D collision)
@@ -90,10 +67,12 @@ public class Posion : MonoBehaviour
     {
         animator.SetTrigger("isGround");
         yield return WaitForNextAnimation("Spread");
-        ChangeColliderArea(true);
 
         animator.SetTrigger("Napalm");
-        yield return new WaitForSeconds(arrangeTime);
+
+        StartCoroutine(AttackEnemiesCoroutine());
+
+        yield return waitArrangeTime;
 
         if (rb != null)
         {
@@ -101,6 +80,33 @@ public class Posion : MonoBehaviour
         }
 
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
+    }
+
+    private IEnumerator AttackEnemiesCoroutine()
+    {
+        while (true)
+        {
+            var collider = colObj.GetComponent<BoxCollider2D>();
+
+            if (collider != null)
+            {
+                Vector2 center = (Vector2)colObj.transform.position + collider.offset;
+                Vector2 size = collider.size;
+
+                Collider2D[] hits = Physics2D.OverlapBoxAll(center, size, 0f, enemyLayer);
+
+                foreach (var hit in hits)
+                {
+                    var health = hit.GetComponent<BaseHealth>();
+                    if (health != null)
+                    {
+                        health.Hit(playerSystem.GetAttack());
+                    }
+                }
+
+                yield return waitDamageInterval;
+            }
+        }
     }
 
     private IEnumerator WaitForNextAnimation(string currentStateName)
@@ -116,10 +122,5 @@ public class Posion : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void ChangeColliderArea(bool isOn)
-    {
-        colObj.SetActive(isOn);
     }
 }
