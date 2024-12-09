@@ -8,22 +8,22 @@ public class Flamethrower : CoolTimeDisplay
     [SerializeField] private Vector2 launchAngle = new(1, 0);
 
     private PlayerSystem playerSystem;
+    private ExplainableComponent explain;
+
     private readonly float arrangeTime = 5f;
 
     protected override void Start()
     {
         base.Start();
-        playerSystem = FindObjectOfType<PlayerSystem>();
         ObjectPoolManager.Instance.InitObjectPool(flamePrefab);
-        explainDetail = $"앞 방향으로 {arrangeTime} 초 동안 \n불을 뿜습니다.";
+        playerSystem = FindObjectOfType<PlayerSystem>();
+        explain = GetComponent<ExplainableComponent>();
+        explain.SetExplainDetail($"앞 방향으로 {arrangeTime} 초 동안 \n불을 뿜습니다.");
     }
 
     public override void BehaviourButtonClick()
     {
-        if (isCoolTime) return;
-
-        isCoolTime = true;
-        StartCoroutine(CoolTime());
+        base.BehaviourButtonClick();
         FlameThrowerEffect();
     }
 

@@ -1,30 +1,20 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using UnityEngine.EventSystems;
-using TMPro;
 
-public abstract class CoolTimeDisplay : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class CoolTimeDisplay : MonoBehaviour
 {
-    [Header("설명 패널")]
-    [SerializeField] protected GameObject explainPanel;
-    [SerializeField] protected TextMeshProUGUI explainText;
-    protected string explainDetail;
-
-    protected bool isHolding = false;
-    protected float holdTimer = 0f;
-    protected float holdTime = 0.5f;
-    protected bool isExplainActive = false;
-    protected bool isClickActionAllowed = false;
-
     [Header("쿨타임")]
     [SerializeField] protected float coolTime;
     [Header("쿨 적용 이미지")]
     [SerializeField] protected Image coolImage;
-    protected Button button;
+    
     protected bool isCoolTime;
 
     protected FunctionBarComponent functionBar;
+
+    protected ExplainableComponent explainableComponent;
+    private Button button;
 
     protected virtual void Start()
     {
@@ -32,40 +22,27 @@ public abstract class CoolTimeDisplay : MonoBehaviour, IPointerDownHandler, IPoi
         InitButton();
     }
 
-    protected virtual void Update()
-    {
-        HoldButton();
-    }
-
-    protected virtual void HoldButton()
-    {
-        if (isHolding)
-        {
-            holdTimer += Time.deltaTime;
-
-            if (holdTimer >= holdTime && !isExplainActive)
-            {
-                explainPanel.SetActive(true);
-                isExplainActive = true;
-                isClickActionAllowed = false;
-            }
-        }
-    }
-
     private void FindRefer()
     {
         functionBar = UIManager.Instance.gameObject.GetComponentInChildren<FunctionBarComponent>();
+        button = GetComponent<Button>();
+        explainableComponent = GetComponent<ExplainableComponent>();
     }
 
-    protected virtual void InitButton()
+    private void InitButton()
     {
         isCoolTime = false;
         coolImage.fillAmount = 0;
-
-        button = GetComponent<Button>();
         button.onClick.AddListener(() =>
         {
-            if (isClickActionAllowed)
+            if (explainableComponent != null)
+            {
+                if (explainableComponent.GetIsClickActionAllowed())
+                {
+                    BehaviourButtonClick();
+                }
+            }
+            else
             {
                 BehaviourButtonClick();
             }
@@ -88,32 +65,11 @@ public abstract class CoolTimeDisplay : MonoBehaviour, IPointerDownHandler, IPoi
         isCoolTime = false;
     }
 
-    public abstract void BehaviourButtonClick();
-
-    public virtual void OnPointerDown(PointerEventData eventData)
+    public virtual void BehaviourButtonClick()
     {
-        if (explainPanel == null) return;
+        if (isCoolTime) return;
 
-        explainText.text = explainDetail;
-        isHolding = true;
-        isClickActionAllowed = true;
-        holdTimer = 0;
-    }
-
-    public virtual void OnPointerUp(PointerEventData eventData)
-    {
-        if (explainPanel == null) return;
-
-        explainText.text = string.Empty;
-        isHolding = false;
-
-        if (isExplainActive)
-        {
-            isClickActionAllowed = false;
-            explainPanel.SetActive(false);
-            isExplainActive = false;
-        }
-
-        holdTimer = 0;
+        isCoolTime = true;
+        StartCoroutine(CoolTime());
     }
 }

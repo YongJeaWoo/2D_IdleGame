@@ -1,11 +1,9 @@
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class OrganizeKnifeButton : CoolTimeDisplay
 {
-    private Coroutine organizeCoroutine;
     private Transform content;
     private GridLayoutGroup gridLayoutGroup;
 
@@ -26,21 +24,10 @@ public class OrganizeKnifeButton : CoolTimeDisplay
     public override void BehaviourButtonClick()
     {
         if (isCoolTime) return;
-
-        if (organizeCoroutine == null)
-        {
-            organizeCoroutine = StartCoroutine(OrganizeKnifeCoroutine());
-        }
-    }
-
-    private IEnumerator OrganizeKnifeCoroutine()
-    {
         isCoolTime = true;
         OrganizeBehaviour();
-        yield return StartCoroutine(CoolTime());
-        organizeCoroutine = null;
+        StartCoroutine(CoolTime());
     }
-
 
     private void OrganizeBehaviour()
     {
