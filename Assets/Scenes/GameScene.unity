@@ -19084,6 +19084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolTime: 30
   coolImage: {fileID: 1301504246}
+  effectPrefab: {fileID: 625815041635314662, guid: 471805708661d94469cec5ece2bb1020, type: 3}
 --- !u!114 &1582711127
 MonoBehaviour:
   m_ObjectHideFlags: 0
