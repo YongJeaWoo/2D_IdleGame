@@ -7,8 +7,9 @@ public class AlramPanel : MonoBehaviour
     [Header("알림 텍스트")]
     [SerializeField] protected TextMeshProUGUI infoText;
 
-    protected Animator animator;
     protected string openText = $"isOpen";
+
+    protected Animator animator;
 
     private void Awake()
     {

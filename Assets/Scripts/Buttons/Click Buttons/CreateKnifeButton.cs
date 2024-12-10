@@ -9,6 +9,7 @@ public class CreateKnifeButton : MonoBehaviour
     private readonly string maxCountAlramText = $"Max Count Info Panel";
 
     private List<GameObject> uiKnifeObjs;
+    private List<int> unlockedIDs = new List<int>();
 
     private ObjectPoolManager poolManager;
     private PlayerSystem playerSystem;
@@ -30,16 +31,19 @@ public class CreateKnifeButton : MonoBehaviour
         InitKnifeData();
         InitPools();
 
+        unlockedIDs.Add(1);
         UpdateCreatedText();
     }
 
     private void OnEnable()
     {
+        KnifeUIActivator.OnMerge += UnlockNextID;
         KnifeUIActivator.OnMerge += UpdateCreatedText;
     }
 
     private void OnDisable()
     {
+        KnifeUIActivator.OnMerge -= UnlockNextID;
         KnifeUIActivator.OnMerge -= UpdateCreatedText;
     }
 
@@ -93,14 +97,20 @@ public class CreateKnifeButton : MonoBehaviour
             return null;
         }
 
-        if (uiKnifeObjs.Count == 0)
+        if (unlockedIDs.Count == 0)
         {
-            Debug.LogError($"현재 가진 칼의 데이터가 존재하지 않음");
+            Debug.LogError($"생성 가능한 단계가 없습니다.");
             return null;
         }
 
-        int randomIndex = UnityEngine.Random.Range(0, uiKnifeObjs.Count);
-        GameObject selectedKnife = uiKnifeObjs[randomIndex];
+        int randomID = unlockedIDs[UnityEngine.Random.Range(0, unlockedIDs.Count)];
+        GameObject selectedKnife = uiKnifeObjs.Find(k => k.GetComponent<KnifeNextData>().NextID == randomID);
+
+        if (selectedKnife == null)
+        {
+            Debug.LogError($"ID {randomID}에 해당하는 나이프 데이터가 없습니다.");
+            return null;
+        }
 
         RectTransform contentRect = createPos.GetComponent<RectTransform>();
 
@@ -120,16 +130,22 @@ public class CreateKnifeButton : MonoBehaviour
 
         finalKnife.transform.localPosition = randomPos;
 
-        if (knifeCollectBar == null)
-        {
-            Debug.LogError("KnifeCollectionBar 컴포넌트가 존재하지 않습니다.");
-            return null;
-        }
-
         knifeCollectBar.AddAttackKnifes(finalKnife);
-
         UpdateCreatedText();
 
         return finalKnife;
+    }
+
+    private void UnlockNextID()
+    {
+        foreach (var knife in knifeCollectBar.GetKnifesList())
+        {
+            var knifeData = knife.GetComponent<KnifeNextData>();
+            if (knifeData != null && !unlockedIDs.Contains(knifeData.NextID))
+            {
+                unlockedIDs.Add(knifeData.NextID);
+                Debug.Log($"Unlocked new knife ID: {knifeData.NextID}");
+            }
+        }
     }
 }

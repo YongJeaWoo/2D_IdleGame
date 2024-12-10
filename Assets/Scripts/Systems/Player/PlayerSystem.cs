@@ -20,6 +20,16 @@ public class PlayerSystem : MonoBehaviour
         player.GetComponent<PlayerAttack>().SetAtk(newAtk);
     }
 
+    public BigInteger SetCurrentHp(BigInteger newHp)
+    {
+        var pHealth = player.GetComponent<PlayerHealth>();
+        var currentHp = pHealth.GetCurrentHp();
+        var finalHealth = currentHp + newHp;
+        var currentHpChanging = pHealth.SetCurrentHp(finalHealth);
+        
+        return currentHpChanging;
+    }
+
     public BigInteger GetMaxHp()
     {
         return player.GetComponent<PlayerHealth>().GetMaxHp();

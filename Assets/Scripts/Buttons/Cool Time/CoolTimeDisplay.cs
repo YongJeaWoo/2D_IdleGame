@@ -1,17 +1,20 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public abstract class CoolTimeDisplay : MonoBehaviour
+public class CoolTimeDisplay : MonoBehaviour
 {
     [Header("ÄðÅ¸ÀÓ")]
     [SerializeField] protected float coolTime;
     [Header("Äð Àû¿ë ÀÌ¹ÌÁö")]
     [SerializeField] protected Image coolImage;
-    protected Button button;
+    
     protected bool isCoolTime;
 
     protected FunctionBarComponent functionBar;
+
+    protected ExplainableComponent explainableComponent;
+    private Button button;
 
     protected virtual void Start()
     {
@@ -22,15 +25,28 @@ public abstract class CoolTimeDisplay : MonoBehaviour
     private void FindRefer()
     {
         functionBar = UIManager.Instance.gameObject.GetComponentInChildren<FunctionBarComponent>();
+        button = GetComponent<Button>();
+        explainableComponent = GetComponent<ExplainableComponent>();
     }
 
-    protected virtual void InitButton()
+    private void InitButton()
     {
         isCoolTime = false;
         coolImage.fillAmount = 0;
-
-        button = GetComponent<Button>();
-        button.onClick.AddListener(BehaviourButtonClick);
+        button.onClick.AddListener(() =>
+        {
+            if (explainableComponent != null)
+            {
+                if (explainableComponent.GetIsClickActionAllowed())
+                {
+                    BehaviourButtonClick();
+                }
+            }
+            else
+            {
+                BehaviourButtonClick();
+            }
+        });
     }
 
     protected IEnumerator CoolTime()
@@ -49,5 +65,11 @@ public abstract class CoolTimeDisplay : MonoBehaviour
         isCoolTime = false;
     }
 
-    public abstract void BehaviourButtonClick();
+    public virtual void BehaviourButtonClick()
+    {
+        if (isCoolTime) return;
+
+        isCoolTime = true;
+        StartCoroutine(CoolTime());
+    }
 }

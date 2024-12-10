@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
@@ -69,5 +68,10 @@ public class BaseHealth : MonoBehaviour
     public Image GetHealthImage() => myHealthBar;
     public TextMeshProUGUI GetHealthText() => myHealthText;
     public BigInteger GetCurrentHp() => currentHp;
+    public BigInteger SetCurrentHp(BigInteger value)
+    {
+        if (currentHp >= maxHp) return currentHp;
+        return currentHp = value;
+    }
     public BigInteger GetMaxHp() => maxHp;
 }
