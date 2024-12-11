@@ -18,8 +18,6 @@ public class Posion : MonoBehaviour
     private WaitForSeconds waitArrangeTime;
     private WaitForSeconds waitDamageInterval;
 
-    private bool isDamaged = true;
-
     private void Awake()
     {
         GetComponents();

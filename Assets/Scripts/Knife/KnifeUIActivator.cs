@@ -45,9 +45,11 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         Vector2 localPoint;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(contentArea, eventData.position, Camera.main, out localPoint);
 
+        Vector2 halfSize = myTransform.rect.size * 0.5f;
+
         Rect rect = contentArea.rect;
-        localPoint.x = Mathf.Clamp(localPoint.x, rect.xMin, rect.xMax);
-        localPoint.y = Mathf.Clamp(localPoint.y, rect.yMin, rect.yMax);
+        localPoint.x = Mathf.Clamp(localPoint.x, rect.xMin + halfSize.x, rect.xMax - halfSize.x);
+        localPoint.y = Mathf.Clamp(localPoint.y, rect.yMin + halfSize.y, rect.yMax - halfSize.y);
 
         Vector3 clampedPosition = contentArea.TransformPoint(localPoint);
         myTransform.position = clampedPosition;
