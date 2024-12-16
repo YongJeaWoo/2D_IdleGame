@@ -21,12 +21,6 @@ public class Flamethrower : CoolTimeDisplay
         explain.SetExplainDetail($"앞 방향으로 {arrangeTime} 초 동안 \n불을 뿜습니다.");
     }
 
-    public override void BehaviourButtonClick()
-    {
-        base.BehaviourButtonClick();
-        FlameThrowerEffect();
-    }
-
     private void FlameThrowerEffect()
     {
         var player = playerSystem.GetPlayer();
@@ -36,5 +30,10 @@ public class Flamethrower : CoolTimeDisplay
         GameObject skill = ObjectPoolManager.Instance.GetToPool(flamePrefab);
 
         skill.transform.position = pos.transform.position;
+    }
+
+    public override void PerformingAction()
+    {
+        FlameThrowerEffect();
     }
 }

@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class UIManager : SingletonBase<UIManager>
 {
+    [Header("UI용 캔버스")]
+    [SerializeField] private GameObject uiCanvas;
+
     [Header("라운드 표시 텍스트")]
     [SerializeField] private TextMeshProUGUI roundText;
 
@@ -19,7 +22,7 @@ public class UIManager : SingletonBase<UIManager>
     private float lerpSpeed = 10f;
 
     [Header("이팩트용 UI 캔버스")]
-    public Transform uiCanvas;
+    public Transform effectUICanvas;
 
     [Header("재화 관련 정보")]
     [SerializeField] private TextMeshProUGUI[] possessText;
@@ -105,6 +108,11 @@ public class UIManager : SingletonBase<UIManager>
 
         string result = string.Join(" ", parts).Trim();
         return result;
+    }
+
+    public void ToggleUICanvas(bool isOn)
+    {
+        uiCanvas.SetActive(isOn);
     }
 
     public Image[] GetHpBars() => hpBars;

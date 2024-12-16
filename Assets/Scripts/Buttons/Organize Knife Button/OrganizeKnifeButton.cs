@@ -21,14 +21,6 @@ public class OrganizeKnifeButton : CoolTimeDisplay
         gridLayoutGroup.enabled = false;
     }
 
-    public override void BehaviourButtonClick()
-    {
-        if (isCoolTime) return;
-        isCoolTime = true;
-        OrganizeBehaviour();
-        StartCoroutine(CoolTime());
-    }
-
     private void OrganizeBehaviour()
     {
         var knifeCollectionBar = functionBar.GetKnifeCollectBar();
@@ -54,5 +46,10 @@ public class OrganizeKnifeButton : CoolTimeDisplay
         LayoutRebuilder.ForceRebuildLayoutImmediate(gridLayoutGroup.GetComponent<RectTransform>());
 
         gridLayoutGroup.enabled = false;
+    }
+
+    public override void PerformingAction()
+    {
+        OrganizeBehaviour();
     }
 }

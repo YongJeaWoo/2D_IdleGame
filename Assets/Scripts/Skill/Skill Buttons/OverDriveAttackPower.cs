@@ -1,9 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
 public class OverDriveAttackPower : CoolTimeDisplay
 {
+    [Header("이팩트 사운드")]
+    [SerializeField] private AudioClip powerUpEffectSound;
+
     [SerializeField] private GameObject effectPrefab;
 
     private readonly float arrangeTime = 10f;
@@ -20,13 +24,6 @@ public class OverDriveAttackPower : CoolTimeDisplay
         explain.SetExplainDetail($"{arrangeTime} 초 동안 플레이어의 \n자체 공격력이 2배로 증가합니다.");
     }
 
-    public override void BehaviourButtonClick()
-    {
-        base.BehaviourButtonClick();
-        var attack = playerSystem.GetAttack();
-        StartCoroutine(TemporaryAttackUpCoroutine(playerSystem, attack));
-    }
-
     private IEnumerator TemporaryAttackUpCoroutine(PlayerSystem playerSystem, BigInteger playerAttack)
     {
         var player = playerSystem.GetPlayer();
@@ -40,5 +37,17 @@ public class OverDriveAttackPower : CoolTimeDisplay
         yield return new WaitForSeconds(arrangeTime);
         ObjectPoolManager.Instance.ReleaseToPool(obj);
         playerSystem.SetAttack(originAttack);
+    }
+
+    public override void PerformingAction()
+    {
+        var attack = playerSystem.GetAttack();
+        StartCoroutine(TemporaryAttackUpCoroutine(playerSystem, attack));
+        EffectSound();
+    }
+
+    private void EffectSound()
+    {
+        AudioManager.Instance.PlaySFX(powerUpEffectSound);
     }
 }

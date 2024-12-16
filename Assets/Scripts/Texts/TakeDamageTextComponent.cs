@@ -15,7 +15,7 @@ public class TakeDamageTextComponent : MonoBehaviour
 
     public void ShowDamagedText(BigInteger damage)
     {
-        var uiCanvas = UIManager.Instance.uiCanvas;
+        var uiCanvas = UIManager.Instance.effectUICanvas;
 
         UnityEngine.Vector3 yValue = new(transform.position.x, transform.position.y + plusYValue, transform.position.z);
 

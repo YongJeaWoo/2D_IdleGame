@@ -1,7 +1,11 @@
 using System.Numerics;
+using UnityEngine;
 
 public class HealingPlayer : CoolTimeDisplay
 {
+    [Header("이팩트 사운드")]
+    [SerializeField] private AudioClip healingEffectSound;
+
     private PlayerSystem playerSystem;
     private ExplainableComponent explain;
 
@@ -15,9 +19,14 @@ public class HealingPlayer : CoolTimeDisplay
         explain.SetExplainDetail($"플레이어에게 {healAmount}만큼 \n체력을 회복시킵니다.");
     }
 
-    public override void BehaviourButtonClick()
+    private void EffectSound()
     {
-        base.BehaviourButtonClick();
+        AudioManager.Instance.PlaySFX(healingEffectSound);
+    }
+
+    public override void PerformingAction()
+    {
         playerSystem.SetCurrentHp(healAmount);
+        EffectSound();
     }
 }

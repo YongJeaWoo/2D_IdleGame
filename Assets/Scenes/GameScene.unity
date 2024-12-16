@@ -647,6 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d67cd6edc53d50843aadfb41e922aaad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitSound: {fileID: 8300000, guid: c76b2d12957a8964f88d634f3e3781ed, type: 3}
   maxHpString: 1000
   hitEffectPrefab: {fileID: 6771807853168389204, guid: d16f755f9c91bdb4ea86548ab1799ec2, type: 3}
 --- !u!114 &48365936
@@ -665,6 +666,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   detectionDistance: 6
+  attackSound:
+  - {fileID: 8300000, guid: 84e2c6751462cfc43af5976ff6750bc8, type: 3}
+  - {fileID: 8300000, guid: a9411aa1b092ed749b279cf93d886d63, type: 3}
   attackPos: {fileID: 1426972275}
   attackKnifes:
   - {fileID: 7511845092201265516, guid: 962950ca84c65d74f9c94594194d8da9, type: 3}
@@ -2510,6 +2514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2936c8698a8b85340a42d1bd9cf53326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiCanvas: {fileID: 0}
   roundText: {fileID: 129657846}
   hpBars:
   - {fileID: 1691491799}
@@ -2520,7 +2525,7 @@ MonoBehaviour:
   nameTexts:
   - {fileID: 1632980435}
   - {fileID: 1391147560}
-  uiCanvas: {fileID: 1489543660}
+  effectUICanvas: {fileID: 0}
   possessText:
   - {fileID: 980983037}
   - {fileID: 1679600301}
@@ -5812,12 +5817,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 383071104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5ee2ad69005a404e887e824dff99900, type: 3}
+  m_Script: {fileID: 11500000, guid: 699d442e96b4bdd4a87f0545c9fc9893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   coolTime: 15
   coolImage: {fileID: 404601808}
-  posionBallPrefab: {fileID: 5806115981599855894, guid: 74be608029c21884ea20ee72211376dc, type: 3}
+  poisonBallPrefab: {fileID: 5806115981599855894, guid: 74be608029c21884ea20ee72211376dc, type: 3}
   launchForce: 5.5
   launchAngle: {x: 1, y: 1}
 --- !u!114 &383071111
@@ -11781,6 +11786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolTime: 50
   coolImage: {fileID: 31973763}
+  healingEffectSound: {fileID: 8300000, guid: 83fbfc266a971c046919e5ff226f50d3, type: 3}
 --- !u!114 &878051320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19084,6 +19090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolTime: 30
   coolImage: {fileID: 1301504246}
+  powerUpEffectSound: {fileID: 8300000, guid: 831ce0faff073e84ba25bc07396de9c4, type: 3}
   effectPrefab: {fileID: 625815041635314662, guid: 471805708661d94469cec5ece2bb1020, type: 3}
 --- !u!114 &1582711127
 MonoBehaviour:

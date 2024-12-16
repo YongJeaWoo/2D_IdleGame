@@ -4,56 +4,91 @@ using UnityEngine;
 
 public class AudioManager : SingletonBase<AudioManager>
 {
-    private readonly string AUDIO_PATH = $"/Ingame/Music";
+    private List<AudioSource> sfxSources = new List<AudioSource>();
+    private AudioSource bgmSource;
 
-    [Header("사용될 오디오 리스트")]
-    [SerializeField] private List<AudioClip> clipList = new List<AudioClip>();
-
-    private List<AudioSource> audioSources = new List<AudioSource>();
-    private AudioSource loopAudioSource;
-
-    public AudioSource CreateNewAudioSource()
+    public void PlayBGM(AudioClip clip, bool loop = true, float volume = 1.0f)
     {
-        GameObject newAudioName = new();
-        ObjectPoolManager.Instance.InitObjectPool(newAudioName);
-        var audioObj = ObjectPoolManager.Instance.GetToPool(newAudioName);
-        AudioSource newSource = audioObj.AddComponent<AudioSource>();
-        audioSources.Add(newSource);
+        if (bgmSource == null)
+        {
+            GameObject bgmObject = new GameObject("BGM_AudioSource");
+            bgmObject.transform.SetParent(transform);
+            bgmSource = bgmObject.AddComponent<AudioSource>();
+            bgmSource.playOnAwake = false;
+        }
+
+        if (clip == null)
+        {
+            Debug.LogError("BGM Clip is null");
+            return;
+        }
+
+        if (bgmSource.clip == clip && bgmSource.isPlaying)
+        {
+            return; 
+        }
+
+        bgmSource.clip = clip;
+        bgmSource.loop = loop;
+        bgmSource.volume = volume;
+        bgmSource.Play();
+    }
+
+    public void StopBGM()
+    {
+        if (bgmSource != null)
+        {
+            bgmSource.Stop();
+            bgmSource.clip = null;
+        }
+    }
+
+    public void PlaySFX(AudioClip clip, bool loop = false, float volume = 1.0f)
+    {
+        if (clip == null)
+        {
+            Debug.LogError("SFX Clip is null");
+            return;
+        }
+
+        AudioSource source = GetAvailableSFXSource();
+        source.clip = clip;
+        source.volume = volume;
+        source.loop = loop;
+        source.Play();
+    }
+
+    public void StopSFX(AudioClip clip)
+    {
+        if (sfxSources != null)
+        {
+            var source = sfxSources.Find(x => x.clip == clip);
+            source.Stop();
+        }
+    }
+
+    private AudioSource CreateNewSFXSource()
+    {
+        GameObject sfxObject = new GameObject("SFX_AudioSource");
+        sfxObject.transform.SetParent(transform);
+        AudioSource newSource = sfxObject.AddComponent<AudioSource>();
+        newSource.playOnAwake = false;
+        sfxSources.Add(newSource);
         return newSource;
     }
 
-    private AudioSource GetAvailableAudioSource()
+    private AudioSource GetAvailableSFXSource()
     {
-        foreach (var source in audioSources)
+        foreach (var source in sfxSources)
         {
             if (!source.isPlaying)
             {
                 return source;
             }
-
         }
 
-         return CreateNewAudioSource();
+        return CreateNewSFXSource();
     }
 
-    public void Play(AudioClip _clip, bool _loop = false)
-    {
-        AudioSource source = _loop ? loopAudioSource : GetAvailableAudioSource();
-        source.clip = _clip;
-        source.loop = _loop;
-        source.Play();
-    }
-
-    public AudioClip LoadClip(string _loadClipName)
-    {
-        AudioClip clip = clipList.Find(c =>c.name.Equals(_loadClipName));
-
-        if (clip != null) return clip;
-
-        clip = Resources.Load<AudioClip>($"{AUDIO_PATH}{_loadClipName}");
-
-        if (clip != null) clipList.Add(clip);
-
-        return clip;
-    }
+    public AudioSource GetBGMSource() => bgmSource;
 }

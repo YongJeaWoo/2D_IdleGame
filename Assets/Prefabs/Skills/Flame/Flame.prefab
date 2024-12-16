@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6464d5207b063614eac9028c812bbc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flameEffectSound: {fileID: 8300000, guid: 2d479ef20533eb14e9d98182869932ea, type: 3}
   colObj: {fileID: 8856683540550678526}
   enemyLayer:
     serializedVersion: 2

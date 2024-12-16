@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TakeDamageTextComponent))]
 public class BaseHealth : MonoBehaviour
 {
+    [Header("피격 시 이팩트 사운드")]
+    [SerializeField] private AudioClip hitSound;
     [Header("체력 최댓값")]
     [SerializeField] protected string maxHpString;
     [Header("피격 시 이팩트")]
@@ -40,6 +42,7 @@ public class BaseHealth : MonoBehaviour
 
     public virtual void Hit(BigInteger attackPoint)
     {
+        AudioManager.Instance.PlaySFX(hitSound);
         currentHp -= attackPoint;
         takeDamage.ShowDamagedText(attackPoint);
         var hitEffect = ObjectPoolManager.Instance.GetToPool(hitEffectPrefab);
@@ -59,7 +62,6 @@ public class BaseHealth : MonoBehaviour
         currentHp = maxHp;
     }
 
-    //TODO : 사망처리
     protected virtual void Death()
     {
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
