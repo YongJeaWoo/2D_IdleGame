@@ -113,9 +113,16 @@ public class CreateKnifeButton : MonoBehaviour
         }
 
         RectTransform contentRect = createPos.GetComponent<RectTransform>();
+        var rect = contentRect.rect;
+
+        var knifeRectTrans = selectedKnife.GetComponent<RectTransform>();
+        Vector2 halfSize = knifeRectTrans.rect.size * 0.5f;        
 
         float randomX = UnityEngine.Random.Range(-contentRect.rect.width / 2, contentRect.rect.width / 2);
         float randomY = UnityEngine.Random.Range(-contentRect.rect.height / 2, contentRect.rect.height / 2);
+
+        randomX = Mathf.Clamp(randomX, rect.xMin + halfSize.x, rect.xMax - halfSize.x);
+        randomY = Mathf.Clamp(randomY, rect.yMin + halfSize.y, rect.yMax - halfSize.y);
 
         Vector3 randomPos = new(randomX, randomY, selectedKnife.transform.position.z);
 

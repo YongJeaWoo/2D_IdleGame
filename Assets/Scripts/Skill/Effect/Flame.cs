@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Flame : MonoBehaviour
 {
+    [Header("이팩트 사운드")]
+    [SerializeField] private AudioClip flameEffectSound;
+
     [SerializeField] private GameObject colObj;
     [SerializeField] private LayerMask enemyLayer;
 
@@ -43,6 +46,7 @@ public class Flame : MonoBehaviour
 
         yield return WaitForAnimationState("FlameEnd", 1f);
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
+        AudioManager.Instance.StopSFX(flameEffectSound);
     }
 
     private IEnumerator WaitForAnimationState(string stateName, float _normalized)
@@ -63,7 +67,9 @@ public class Flame : MonoBehaviour
     private IEnumerator AttackEnemiesCoroutine()
     {
         while (true)
-        {
+        { 
+            AudioManager.Instance.PlaySFX(flameEffectSound, true);
+
             var collider = colObj.GetComponent<BoxCollider2D>();
 
             if (collider != null)

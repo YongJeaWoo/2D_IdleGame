@@ -8,6 +8,9 @@ public class PlayerAttack : BaseAttack
     private readonly string runText = $"isRun";
     private readonly string attackText = $"isAttack";
 
+    [Header("공격 사운드")]
+    [SerializeField] private AudioClip[] attackSound;
+
     [SerializeField] private Transform attackPos;
 
     private SpeedComponent speed;
@@ -50,6 +53,11 @@ public class PlayerAttack : BaseAttack
         bgController = FindAnyObjectByType<BackgroundController>();
         UIManager.Instance.InitHpImage();
         knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
+
+        foreach (var knife in attackKnifes)
+        {
+            ObjectPoolManager.Instance.InitObjectPool(knife);
+        }
     }
 
     protected override void DetectObject()
@@ -102,25 +110,30 @@ public class PlayerAttack : BaseAttack
     public void GetKnifeInfo()
     {
         var knifeList = knifeBar.GetKnifesList();
-        var matchingKnifes = attackKnifes.Where(knife =>
+
+        var knifeListCount = knifeList.GroupBy(k => k.GetComponent<KnifeNextData>().NextID)
+                                  .ToDictionary(group => group.Key, group => group.Count());
+
+        var matchingKnifes = new List<GameObject>();
+
+        foreach (var knife in attackKnifes)
         {
             var knifeNextData = knife.GetComponent<KnifeNextData>();
-            return knifeNextData != null && knifeList.Any(k => 
-            k.GetComponent<KnifeNextData>().NextID == knifeNextData.NextID);
-        });
+            if (knifeNextData != null && knifeListCount.ContainsKey(knifeNextData.NextID))
+            {
+                int count = knifeListCount[knifeNextData.NextID];
 
-        sortedKnifes = matchingKnifes
-            .Select(knife => knife.GetComponent<KnifeAttack>())
-            .OrderByDescending(knifeAttack => BigInteger.Parse(knifeAttack.GetAttackPointString()))
-            .Select(knifeAttack => knifeAttack.gameObject)
-            .ToList();
-
-        foreach (var knife in sortedKnifes)
-        {
-            ObjectPoolManager.Instance.InitObjectPool(knife);
+                for (int i = 0; i < count; i++)
+                {
+                    matchingKnifes.Add(knife);
+                }
+            }
         }
 
-        currentKnifeIndex = 0;
+        sortedKnifes = matchingKnifes
+            .OrderByDescending(knife => BigInteger.Parse(
+                knife.GetComponent<KnifeAttack>().GetAttackPointString()))
+            .ToList();
     }
 
     public override void AttackAnimation()
@@ -130,7 +143,18 @@ public class PlayerAttack : BaseAttack
         var currentKnife = sortedKnifes[currentKnifeIndex];
         ObjectPoolManager.Instance.GetToPool(currentKnife, attackPos);
 
-        currentKnifeIndex = (currentKnifeIndex + 1) % sortedKnifes.Count;
+        if (attackSound != null && attackSound.Length > 0)
+        {
+            int randomSound = Random.Range(0, attackSound.Length);
+            AudioManager.Instance.PlaySFX(attackSound[randomSound]);
+        }
+
+        currentKnifeIndex++;
+
+        if (currentKnifeIndex >= sortedKnifes.Count)
+        {
+            currentKnifeIndex = 0;
+        }
     }
 
     public BigInteger GetAtk() => atk;

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Posion : MonoBehaviour
 {
+    [Header("이팩트 사운드")]
+    [SerializeField] private AudioClip poisonEffectSound;
+
     [SerializeField] private GameObject colObj;
     [SerializeField] private LayerMask enemyLayer;
 
@@ -78,12 +81,15 @@ public class Posion : MonoBehaviour
         }
 
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
+        AudioManager.Instance.StopSFX(poisonEffectSound);
     }
 
     private IEnumerator AttackEnemiesCoroutine()
     {
         while (true)
         {
+            AudioManager.Instance.PlaySFX(poisonEffectSound, true);
+
             var collider = colObj.GetComponent<BoxCollider2D>();
 
             if (collider != null)

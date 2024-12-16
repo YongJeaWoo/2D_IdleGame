@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CoolTimeDisplay : MonoBehaviour
+public abstract class CoolTimeDisplay : MonoBehaviour
 {
     [Header("ÄðÅ¸ÀÓ")]
     [SerializeField] protected float coolTime;
@@ -68,8 +68,10 @@ public class CoolTimeDisplay : MonoBehaviour
     public virtual void BehaviourButtonClick()
     {
         if (isCoolTime) return;
-
         isCoolTime = true;
         StartCoroutine(CoolTime());
+        PerformingAction();
     }
+
+    public abstract void PerformingAction();
 }
