@@ -19,7 +19,8 @@ public abstract class DataCell : MonoBehaviour
 
     public static event Action ClickButton;
 
-    private readonly string NoMoney = $"No Money Panel";
+    private readonly string NoMoney = $"Warning Panel";
+    private readonly string NoMoneyExplainText = $"현재 자원이 부족합니다.";
 
     protected virtual void Awake()
     {
@@ -58,7 +59,9 @@ public abstract class DataCell : MonoBehaviour
     {
         if (!possessionController.SpendGold(upgradeCost))
         {
-            PopupManager.Instance.InstantPopup(NoMoney);
+            var panel = PopupManager.Instance.InstantPopup(NoMoney);
+            var warningPanel = panel.GetComponent<WarningPanel>();
+            warningPanel.SetAlramPanelText(NoMoneyExplainText);
             return;
         }
 

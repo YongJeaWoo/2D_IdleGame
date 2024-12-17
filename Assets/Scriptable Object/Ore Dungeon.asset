@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 473b03382e763824cbcf00e43f28c85a, type: 3}
+  m_Name: Ore Dungeon
+  m_EditorClassIdentifier: 
+  iconImage: {fileID: 0}
+  icon: {fileID: -841100070, guid: 1b3914383fa30e441a34705baa80a87d, type: 3}
+  dungeon_InfoText: {fileID: 0}
+  enterButton: {fileID: 0}
+  dungeonName: "\uAD11\uC11D \uB358\uC804"
+  dungeonEnterSceneName: DungeonScene

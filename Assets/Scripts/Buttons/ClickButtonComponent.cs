@@ -6,6 +6,10 @@ public class ClickButtonComponent : MonoBehaviour
     [Header("연결된 패널 이름")]
     [SerializeField] protected string panelName;
 
+    protected readonly string DungeonSceneName = $"DungeonScene";
+    protected readonly string DoNotFunctionPanel = $"Warning Panel";
+    protected readonly string DoNotFunctionAlramText = $"현재 기능은 수행할 수 없습니다.";
+
     protected FunctionBarComponent functionBar;
     protected Button myButton;
     protected ClickEffectButton effectButton;
@@ -41,6 +45,14 @@ public class ClickButtonComponent : MonoBehaviour
 
     public virtual void ClickButton()
     {
+        if (SceneStateManager.Instance.CurrentScene == DungeonSceneName)
+        {
+            var panel = PopupManager.Instance.InstantPopup(DoNotFunctionPanel);
+            var warningPanel = panel.GetComponent<WarningPanel>();
+            warningPanel.SetAlramPanelText(DoNotFunctionAlramText);
+            return;
+        }
+
         if (functionBar != null)
         {
             var objs = functionBar.GetOtherObjects();
