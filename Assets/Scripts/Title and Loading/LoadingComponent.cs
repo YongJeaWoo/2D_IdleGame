@@ -26,6 +26,13 @@ public class LoadingComponent : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         asyncLoad.allowSceneActivation = false;
 
+        var uiManager = UIManager.Instance;
+
+        if (uiManager != null)
+        {
+            uiManager.ToggleUICanvas(false);
+        }
+
         float fakeProgress = 0f;
         float loadingSpeed = 0.6f;
 
@@ -46,6 +53,11 @@ public class LoadingComponent : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 asyncLoad.allowSceneActivation = true;
                 SceneStateManager.Instance.OnCurrentSceneChangeMethod(targetSceneName);
+
+                if (uiManager != null)
+                {
+                    uiManager.ToggleUICanvas(true);
+                }
             }
 
             yield return null;

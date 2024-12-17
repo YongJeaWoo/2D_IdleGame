@@ -11,6 +11,8 @@ public class UIManager : SingletonBase<UIManager>
     [Header("UI용 캔버스")]
     [SerializeField] private GameObject uiCanvas;
 
+    [SerializeField] private GameObject bottmCollection;
+
     [Header("라운드 표시 텍스트")]
     [SerializeField] private TextMeshProUGUI roundText;
 
@@ -113,6 +115,7 @@ public class UIManager : SingletonBase<UIManager>
     public void ToggleUICanvas(bool isOn)
     {
         uiCanvas.SetActive(isOn);
+        bottmCollection.SetActive(isOn);
     }
 
     public Image[] GetHpBars() => hpBars;

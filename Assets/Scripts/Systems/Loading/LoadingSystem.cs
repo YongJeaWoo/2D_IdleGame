@@ -24,13 +24,19 @@ public class LoadingSystem : MonoBehaviour
     {
         float startVolume = source.volume;
 
-        while (source.volume > 0)
+        while (source.volume > 0.2f)
         {
             source.volume -= startVolume * Time.deltaTime / duration;
+
+            if (source.volume <= 0.2f)
+            {
+                source.volume = 0.2f;
+                break;
+            }
+
             yield return null;
         }
 
-        source.volume = 0.2f;
         AudioManager.Instance.StopBGM();
     }
 }

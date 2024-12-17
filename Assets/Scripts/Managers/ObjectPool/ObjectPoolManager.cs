@@ -1,4 +1,4 @@
-using SingletonBase.DestroySingleton;
+using SingletonBase.DontDestroySingleton;
 using System.Collections.Generic;
 using UnityEngine;
 

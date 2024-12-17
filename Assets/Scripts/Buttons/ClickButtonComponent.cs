@@ -14,7 +14,8 @@ public class ClickButtonComponent : MonoBehaviour
     protected Button myButton;
     protected ClickEffectButton effectButton;
     protected GameObject targetPanel;
-    private static ClickButtonComponent lastSelectButtonComponent = null;
+
+    protected ButtonCollector buttonCollector;
 
     protected virtual void Start()
     {
@@ -33,6 +34,7 @@ public class ClickButtonComponent : MonoBehaviour
         functionBar = UIObj.GetComponentInChildren<FunctionBarComponent>();
         myButton = GetComponent<Button>();
         effectButton = GetComponent<ClickEffectButton>();
+        buttonCollector = GetComponentInParent<ButtonCollector>();
     }
     protected virtual void AddListenerButton()
     {
@@ -63,29 +65,26 @@ public class ClickButtonComponent : MonoBehaviour
                 bool isActive = !targetPanel.activeSelf;
 
                 functionBar.PanelOffButton(targetPanel);
-
                 targetPanel.SetActive(isActive);
 
                 if (isActive)
                 {
-                    if (lastSelectButtonComponent != null && lastSelectButtonComponent != this)
-                    {
-                        lastSelectButtonComponent.effectButton.DeSelectButton(lastSelectButtonComponent.myButton);
-                    }
-
+                    buttonCollector.OnButtonSelected(this);
                     effectButton.SelectButton(myButton);
-
-                    lastSelectButtonComponent = this;
                 }
                 else
                 {
-                    effectButton.DeSelectButton(myButton);
-                    lastSelectButtonComponent = null;
+                    DeselectButton();
                 }
 
                 functionBar.ActiveObjectKnifeUIObject();
             }
         }
+    }
+
+    public void DeselectButton()
+    {
+        effectButton.DeSelectButton(myButton);
     }
 
     private GameObject FindPanelByName(GameObject[] panels, string panelName)
@@ -100,6 +99,5 @@ public class ClickButtonComponent : MonoBehaviour
         return null;
     }
 
-    public GameObject SetTargetPanel(GameObject obj) => targetPanel = obj;
-    public GameObject GetTargetPanel() => targetPanel;
+    public ClickEffectButton GetEffectButton() => effectButton;
 }

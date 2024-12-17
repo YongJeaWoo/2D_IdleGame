@@ -28,7 +28,6 @@ public class CreateKnifeButton : MonoBehaviour
 
     private void Start()
     {
-        InitKnifeData();
         InitPools();
 
         unlockedIDs.Add(1);
@@ -49,7 +48,6 @@ public class CreateKnifeButton : MonoBehaviour
 
     private void GetComponents()
     {
-        playerSystem = FindObjectOfType<PlayerSystem>();
         createdText = GetComponentInChildren<TextMeshProUGUI>();
         poolManager = ObjectPoolManager.Instance;
     }
@@ -59,8 +57,9 @@ public class CreateKnifeButton : MonoBehaviour
         createdText.text = $"Ä® Á¦ÀÛ\n({knifeCollectBar.GetCreatedCurrentCount()} / {knifeCollectBar.GetCreatedMaxCount()})";
     }
 
-    private void InitKnifeData()
+    public void InitKnifeData()
     {
+        playerSystem = FindObjectOfType<PlayerSystem>();
         var player = playerSystem.GetPlayer();
         var knifeData = player.GetComponent<KnifeData>();
         uiKnifeObjs = knifeData.GetUIKnifes();
