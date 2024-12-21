@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ClickButtonComponent : MonoBehaviour
@@ -64,12 +65,13 @@ public class ClickButtonComponent : MonoBehaviour
             {
                 bool isActive = !targetPanel.activeSelf;
 
+                buttonCollector.OnButtonSelected(this);
+
                 functionBar.PanelOffButton(targetPanel);
                 targetPanel.SetActive(isActive);
 
                 if (isActive)
                 {
-                    buttonCollector.OnButtonSelected(this);
                     effectButton.SelectButton(myButton);
                 }
                 else
@@ -85,6 +87,15 @@ public class ClickButtonComponent : MonoBehaviour
     public void DeselectButton()
     {
         effectButton.DeSelectButton(myButton);
+    }
+
+    public void CloseTargetPanel()
+    {
+        if (targetPanel != null && targetPanel.activeSelf)
+        {
+            targetPanel.SetActive(false);
+            DeselectButton();
+        }
     }
 
     private GameObject FindPanelByName(GameObject[] panels, string panelName)

@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconImage: {fileID: 0}
   icon: {fileID: -237655062, guid: 1b3914383fa30e441a34705baa80a87d, type: 3}
+  dungeonObjSprite: {fileID: -1584049443, guid: 982a7ad183b2a354dbc3a46afbd360d2, type: 3}
   dungeon_InfoText: {fileID: 0}
   enterButton: {fileID: 0}
   dungeonName: "\uACE8\uB4DC \uB358\uC804"
+  dungeonTimer: 10
   dungeonEnterSceneName: DungeonScene
+  dungeonType: 0
+  dungeonObj: {fileID: 6566792957355492745, guid: 8eb2f1cb28a4a294a8d3d4618d9149e8, type: 3}

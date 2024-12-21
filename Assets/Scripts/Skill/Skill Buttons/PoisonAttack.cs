@@ -9,23 +9,22 @@ public class PoisonAttack : CoolTimeDisplay
     [Header("던지는 방향")]
     [SerializeField] private Vector2 launchAngle = new(1, 1);
     private readonly float arrangeTime = 10f;
-    private PlayerSystem playerSystem;
     private ExplainableComponent explain;
 
     protected override void Start()
     {
         base.Start();
         ObjectPoolManager.Instance.InitObjectPool(poisonBallPrefab);
-        playerSystem = FindObjectOfType<PlayerSystem>();
         explain = GetComponent<ExplainableComponent>();
         explain.SetExplainDetail($"플레이어 앞 방향으로 스킬을 날려 \n 범위 안의 적들을 {arrangeTime} 초 동안 대미지를 입힙니다."); 
     }
 
     private void LaunchSkill()
     {
-        if (playerSystem == null || poisonBallPrefab == null) return;
+        var playerManager = PlayerManager.Instance;
+        if (playerManager == null || poisonBallPrefab == null) return;
 
-        Vector3 spawnPosition = playerSystem.GetPlayer().transform.position;
+        Vector3 spawnPosition = playerManager.GetPlayer().transform.position;
         spawnPosition.y += 0.2f;
 
         GameObject skill = ObjectPoolManager.Instance.GetToPool(poisonBallPrefab);

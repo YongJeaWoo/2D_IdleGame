@@ -24,6 +24,7 @@ public class DungeonCell : MonoBehaviour
     protected void EnterDungeon()
     {
         DungeonDataManager.Instance.SetDungeonData(dungeonData);
+        LevelManager.Instance.SaveCurrentRound();
         LoadingComponent.LoadScene(dungeonData.dungeonEnterSceneName);
     }
 }

@@ -11,10 +11,14 @@ public class UIManager : SingletonBase<UIManager>
     [Header("UI용 캔버스")]
     [SerializeField] private GameObject uiCanvas;
 
-    [SerializeField] private GameObject bottmCollection;
+    [SerializeField] private BottomCollector bottmCollection;
 
     [Header("라운드 표시 텍스트")]
     [SerializeField] private TextMeshProUGUI roundText;
+    [Header("던전 표시 텍스트")]
+    [SerializeField] private TextMeshProUGUI dungeonText;
+
+    [SerializeField] public GameObject dungeonEndPanel;
 
     [Header("UI 정보들")]
     [SerializeField] private Image[] hpBars;                                    // 플레이어 0, 적 1
@@ -28,8 +32,6 @@ public class UIManager : SingletonBase<UIManager>
 
     [Header("재화 관련 정보")]
     [SerializeField] private TextMeshProUGUI[] possessText;
-    // gold, ore, other 순서로 관리
-    private BigInteger[] possess = new BigInteger[3];
 
     public void InitHpImage()
     {
@@ -50,16 +52,6 @@ public class UIManager : SingletonBase<UIManager>
 
         healthImage.fillAmount = Mathf.Lerp(healthImage.fillAmount, targetFillAmount, Time.deltaTime * lerpSpeed);
         healthText.text = currentHp.ToString();
-    }
-
-    // 재화 초기화
-    public void InitializePossess()
-    {
-        for (int i = 0; i < possess.Length; i++)
-        {
-            possess[i] = BigInteger.Zero;
-            possessText[i].text = "0";
-        }
     }
 
     public void UpdatePossessText(TextMeshProUGUI showText, BigInteger amount)
@@ -115,12 +107,13 @@ public class UIManager : SingletonBase<UIManager>
     public void ToggleUICanvas(bool isOn)
     {
         uiCanvas.SetActive(isOn);
-        bottmCollection.SetActive(isOn);
     }
 
     public Image[] GetHpBars() => hpBars;
     public TextMeshProUGUI[] GetHpTexts() => hpTexts;
+    public TextMeshProUGUI GetDungeonText() => dungeonText;
     public TextMeshProUGUI GetRoundText() => roundText;
     public TextMeshProUGUI[] GetPossessText() => possessText;
     public TextMeshProUGUI[] GetNameText() => nameTexts;
+    public BottomCollector GetBottomCollection() => bottmCollection;
 }

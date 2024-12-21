@@ -16,8 +16,6 @@ public class Posion : MonoBehaviour
     private Rigidbody2D rb;
     private bool hasTriggered = false;
 
-    private PlayerSystem playerSystem;
-
     private WaitForSeconds waitArrangeTime;
     private WaitForSeconds waitDamageInterval;
 
@@ -35,7 +33,6 @@ public class Posion : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        playerSystem = FindObjectOfType<PlayerSystem>();
 
         waitArrangeTime = new WaitForSeconds(arrangeTime);
         waitDamageInterval = new WaitForSeconds(damagedInterval);
@@ -104,7 +101,7 @@ public class Posion : MonoBehaviour
                     var health = hit.GetComponent<BaseHealth>();
                     if (health != null)
                     {
-                        health.Hit(playerSystem.GetAttack());
+                        health.Hit(PlayerManager.Instance.GetAttack());
                     }
                 }
 

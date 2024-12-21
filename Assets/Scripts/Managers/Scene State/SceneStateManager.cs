@@ -29,6 +29,7 @@ public class SceneStateManager : SingletonBase<SceneStateManager>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         CurrentScene = scene.name;
+        ObjectPoolManager.Instance.ReleaseAllObjects();
     }
 }
 

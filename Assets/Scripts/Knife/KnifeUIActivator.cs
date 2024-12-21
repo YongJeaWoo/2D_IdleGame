@@ -16,7 +16,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private RectTransform contentArea;
     private KnifeCollectionBar knifeCollectionBar;
-    private PlayerSystem playerSystem;
 
     public static event Action OnMerge;
 
@@ -32,7 +31,6 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         knifeCollectionBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
         nextData = GetComponent<KnifeNextData>();
-        playerSystem = FindObjectOfType<PlayerSystem>();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -104,7 +102,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         int newNextID = nextData.GetNextID(nextData.NextID);
 
-        var player = playerSystem.GetPlayer();
+        var player = PlayerManager.Instance.GetPlayer();
         var knifeData = player.GetComponent<KnifeData>();
         var knifeList = knifeData.GetUIKnifes();
 

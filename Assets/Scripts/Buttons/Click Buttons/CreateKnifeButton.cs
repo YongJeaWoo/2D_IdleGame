@@ -12,7 +12,6 @@ public class CreateKnifeButton : MonoBehaviour
     private List<int> unlockedIDs = new List<int>();
 
     private ObjectPoolManager poolManager;
-    private PlayerSystem playerSystem;
     private FunctionBarComponent functionBar;
     private KnifeCollectionBar knifeCollectBar;
     private Transform createPos;
@@ -23,15 +22,7 @@ public class CreateKnifeButton : MonoBehaviour
 
     private void Awake()
     {
-        GetComponents();
-    }
-
-    private void Start()
-    {
-        InitPools();
-
-        unlockedIDs.Add(1);
-        UpdateCreatedText();
+        InitBehaviour();
     }
 
     private void OnEnable()
@@ -46,10 +37,13 @@ public class CreateKnifeButton : MonoBehaviour
         KnifeUIActivator.OnMerge -= UpdateCreatedText;
     }
 
-    private void GetComponents()
+    private void InitBehaviour()
     {
         createdText = GetComponentInChildren<TextMeshProUGUI>();
         poolManager = ObjectPoolManager.Instance;
+
+        myButton = GetComponent<Button>();
+        myButton.onClick.AddListener(CreateButton);
     }
 
     private void UpdateCreatedText()
@@ -57,10 +51,9 @@ public class CreateKnifeButton : MonoBehaviour
         createdText.text = $"Ä® Á¦ÀÛ\n({knifeCollectBar.GetCreatedCurrentCount()} / {knifeCollectBar.GetCreatedMaxCount()})";
     }
 
-    public void InitKnifeData()
+    public void InitKnifeData(PlayerManager playerManager)
     {
-        playerSystem = FindObjectOfType<PlayerSystem>();
-        var player = playerSystem.GetPlayer();
+        var player = playerManager.GetPlayer();
         var knifeData = player.GetComponent<KnifeData>();
         uiKnifeObjs = knifeData.GetUIKnifes();
 
@@ -69,17 +62,17 @@ public class CreateKnifeButton : MonoBehaviour
         knifeCollectBar = functionBar.GetKnifeCollectBar();
 
         createPos = knifeCollectBar.transform.GetChild(1).GetChild(0).GetChild(0);
-
-        myButton = GetComponent<Button>();
-        myButton.onClick.AddListener(CreateButton);
     }
 
-    private void InitPools()
+    public void InitPools()
     {
         foreach (var knife in uiKnifeObjs)
         {
             poolManager.InitObjectPool(knife);
         }
+
+        unlockedIDs.Add(1);
+        UpdateCreatedText();
     }
 
     public void CreateButton()

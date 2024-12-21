@@ -46,7 +46,6 @@ public class EnemiesSpawnerSystem : MonoBehaviour
 
     private IEnumerator SpawnEnemiesCoroutine()
     {
-        // TODO : 추후 나중에 변경이 필요함 (던전 진입 시 멈추는 기능)
         while (true)
         {
             var currentRound = LevelManager.Instance.GetCurrentRound();
@@ -56,22 +55,34 @@ public class EnemiesSpawnerSystem : MonoBehaviour
 
             spawnCount = createdCount;
 
-            int enemyIndex = 0;
+            GameObject selectedPrefab;
+
+            if (currentRound % 100 == 0)
+            {
+                selectedPrefab = enemiesPrefab.Length >= 10 ? enemiesPrefab[9] :
+                    enemiesPrefab.Length >= 5 ? enemiesPrefab[4] : enemiesPrefab[0];
+            }
+            else if (currentRound % 10 == 0)
+            {
+                selectedPrefab = enemiesPrefab.Length >= 5 ? enemiesPrefab[4] : enemiesPrefab[0];
+            }
+            else
+            {
+                selectedPrefab = enemiesPrefab[0];
+            }
 
             for (int i = 0; i < createdCount; i++)
             {
-                var enemyPrefab = enemiesPrefab[enemyIndex];
-                var enemyObj = ObjectPoolManager.Instance.GetToPool(enemyPrefab, spawnPos);
-                
+                var enemyObj = ObjectPoolManager.Instance.GetToPool(selectedPrefab, spawnPos);
+
                 if (enemyObj != null)
                 {
                     if (enemyObj.TryGetComponent<EnemyHealth>(out var health))
                     {
                         health.OnDeath += EnemyDeath;
+                        health.SetCurrentHp(CalculateHealth(currentRound));
                     }
                 }
-
-                enemyIndex = (enemyIndex + 1) % enemiesPrefab.Length;
 
                 yield return new WaitForSeconds(5f);
             }
@@ -80,6 +91,11 @@ public class EnemiesSpawnerSystem : MonoBehaviour
 
             NextRound();
         }
+    }
+
+    private int CalculateHealth(int round)
+    {
+        return Mathf.CeilToInt(round * 10 * 1.2f);
     }
 
     private void EnemyDeath()

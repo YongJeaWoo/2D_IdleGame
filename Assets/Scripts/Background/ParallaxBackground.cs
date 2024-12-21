@@ -14,27 +14,14 @@ public class ParallaxBackground : MonoBehaviour
     private float moveSpeed;
     private float originSpeed;
 
-    private PlayerSystem playerSystem;
-
-    private void Start()
-    {
-        InitValue();
-    }
-
     private void Update()
     {
         MoveBackground();
     }
 
-    private void InitValue()
+    public void InitValue(PlayerManager playerManager)
     {
-        BackgroundSetSpeed();
-    }
-
-    private void BackgroundSetSpeed()
-    {
-        playerSystem = FindObjectOfType<PlayerSystem>();
-        var player = playerSystem.GetPlayer();
+        var player = playerManager.GetPlayer();
         var speed = player.GetComponent<SpeedComponent>();
 
         UpdateSpeed(speed);

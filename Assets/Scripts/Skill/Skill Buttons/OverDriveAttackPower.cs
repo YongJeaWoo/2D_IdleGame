@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
@@ -12,37 +11,35 @@ public class OverDriveAttackPower : CoolTimeDisplay
 
     private readonly float arrangeTime = 10f;
 
-    private PlayerSystem playerSystem;
     private ExplainableComponent explain;
 
     protected override void Start()
     {
         base.Start();
         ObjectPoolManager.Instance.InitObjectPool(effectPrefab);
-        playerSystem = FindObjectOfType<PlayerSystem>();
         explain = GetComponent<ExplainableComponent>();
         explain.SetExplainDetail($"{arrangeTime} 초 동안 플레이어의 \n자체 공격력이 2배로 증가합니다.");
     }
 
-    private IEnumerator TemporaryAttackUpCoroutine(PlayerSystem playerSystem, BigInteger playerAttack)
+    private IEnumerator TemporaryAttackUpCoroutine(PlayerManager playerManager, BigInteger playerAttack)
     {
-        var player = playerSystem.GetPlayer();
+        var player = playerManager.GetPlayer();
         var obj = ObjectPoolManager.Instance.GetToPool(effectPrefab);
         var yPosModify = player.transform.position + new UnityEngine.Vector3(0, 0.3f, 0);
         obj.transform.SetPositionAndRotation(yPosModify, UnityEngine.Quaternion.identity);
         var originAttack = playerAttack;
         var tempAttack = playerAttack * 2;
-        playerSystem.SetAttack(tempAttack);
+        playerManager.SetAttack(tempAttack);
 
         yield return new WaitForSeconds(arrangeTime);
         ObjectPoolManager.Instance.ReleaseToPool(obj);
-        playerSystem.SetAttack(originAttack);
+        playerManager.SetAttack(originAttack);
     }
 
     public override void PerformingAction()
     {
-        var attack = playerSystem.GetAttack();
-        StartCoroutine(TemporaryAttackUpCoroutine(playerSystem, attack));
+        var attack = PlayerManager.Instance.GetAttack();
+        StartCoroutine(TemporaryAttackUpCoroutine(PlayerManager.Instance, attack));
         EffectSound();
     }
 

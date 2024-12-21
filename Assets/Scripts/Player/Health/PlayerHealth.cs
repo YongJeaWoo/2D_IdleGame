@@ -13,7 +13,7 @@ public class PlayerHealth : BaseHealth
         InitializeHealth();
     }
 
-    private void SetValues()
+    protected override void SetValues()
     {
         myHealthBar = UIManager.Instance.GetHpBars()[0];
         myHealthText = UIManager.Instance.GetHpTexts()[0];

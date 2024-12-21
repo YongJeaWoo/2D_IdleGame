@@ -21,7 +21,7 @@ public class MaxHpDataCell : DataCell
 
     public override void UpdateDisplay()
     {
-        displayValue = playerSystem.GetMaxHp();
+        displayValue = PlayerManager.Instance.GetMaxHp();
 
         decimal currentHp = (decimal)displayValue;
         decimal upgradeHp = currentHp * (decimal)upgradeMultiple;
@@ -34,7 +34,7 @@ public class MaxHpDataCell : DataCell
 
     public override void ExecuteClick()
     {
-        var maxHp = playerSystem.GetMaxHp();
+        var maxHp = PlayerManager.Instance.GetMaxHp();
 
         decimal currentHp = (decimal)maxHp;
         decimal upgradeHp = currentHp * (decimal)upgradeMultiple;
@@ -42,6 +42,6 @@ public class MaxHpDataCell : DataCell
         BigInteger newHp = new(Math.Ceiling(upgradeHp));
 
         displayValue = newHp;
-        playerSystem.SetMaxHp(newHp);
+        PlayerManager.Instance.SetMaxHp(newHp);
     }
 }

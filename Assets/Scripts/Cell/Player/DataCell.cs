@@ -14,8 +14,9 @@ public abstract class DataCell : MonoBehaviour
     protected float upgradeMultiple;
     protected BigInteger upgradeCost;
     protected BigInteger displayValue;
-    protected PlayerSystem playerSystem;
     protected PlayerPossessionsController possessionController;
+
+    [SerializeField] protected string possessName;
 
     public static event Action ClickButton;
 
@@ -40,8 +41,7 @@ public abstract class DataCell : MonoBehaviour
 
     private void FindSystem()
     {
-        playerSystem = FindObjectOfType<PlayerSystem>();
-        possessionController = playerSystem.GetPossessionsController();
+        possessionController = PlayerManager.Instance.GetPossessionsController();
     }
 
     public void UpgradeCost()
@@ -57,7 +57,7 @@ public abstract class DataCell : MonoBehaviour
 
     public virtual void OnButtonClick()
     {
-        if (!possessionController.SpendGold(upgradeCost))
+        if (!possessionController.SpendPossess(possessName, upgradeCost))
         {
             var panel = PopupManager.Instance.InstantPopup(NoMoney);
             var warningPanel = panel.GetComponent<WarningPanel>();

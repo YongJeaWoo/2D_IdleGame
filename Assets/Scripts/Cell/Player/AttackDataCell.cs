@@ -20,7 +20,7 @@ public class AttackDataCell : DataCell
 
     public override void UpdateDisplay()
     {
-        displayValue = playerSystem.GetAttack();
+        displayValue = PlayerManager.Instance.GetAttack();
 
         decimal currentAttack = (decimal)displayValue;
         decimal upgradeAttack = currentAttack * (decimal)upgradeMultiple;
@@ -33,7 +33,7 @@ public class AttackDataCell : DataCell
 
     public override void ExecuteClick()
     {
-        var attack = playerSystem.GetAttack();
+        var attack = PlayerManager.Instance.GetAttack();
 
         decimal currentAttack = (decimal)attack;
         decimal upgradeAttack = currentAttack * (decimal)upgradeMultiple;
@@ -41,6 +41,6 @@ public class AttackDataCell : DataCell
         BigInteger newAttack = new (Math.Ceiling(upgradeAttack));
 
         displayValue = newAttack;
-        playerSystem.SetAttack(newAttack);
+        PlayerManager.Instance.SetAttack(newAttack);
     }
 }

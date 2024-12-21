@@ -17,12 +17,10 @@ public class FeverButton : MonoBehaviour
     [SerializeField] private float feverTime;
 
     private Button button;
-    private PlayerSystem playerSystem;
     private float timer;
 
     private void Start()
     {
-        playerSystem = FindObjectOfType<PlayerSystem>();
         button = GetComponent<Button>();
         ResetCooldown();
     }
@@ -38,7 +36,7 @@ public class FeverButton : MonoBehaviour
     {
         if (timer < feverCool) return;
 
-        var player = playerSystem.GetPlayer();
+        var player = PlayerManager.Instance.GetPlayer();
         var speed = player.GetComponent<SpeedComponent>();
         speed.SpeedUp(multipleSpeed, feverTime);
 

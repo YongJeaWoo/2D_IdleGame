@@ -39,12 +39,12 @@ public class PlayerAttack : BaseAttack
 
     protected void OnEnable()
     {
-        KnifeCollectionBar.OnUpdateKnife += GetKnifeInfo;
+        knifeBar.OnUpdateKnife += GetKnifeInfo;
     }
 
-    protected void OnDisable()
+    private void OnDisable()
     {
-        KnifeCollectionBar.OnUpdateKnife -= GetKnifeInfo;
+        knifeBar.OnUpdateKnife += GetKnifeInfo;
     }
 
     private void GetComponents()
@@ -53,6 +53,8 @@ public class PlayerAttack : BaseAttack
         bgController = FindAnyObjectByType<BackgroundController>();
         UIManager.Instance.InitHpImage();
         knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
+
+        LoadKnifesToPlayerAttack();
 
         foreach (var knife in attackKnifes)
         {
@@ -107,6 +109,35 @@ public class PlayerAttack : BaseAttack
         bgController.BG_Controll(isAttack);
     }
 
+    private void LoadKnifesToPlayerAttack()
+    {
+        var knifeList = knifeBar.GetKnifesList();
+
+        var knifeListCount = knifeList.GroupBy(k => k.GetComponent<KnifeNextData>().NextID)
+                                      .ToDictionary(group => group.Key, group => group.Count());
+
+        var matchingKnifes = new List<GameObject>();
+
+        foreach (var knife in attackKnifes)
+        {
+            var knifeNextData = knife.GetComponent<KnifeNextData>();
+            if (knifeNextData != null && knifeListCount.ContainsKey(knifeNextData.NextID))
+            {
+                int count = knifeListCount[knifeNextData.NextID];
+
+                for (int i = 0; i < count; i++)
+                {
+                    matchingKnifes.Add(knife);
+                }
+            }
+        }
+
+        sortedKnifes = matchingKnifes
+            .OrderByDescending(knife => BigInteger.Parse(
+                knife.GetComponent<KnifeAttack>().GetAttackPointString()))
+            .ToList();
+    }
+
     public void GetKnifeInfo()
     {
         var knifeList = knifeBar.GetKnifesList();
@@ -140,7 +171,19 @@ public class PlayerAttack : BaseAttack
     {
         if (sortedKnifes.Count == 0) return;
 
+        if (currentKnifeIndex >= sortedKnifes.Count)
+        {
+            currentKnifeIndex = 0;
+        }
+
         var currentKnife = sortedKnifes[currentKnifeIndex];
+
+        if (currentKnife == null)
+        {
+            Debug.LogError("currentKnife is null, cannot get to pool!");
+            return;
+        }
+
         ObjectPoolManager.Instance.GetToPool(currentKnife, attackPos);
 
         if (attackSound != null && attackSound.Length > 0)
@@ -150,11 +193,6 @@ public class PlayerAttack : BaseAttack
         }
 
         currentKnifeIndex++;
-
-        if (currentKnifeIndex >= sortedKnifes.Count)
-        {
-            currentKnifeIndex = 0;
-        }
     }
 
     public BigInteger GetAtk() => atk;

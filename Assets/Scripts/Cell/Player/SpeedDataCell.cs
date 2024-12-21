@@ -23,7 +23,7 @@ public class SpeedDataCell : DataCell
 
     public override void UpdateDisplay()
     {
-        float speed = playerSystem.GetSpeed();
+        float speed = PlayerManager.Instance.GetSpeed();
 
         decimal currentSpeed = (decimal)speed;
         decimal upgradeSpeed = currentSpeed * (decimal)upgradeMultiple;
@@ -36,7 +36,7 @@ public class SpeedDataCell : DataCell
 
     public override void ExecuteClick()
     {
-        var speed = playerSystem.GetSpeed();
+        var speed = PlayerManager.Instance.GetSpeed();
 
         if (speed > 5)
         {
@@ -52,6 +52,6 @@ public class SpeedDataCell : DataCell
 
         BigInteger newSpeed = new(Mathf.Ceil(newSpeedFloat));
         displayValue = newSpeed;
-        playerSystem.SetSpeed((float)displayValue);
+        PlayerManager.Instance.SetSpeed((float)displayValue);
     }
 }

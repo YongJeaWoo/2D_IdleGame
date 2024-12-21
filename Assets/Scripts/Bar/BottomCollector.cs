@@ -4,8 +4,9 @@ public class BottomCollector : MonoBehaviour
 {
     [SerializeField] private CreateKnifeButton button;
 
-    private void OnEnable()
+    public void Initialize(PlayerManager playerManager)
     {
-        button.InitKnifeData();
+        button.InitKnifeData(playerManager);
+        button.InitPools();
     }
 }

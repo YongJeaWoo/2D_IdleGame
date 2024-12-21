@@ -52,6 +52,7 @@ public class LoadingComponent : MonoBehaviour
                 fillImage.fillAmount = 1f;
                 yield return new WaitForSeconds(1f);
                 asyncLoad.allowSceneActivation = true;
+
                 SceneStateManager.Instance.OnCurrentSceneChangeMethod(targetSceneName);
 
                 if (uiManager != null)

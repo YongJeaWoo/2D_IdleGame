@@ -9,12 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 473b03382e763824cbcf00e43f28c85a, type: 3}
-  m_Name: Capsule Dungeon
+  m_Script: {fileID: 11500000, guid: d32e3a5c11b0a914d874189f0e927828, type: 3}
+  m_Name: Round
   m_EditorClassIdentifier: 
-  iconImage: {fileID: 0}
-  icon: {fileID: 0}
-  dungeon_InfoText: {fileID: 0}
-  enterButton: {fileID: 0}
-  dungeonName: "\uCEA1\uC290 \uB358\uC804"
-  dungeonEnterSceneName: DungeonScene
