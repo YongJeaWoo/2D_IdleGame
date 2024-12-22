@@ -20,22 +20,39 @@ public class SkillCollector : MonoBehaviour
             skillButtons[i].SetActive(false);
         }
 
-        PlayerManager.Instance.OnPlayerReady += CheckOpenSkill;
+        PlayerManager.Instance.OnPlayerReady += () =>
+        {
+            if (PlayerManager.Instance.GetPlayer() != null)
+            {
+                CheckOpenSkill();
+            }
+        };
     }
 
     public void CheckOpenSkill()
     {
         BigInteger playerAttack = PlayerManager.Instance.GetAttack();
 
+        if (skillButtons.Length != requiredAttackPoint.Length)
+        {
+            Debug.LogError("스킬 버튼이 아직 활성화 되지 않음");
+            return;
+        }
+
         for (int i = 0; i < skillButtons.Length; i++)
         {
-            if (playerAttack >= requiredAttackPoint[i])
+            if (skillButtons[i] == null)
             {
-                skillButtons[i].SetActive(true);
+                continue; 
             }
-            else
+
+            try
             {
-                skillButtons[i].SetActive(false);
+                skillButtons[i].SetActive(playerAttack >= requiredAttackPoint[i]);
+            }
+            catch (MissingReferenceException ex)
+            {
+                Debug.LogError($"스킬 버튼의 {i} 부분이 Missing 에러가 남: {ex.Message}");
             }
         }
     }

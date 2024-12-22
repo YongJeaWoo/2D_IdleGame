@@ -18,6 +18,7 @@ MonoBehaviour:
   dungeon_InfoText: {fileID: 0}
   enterButton: {fileID: 0}
   dungeonName: "\uACE8\uB4DC \uB358\uC804"
+  objectName: "\uACE8\uB4DC"
   dungeonTimer: 10
   dungeonEnterSceneName: DungeonScene
   dungeonType: 0

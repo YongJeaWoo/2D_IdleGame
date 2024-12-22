@@ -10,6 +10,9 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
 
     private float remaingTimer;
 
+    private Coroutine blinkCoroutine;
+    private WaitForSeconds blinkTimer = new(0.5f);
+
     public void SetDungeonData(DungeonData data)
     {
         currentDungeonData = data;
@@ -37,6 +40,7 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
         remaingTimer = currentDungeonData.dungeonTimer;
         var obj = ObjectPoolManager.Instance.GetToPool(currentDungeonData.dungeonObj);
         obj.transform.position = new Vector3(2f, 1.25f, 0);
+        obj.name = currentDungeonData.objectName;
 
         switch (currentDungeonData.dungeonType)
         {
@@ -66,7 +70,7 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
 
     private IEnumerator EnterDungeonTimeLimitCoroutine()
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(1.0f);
 
         while (remaingTimer > 0)
         {
@@ -86,13 +90,53 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
             if (remaingTimer <= 0)
             {
                 remaingTimerText.text = $"00:00";
+
+                if (blinkCoroutine != null)
+                {
+                    StopCoroutine(blinkCoroutine);
+                    remaingTimerText.color = Color.white;
+                }
             }
+            else
+            {
+                int min = Mathf.FloorToInt(remaingTimer / 60f);
+                int sec = Mathf.FloorToInt(remaingTimer % 60f);
 
-            int min = Mathf.FloorToInt(remaingTimer / 60f);
-            int sec = Mathf.FloorToInt(remaingTimer % 60f);
+                remaingTimerText.text = $"{min}:{sec:D2}";
 
-            remaingTimerText.text = $"{min}:{sec:D2}";
+                if (remaingTimer <= 10)
+                {
+                    if (blinkCoroutine == null)
+                    {
+                        blinkCoroutine = StartCoroutine(BlinkTextCoroutine());
+                    }
+                }
+                else
+                {
+                    if (blinkCoroutine != null)
+                    {
+                        StopCoroutine(blinkCoroutine);
+                        blinkCoroutine = null;
+                    }
+
+                    remaingTimerText.color = Color.white;
+                }
+            }
         }
+    }
+
+    private IEnumerator BlinkTextCoroutine()
+    {
+        bool isRed = true;
+
+        while (remaingTimer <= 10 && remaingTimer > 0)
+        {
+            remaingTimerText.color = isRed ? Color.red : Color.white;
+            isRed = !isRed;
+            yield return blinkTimer;
+        }
+
+        remaingTimerText.color = Color.white;
     }
 
     private void DungeonEnd()
@@ -100,6 +144,9 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
         StopAllCoroutines();
         remaingTimer = 0;
         UpdateTimerUI();
+
+        var playerAttack = PlayerManager.Instance.GetPlayer().GetComponent<PlayerAttack>();
+        playerAttack.StopAttack();
 
         var dungeonText = UIManager.Instance.GetDungeonText();
         dungeonText.gameObject.SetActive(false);

@@ -18,6 +18,7 @@ public class DungeonData : ScriptableObject
     public TextMeshProUGUI dungeon_InfoText;
     public Button enterButton;
     public string dungeonName;
+    public string objectName;
 
     public float dungeonTimer;
 

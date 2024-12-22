@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public class DungeonController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     private void Start()
     {
-        InitDungeonStart();
+        InitGameStart();
     }
 
-    private void InitDungeonStart()
+    private void InitGameStart()
     {
         PlayerManager.Instance.FindPlayer();
         var canvasObj = UIManager.Instance.GetGUICanvas();
         var canvas = canvasObj.GetComponent<Canvas>();
         var uiCamObj = GameObject.FindWithTag("UI Camera");
         var uiCam = uiCamObj.GetComponent<Camera>();
-        canvas.worldCamera = uiCam;
-        DungeonDataManager.Instance.StartDungeonTime();
+        if (canvas.worldCamera == null)
+        {
+            canvas.worldCamera = uiCam;
+        }
     }
 }

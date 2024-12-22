@@ -2605,7 +2605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2936c8698a8b85340a42d1bd9cf53326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCanvas: {fileID: 242923003}
+  guiCanvas: {fileID: 242923003}
   bottmCollection: {fileID: 349311136}
   roundText: {fileID: 129657846}
   dungeonText: {fileID: 2085978429}
@@ -9118,7 +9118,7 @@ GameObject:
   - component: {fileID: 663664420}
   - component: {fileID: 663664419}
   m_Layer: 0
-  m_Name: Player Find Controller
+  m_Name: Game Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23828,7 +23828,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907774168}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

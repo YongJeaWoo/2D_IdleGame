@@ -8,6 +8,10 @@ public class CreateKnifeButton : MonoBehaviour
 {
     private readonly string maxCountAlramText = $"Max Count Info Panel";
 
+    protected readonly string DoNotFunctionAlramText = $"현재 기능은 수행할 수 없습니다.";
+    protected readonly string DungeonSceneName = $"DungeonScene";
+    protected readonly string DoNotFunctionPanel = $"Warning Panel";
+
     private List<GameObject> uiKnifeObjs;
     private List<int> unlockedIDs = new List<int>();
 
@@ -77,10 +81,18 @@ public class CreateKnifeButton : MonoBehaviour
 
     public void CreateButton()
     {
+        if (SceneStateManager.Instance.CurrentScene == DungeonSceneName)
+        {
+            var panel = PopupManager.Instance.InstantPopup(DoNotFunctionPanel);
+            var warningPanel = panel.GetComponent<WarningPanel>();
+            warningPanel.SetAlramPanelText(DoNotFunctionAlramText);
+            return;
+        }
+
         CreateRandomKnifes();
         OnCreateButton?.Invoke();
     }
-
+    
     private GameObject CreateRandomKnifes()
     {
         if (knifeCollectBar.GetCreatedCurrentCount() >= knifeCollectBar.GetCreatedMaxCount())

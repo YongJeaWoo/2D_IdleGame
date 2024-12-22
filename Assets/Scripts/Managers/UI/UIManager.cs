@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class UIManager : SingletonBase<UIManager>
 {
     [Header("UI¿ë Äµ¹ö½º")]
-    [SerializeField] private GameObject uiCanvas;
+    [SerializeField] private GameObject guiCanvas;
 
     [SerializeField] private BottomCollector bottmCollection;
 
@@ -48,6 +48,9 @@ public class UIManager : SingletonBase<UIManager>
 
         var healthImage = targetHealth.GetHealthImage();
         var healthText = targetHealth.GetHealthText();
+
+        if (healthImage == null || healthText == null) return;
+
         float targetFillAmount = maxHp == 0 ? 0 : (float)(double)currentHp / (float)(double)maxHp;
 
         healthImage.fillAmount = Mathf.Lerp(healthImage.fillAmount, targetFillAmount, Time.deltaTime * lerpSpeed);
@@ -106,7 +109,7 @@ public class UIManager : SingletonBase<UIManager>
 
     public void ToggleUICanvas(bool isOn)
     {
-        uiCanvas.SetActive(isOn);
+        guiCanvas.SetActive(isOn);
     }
 
     public Image[] GetHpBars() => hpBars;
@@ -116,4 +119,5 @@ public class UIManager : SingletonBase<UIManager>
     public TextMeshProUGUI[] GetPossessText() => possessText;
     public TextMeshProUGUI[] GetNameText() => nameTexts;
     public BottomCollector GetBottomCollection() => bottmCollection;
+    public GameObject GetGUICanvas() => guiCanvas;
 }

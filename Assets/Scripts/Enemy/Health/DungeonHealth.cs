@@ -5,8 +5,8 @@ public class DungeonHealth : BaseHealth
     protected override void Start()
     {
         base.Start();
-        SetValues();
         maxHp = BigInteger.Parse(maxHpString);
+        SetValues();
         SetCurrentHpToMaxHp();
     }
 

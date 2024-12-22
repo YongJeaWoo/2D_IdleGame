@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using TMPro.Examples;
 using UnityEngine;
 
 public class PlayerAttack : BaseAttack
@@ -25,6 +26,7 @@ public class PlayerAttack : BaseAttack
     private BigInteger atk;
 
     private int currentKnifeIndex = 0;
+    private bool isAttack;
 
     protected override void Awake()
     {
@@ -35,6 +37,7 @@ public class PlayerAttack : BaseAttack
     private void Start()
     {
         atk = BigInteger.Parse(atkString);
+        StartAttack();
     }
 
     protected void OnEnable()
@@ -64,6 +67,12 @@ public class PlayerAttack : BaseAttack
 
     protected override void DetectObject()
     {
+        if (!isAttack)
+        {
+            animator.SetBool(runText, true);
+            return;
+        }
+
         UnityEngine.Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
         RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, UnityEngine.Vector2.right, detectionDistance, enemyLayer);
 
@@ -201,6 +210,19 @@ public class PlayerAttack : BaseAttack
         atk = value;
         atkString = atk.ToString();
         return atk;
+    }
+
+    public void StartAttack()
+    {
+        isAttack = true;
+    }
+
+    public void StopAttack()
+    {
+        isAttack = false;
+
+        animator.SetBool(runText, true);
+        animator.SetBool(attackText, false);
     }
 
     public Transform GetAttackPos() => attackPos;

@@ -1,6 +1,5 @@
 using SingletonBase.DontDestroySingleton;
 using System;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneStateManager : SingletonBase<SceneStateManager>
@@ -23,7 +22,6 @@ public class SceneStateManager : SingletonBase<SceneStateManager>
     {
         CurrentScene = targetSceneName;
         OnSceneLoadAction?.Invoke(CurrentScene);
-        Debug.Log(CurrentScene);
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
