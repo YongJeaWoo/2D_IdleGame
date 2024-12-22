@@ -11,7 +11,6 @@ public class CommonPanel : MonoBehaviour
     [SerializeField] protected Button exitButton;
     [SerializeField] protected Button confirmButton;
 
-    protected Camera uiCamera;
     protected Animator animator;
 
     protected bool isOpen = true;
@@ -23,7 +22,6 @@ public class CommonPanel : MonoBehaviour
 
     protected virtual void InitPanel()
     {
-        uiCamera = GameObject.FindWithTag("UI Camera").GetComponent<Camera>();
         animator = GetComponent<Animator>();
         confirmButton.onClick.AddListener(ConfirmGame);
         animator.SetBool(IsOpen, isOpen);

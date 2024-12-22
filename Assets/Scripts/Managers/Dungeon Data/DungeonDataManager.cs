@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class DungeonDataManager : SingletonBase<DungeonDataManager>
 {
+    private readonly string dungeonEnd = $"Info Panel";
+
     [SerializeField] private DungeonData currentDungeonData;
     private TextMeshProUGUI remaingTimerText;
 
@@ -156,15 +158,19 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
 
     private IEnumerator InputKeysCoroutine()
     {
+        GameObject panel = PopupManager.Instance.InstantPopup(dungeonEnd);
+        var infoPanel = panel.GetComponent<InfoPanel>();
+        infoPanel.SetInfoText($"던전 시간이 끝났습니다.");
+        infoPanel.SetInsideInfoText($"아무 키를 눌러 던전에서 탈출");
+
         while (!Input.anyKeyDown)
         {
-            UIManager.Instance.dungeonEndPanel.SetActive(true);
             yield return null;
         }
 
         yield return new WaitForEndOfFrame();
-
-        UIManager.Instance.dungeonEndPanel.SetActive(false);
+        
+        PopupManager.Instance.RemovePopup(panel.name);
         LoadingComponent.LoadScene("GameScene");
         LevelManager.Instance.LoadSaveRound();
     }

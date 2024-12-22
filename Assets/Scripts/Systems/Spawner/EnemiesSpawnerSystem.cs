@@ -30,9 +30,9 @@ public class EnemiesSpawnerSystem : MonoBehaviour
     private void OnDisable()
     {
         LevelManager.Instance.OnRoundChange -= SpawnEnemies;
-    }    
+    }
 
-    // TODO : 라운드별 생성 수 지정 
+    // 라운드별로 몬스터 소환
     public void SpawnEnemies()
     {
         if (isSpawning) return;
@@ -49,27 +49,10 @@ public class EnemiesSpawnerSystem : MonoBehaviour
         while (true)
         {
             var currentRound = LevelManager.Instance.GetCurrentRound();
-            var ceilValue = Mathf.Ceil(currentRound * 1.4f);
-            var maxCount = (int)Mathf.Max(2, ceilValue);
-            int createdCount = Random.Range(1, maxCount + 1);
-
+            int createdCount = Random.Range(1, Mathf.CeilToInt(currentRound * 1.4f) + 1);  // 몬스터 생성 수 계산
             spawnCount = createdCount;
 
-            GameObject selectedPrefab;
-
-            if (currentRound % 100 == 0)
-            {
-                selectedPrefab = enemiesPrefab.Length >= 10 ? enemiesPrefab[9] :
-                    enemiesPrefab.Length >= 5 ? enemiesPrefab[4] : enemiesPrefab[0];
-            }
-            else if (currentRound % 10 == 0)
-            {
-                selectedPrefab = enemiesPrefab.Length >= 5 ? enemiesPrefab[4] : enemiesPrefab[0];
-            }
-            else
-            {
-                selectedPrefab = enemiesPrefab[0];
-            }
+            GameObject selectedPrefab = SelectEnemyPrefab(currentRound); // 라운드에 맞는 적 선택
 
             for (int i = 0; i < createdCount; i++)
             {
@@ -84,15 +67,17 @@ public class EnemiesSpawnerSystem : MonoBehaviour
                     }
                 }
 
-                yield return new WaitForSeconds(5f);
+                float randomTime = Random.Range(0.5f, 5f);
+                yield return new WaitForSeconds(randomTime);  // 생성 간격 조절
             }
 
-            yield return new WaitUntil(() => killCount >= spawnCount);
+            yield return new WaitUntil(() => killCount >= spawnCount);  // 모든 적이 죽을 때까지 대기
 
             NextRound();
         }
     }
 
+    // 적의 체력 계산
     private int CalculateHealth(int round)
     {
         return Mathf.CeilToInt(round * 10 * 1.2f);
@@ -108,5 +93,111 @@ public class EnemiesSpawnerSystem : MonoBehaviour
         LevelManager.Instance.CallChangeRound();
         killCount = 0;
         spawnCount = 0;
+    }
+
+    // 적 프리팹을 라운드에 맞게 선택
+    private GameObject SelectEnemyPrefab(int currentRound)
+    {
+        if (currentRound % 10 == 0)
+        {
+            return SelectBossEnemyPrefab(currentRound); // 10, 20, 30, ... 라운드에서 보스 몬스터 처리
+        }
+        else
+        {
+            return SelectNormalEnemyPrefab(currentRound);
+        }
+    }
+
+    // 10의 배수 라운드에서는 5번째 몬스터 (인덱스 4)
+    private GameObject SelectBossEnemyPrefab(int currentRound)
+    {
+        // 10단위 라운드 (10, 20, 30...)에서는 enemiesPrefab의 5번째 몬스터 선택
+        if (currentRound % 100 != 0) // 100단위가 아닌 경우
+        {
+            return enemiesPrefab[4]; // 5번째 몬스터
+        }
+        else
+        {
+            // 100단위부터는 10번째 몬스터 (110, 120, 130... 라운드)
+            return SelectHighRoundBoss(currentRound);
+        }
+    }
+
+    // 100단위 이상에서는 10번째, 15번째, 20번째 몬스터 소환
+    private GameObject SelectHighRoundBoss(int currentRound)
+    {
+        int multiplier = Mathf.FloorToInt(currentRound / 100f); // 100단위 계산
+        int bossIndex = 9 + (multiplier - 1) * 5; // 5의 배수 인덱스 계산
+
+        // 1000 단위 이후부터 적용
+        if (multiplier >= 10)
+        {
+            bossIndex = 9 + (multiplier - 1) * 5;
+        }
+
+        // 배열 크기를 초과할 경우 반복적으로 5의 배수 인덱스 생성
+        if (bossIndex >= enemiesPrefab.Length)
+        {
+            bossIndex = (bossIndex % enemiesPrefab.Length) - (bossIndex % 5); // 가장 가까운 5의 배수
+            if (bossIndex < 0)
+            {
+                bossIndex = Mathf.Max(0, enemiesPrefab.Length - 1); // 최소 값 보정
+            }
+        }
+
+        return enemiesPrefab[bossIndex];
+    }
+
+    // 일반 몬스터 처리
+    private GameObject SelectNormalEnemyPrefab(int currentRound)
+    {
+        int maxIndex;
+
+        // 1. 10의 단위 이하 라운드 (1~99)
+        if (currentRound < 100)
+        {
+            int onesPlace = currentRound % 10;
+
+            if (onesPlace <= 2)
+            {
+                maxIndex = Mathf.Min(0, enemiesPrefab.Length - 1); // 1번째 몬스터만
+            }
+            else if (onesPlace <= 4)
+            {
+                maxIndex = Mathf.Min(1, enemiesPrefab.Length - 1); // 1, 2번째 몬스터
+            }
+            else if (onesPlace <= 6)
+            {
+                maxIndex = Mathf.Min(2, enemiesPrefab.Length - 1); // 1, 2, 3번째 몬스터
+            }
+            else
+            {
+                maxIndex = Mathf.Min(3, enemiesPrefab.Length - 1); // 1, 2, 3, 4번째 몬스터
+            }
+        }
+        // 2. 100 이상의 라운드
+        else
+        {
+            int hundredsPlace = Mathf.FloorToInt(currentRound / 100f); // 100단위 계산
+            maxIndex = Mathf.Min(4 + hundredsPlace, enemiesPrefab.Length - 1); // 크기 제한
+        }
+
+        // 일반 몬스터 선택
+        int randomIndex = Random.Range(0, maxIndex + 1);
+        return enemiesPrefab[randomIndex];
+    }
+
+    // 모든 적을 오브젝트 풀로 반환하고 스폰을 멈추는 메서드
+    public void StopSpawningAndClearEnemies()
+    {
+        isSpawning = false;
+        killCount = 0;
+        spawnCount = 0;
+
+        var enemies = FindObjectsOfType<EnemyHealth>();
+        foreach (var enemy in enemies)
+        {
+            ObjectPoolManager.Instance.ReleaseToPool(enemy.gameObject);
+        }
     }
 }

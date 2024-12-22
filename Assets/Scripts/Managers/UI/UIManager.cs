@@ -18,8 +18,6 @@ public class UIManager : SingletonBase<UIManager>
     [Header("던전 표시 텍스트")]
     [SerializeField] private TextMeshProUGUI dungeonText;
 
-    [SerializeField] public GameObject dungeonEndPanel;
-
     [Header("UI 정보들")]
     [SerializeField] private Image[] hpBars;                                    // 플레이어 0, 적 1
     [SerializeField] private TextMeshProUGUI[] hpTexts;             // 플레이어 0, 적 1

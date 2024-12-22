@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class SettingButton : MonoBehaviour
 {
+    [SerializeField] private AudioClip clickSound;
     private readonly string SettingText = $"Setting Panel";
     private Button settingButton;
 
@@ -14,6 +15,7 @@ public class SettingButton : MonoBehaviour
 
     public void OnSetting()
     {
+        AudioManager.Instance.PlaySFX(clickSound);
         PopupManager.Instance.InstantPopup(SettingText);
     }
 }
