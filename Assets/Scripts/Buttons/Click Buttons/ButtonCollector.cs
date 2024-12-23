@@ -5,8 +5,6 @@ public class ButtonCollector : MonoBehaviour
 {
     private ClickButtonComponent currentSelectedButton;
 
-    [SerializeField] private FunctionBarComponent functionBar;
-
     public void OnButtonSelected(ClickButtonComponent button)
     {
         if (currentSelectedButton != null && currentSelectedButton != button)
@@ -34,7 +32,6 @@ public class ButtonCollector : MonoBehaviour
         {
             currentSelectedButton.CloseTargetPanel();
             currentSelectedButton.DeselectButton();
-            functionBar.ActiveObjectKnifeUIObject();
             currentSelectedButton = null;
         }
     }

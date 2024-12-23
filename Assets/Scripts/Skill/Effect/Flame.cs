@@ -34,6 +34,14 @@ public class Flame : MonoBehaviour
 
     private IEnumerator FlamingCoroutine()
     {
+        if (PlayerManager.Instance.GetPlayer().GetComponent<PlayerHealth>().GetIsPlayerDead())
+        {
+            StopAllCoroutines();
+            AudioManager.Instance.StopSFX(flameEffectSound);
+            ObjectPoolManager.Instance.ReleaseToPool(gameObject);
+            yield break;
+        }
+
         yield return WaitForAnimationState("FlameStart", 1f);
         animator.SetTrigger("Start");
 
@@ -44,7 +52,6 @@ public class Flame : MonoBehaviour
 
         yield return WaitForAnimationState("FlameEnd", 1f);
         ObjectPoolManager.Instance.ReleaseToPool(gameObject);
-        AudioManager.Instance.StopSFX(flameEffectSound);
     }
 
     private IEnumerator WaitForAnimationState(string stateName, float _normalized)
@@ -61,12 +68,20 @@ public class Flame : MonoBehaviour
             yield return null;
         }
     }
-
+    
     private IEnumerator AttackEnemiesCoroutine()
     {
         while (true)
         { 
-            AudioManager.Instance.PlaySFX(flameEffectSound, true);
+            if (PlayerManager.Instance.GetPlayer().GetComponent<PlayerHealth>().GetIsPlayerDead())
+            {
+                StopAllCoroutines();
+                AudioManager.Instance.StopSFX(flameEffectSound);
+                ObjectPoolManager.Instance.ReleaseToPool(gameObject);
+                yield break;
+            }
+
+            AudioManager.Instance.PlaySFX(flameEffectSound);
 
             var collider = colObj.GetComponent<BoxCollider2D>();
 
@@ -84,6 +99,8 @@ public class Flame : MonoBehaviour
                 }
 
                 yield return waitDamageInterval;
+
+                AudioManager.Instance.StopSFX(flameEffectSound);
             }
         }
     }

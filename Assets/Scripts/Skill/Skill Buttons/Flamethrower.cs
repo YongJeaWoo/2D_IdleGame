@@ -6,7 +6,7 @@ public class Flamethrower : CoolTimeDisplay
     [SerializeField] private GameObject flamePrefab;
 
     private ExplainableComponent explain;
-
+    
     private readonly float arrangeTime = 5f;
 
     protected override void Start()

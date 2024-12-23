@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public abstract class DataCell : MonoBehaviour
 {
     [SerializeField] protected Image iconImage;
+    [SerializeField] protected Image upgradeImage;
     [SerializeField] protected TextMeshProUGUI infoNameText;
     [SerializeField] protected TextMeshProUGUI upgradeCostText;
     [SerializeField] protected TextMeshProUGUI numericalText;

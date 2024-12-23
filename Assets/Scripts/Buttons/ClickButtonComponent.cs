@@ -78,8 +78,6 @@ public class ClickButtonComponent : MonoBehaviour
                 {
                     DeselectButton();
                 }
-
-                functionBar.ActiveObjectKnifeUIObject();
             }
         }
     }

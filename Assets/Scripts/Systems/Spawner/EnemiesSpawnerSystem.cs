@@ -49,10 +49,12 @@ public class EnemiesSpawnerSystem : MonoBehaviour
         while (true)
         {
             var currentRound = LevelManager.Instance.GetCurrentRound();
-            int createdCount = Random.Range(1, Mathf.CeilToInt(currentRound * 1.4f) + 1);  // 몬스터 생성 수 계산
-            spawnCount = createdCount;
+            bool isBossRound = currentRound % 10 == 0;
 
             GameObject selectedPrefab = SelectEnemyPrefab(currentRound); // 라운드에 맞는 적 선택
+
+            int createdCount = isBossRound ? 1 : Random.Range(1, Mathf.RoundToInt(currentRound * 1.4f) + 1);  // 몬스터 생성 수 계산
+            spawnCount = createdCount;
 
             for (int i = 0; i < createdCount; i++)
             {
@@ -67,7 +69,7 @@ public class EnemiesSpawnerSystem : MonoBehaviour
                     }
                 }
 
-                float randomTime = Random.Range(0.5f, 5f);
+                float randomTime = Random.Range(3f, 5f);
                 yield return new WaitForSeconds(randomTime);  // 생성 간격 조절
             }
 

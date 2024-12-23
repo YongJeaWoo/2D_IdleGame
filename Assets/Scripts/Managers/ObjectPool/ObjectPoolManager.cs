@@ -70,9 +70,12 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 
     public void ReleaseAllObjects()
     {
-        foreach (var pool in poolDic.Values)
+        foreach (var pool in poolDic)
         {
-            pool.ReleaseAllObjects();
+            if (!pool.Key.name.StartsWith("evo_"))
+            {
+                pool.Value.ReleaseAllObjects();
+            }
         }
     }
     

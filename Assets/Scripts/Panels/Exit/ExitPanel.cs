@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class ExitPanel : CommonPanel
 {
     protected override void InitPanel()
@@ -8,10 +10,11 @@ public class ExitPanel : CommonPanel
 
     public void ExitGame()
     {
-        #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-        #else
-                            Application.Quit();
-        #endif
+        Application.Quit();
+        //#if UNITY_EDITOR
+        //        UnityEditor.EditorApplication.isPlaying = false;
+        //#else
+        //        Application.Quit();
+        //#endif
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : BaseHealth
 {
+    private bool isPlayerDead;
+
     protected override void Start()
     {
         base.Start();
@@ -34,6 +36,15 @@ public class PlayerHealth : BaseHealth
 
     private IEnumerator DeathCoroutine()
     {
+        if (isPlayerDead) yield break;
+        isPlayerDead = true;
+
+        var pAttack = GetComponent<PlayerAttack>();
+
+        pAttack.enabled = false;
+        anim.SetTrigger("isDead");
+        anim.SetBool("isAttack", false);
+
         var panel = PopupManager.Instance.InstantPopup("Info Panel");
         var infoPanel = panel.GetComponent<InfoPanel>();
         infoPanel.SetInfoText("플레이어가 죽었습니다.");
@@ -56,6 +67,10 @@ public class PlayerHealth : BaseHealth
 
         LevelManager.Instance.LoadSaveRound();
         spawner.SpawnEnemies();
+
+        isPlayerDead = false;
+
+        pAttack.enabled = true;
     }
 
     public BigInteger SetMaxHp(BigInteger value)
@@ -64,4 +79,6 @@ public class PlayerHealth : BaseHealth
         maxHpString = maxHp.ToString();
         return maxHp;
     }
+
+    public bool GetIsPlayerDead() => isPlayerDead;
 }

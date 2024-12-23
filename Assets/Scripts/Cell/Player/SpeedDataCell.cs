@@ -8,7 +8,7 @@ public class SpeedDataCell : DataCell
 {
     private readonly float upgradeValue = 1f;
     private readonly string speedString = $"속도 강화";
-
+    
     protected override void OnEnable()
     {
         base.OnEnable();

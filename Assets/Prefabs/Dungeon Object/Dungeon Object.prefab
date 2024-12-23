@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagedTextPrefab: {fileID: 6452942506768808087, guid: 7252f10ef16ce7142ab1b9d60a3112e5, type: 3}
-  plusYValue: 0.9
+  plusYValue: 0.4
 --- !u!114 &-6872172140228271298
 MonoBehaviour:
   m_ObjectHideFlags: 0

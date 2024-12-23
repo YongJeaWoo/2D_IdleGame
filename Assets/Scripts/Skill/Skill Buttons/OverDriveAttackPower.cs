@@ -23,6 +23,13 @@ public class OverDriveAttackPower : CoolTimeDisplay
 
     private IEnumerator TemporaryAttackUpCoroutine(PlayerManager playerManager, BigInteger playerAttack)
     {
+        if (PlayerManager.Instance.GetPlayer().GetComponent<PlayerHealth>().GetIsPlayerDead())
+        {
+            StopAllCoroutines();
+            AudioManager.Instance.StopSFX(powerUpEffectSound);
+            yield break;
+        }
+
         var player = playerManager.GetPlayer();
         var obj = ObjectPoolManager.Instance.GetToPool(effectPrefab);
         var yPosModify = player.transform.position + new UnityEngine.Vector3(0, 0.3f, 0);

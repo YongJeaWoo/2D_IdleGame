@@ -58,7 +58,7 @@ public class DungeonDataManager : SingletonBase<DungeonDataManager>
                 }
             case E_DungeonType.Capsule:
                 {
-                    // TODO : Ä¸½¶¿ë ¸¸µé±â
+                    obj.AddComponent<DungeonCapsuleItem>();
                     break;
                 }
         }
