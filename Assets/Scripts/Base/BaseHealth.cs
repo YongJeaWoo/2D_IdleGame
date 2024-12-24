@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BaseHealth : MonoBehaviour
 {
     [Header("피격 시 이팩트 사운드")]
-    [SerializeField] private AudioClip hitSound;
+    [SerializeField] protected AudioClip hitSound;
     [Header("체력 최댓값")]
     [SerializeField] protected string maxHpString;
     [Header("피격 시 이팩트")]
@@ -22,9 +22,13 @@ public class BaseHealth : MonoBehaviour
     protected Image myHealthBar;
     protected TextMeshProUGUI myHealthText;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         GetComponents();
+    }
+
+    protected virtual void Start()
+    {
         HitPoolObject();
     }
 
@@ -38,6 +42,12 @@ public class BaseHealth : MonoBehaviour
     protected virtual void HitPoolObject()
     {
         ObjectPoolManager.Instance.InitObjectPool(hitEffectPrefab);
+    }
+
+    protected virtual void SetValues()
+    {
+        myHealthBar = UIManager.Instance.GetHpBars()[1];
+        myHealthText = UIManager.Instance.GetHpTexts()[1];
     }
 
     public virtual void Hit(BigInteger attackPoint)

@@ -17,12 +17,12 @@ public class TakeDamageTextComponent : MonoBehaviour
     {
         var uiCanvas = UIManager.Instance.effectUICanvas;
 
-        UnityEngine.Vector3 yValue = new(transform.position.x, transform.position.y + plusYValue, transform.position.z);
+        UnityEngine.Vector3 pos = new(transform.position.x, transform.position.y + plusYValue, transform.position.z);
 
         GameObject damageText = ObjectPoolManager.Instance.GetToPool(damagedTextPrefab, uiCanvas);
-        damageText.transform.SetParent(uiCanvas);
+        damageText.transform.localScale = UnityEngine.Vector3.one;
 
-        UnityEngine.Vector2 screenPos = Camera.main.WorldToScreenPoint(yValue);
+        UnityEngine.Vector2 screenPos = Camera.main.WorldToScreenPoint(pos);
         damageText.transform.position = screenPos;
 
         var text = damageText.GetComponent<DamageText>();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using TMPro.Examples;
 using UnityEngine;
 
 public class PlayerAttack : BaseAttack
@@ -25,6 +26,7 @@ public class PlayerAttack : BaseAttack
     private BigInteger atk;
 
     private int currentKnifeIndex = 0;
+    private bool isAttack;
 
     protected override void Awake()
     {
@@ -35,16 +37,17 @@ public class PlayerAttack : BaseAttack
     private void Start()
     {
         atk = BigInteger.Parse(atkString);
+        StartAttack();
     }
 
     protected void OnEnable()
     {
-        KnifeCollectionBar.OnUpdateKnife += GetKnifeInfo;
+        knifeBar.OnUpdateKnife += GetKnifeInfo;
     }
 
-    protected void OnDisable()
+    private void OnDisable()
     {
-        KnifeCollectionBar.OnUpdateKnife -= GetKnifeInfo;
+        knifeBar.OnUpdateKnife += GetKnifeInfo;
     }
 
     private void GetComponents()
@@ -54,6 +57,8 @@ public class PlayerAttack : BaseAttack
         UIManager.Instance.InitHpImage();
         knifeBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
 
+        LoadKnifesToPlayerAttack();
+
         foreach (var knife in attackKnifes)
         {
             ObjectPoolManager.Instance.InitObjectPool(knife);
@@ -62,6 +67,12 @@ public class PlayerAttack : BaseAttack
 
     protected override void DetectObject()
     {
+        if (!isAttack)
+        {
+            animator.SetBool(runText, true);
+            return;
+        }
+
         UnityEngine.Vector2 rayPos = new(transform.position.x, transform.position.y + 0.25f);
         RaycastHit2D[] hits = Physics2D.RaycastAll(rayPos, UnityEngine.Vector2.right, detectionDistance, enemyLayer);
 
@@ -107,6 +118,35 @@ public class PlayerAttack : BaseAttack
         bgController.BG_Controll(isAttack);
     }
 
+    private void LoadKnifesToPlayerAttack()
+    {
+        var knifeList = knifeBar.GetKnifesList();
+
+        var knifeListCount = knifeList.GroupBy(k => k.GetComponent<KnifeNextData>().NextID)
+                                      .ToDictionary(group => group.Key, group => group.Count());
+
+        var matchingKnifes = new List<GameObject>();
+
+        foreach (var knife in attackKnifes)
+        {
+            var knifeNextData = knife.GetComponent<KnifeNextData>();
+            if (knifeNextData != null && knifeListCount.ContainsKey(knifeNextData.NextID))
+            {
+                int count = knifeListCount[knifeNextData.NextID];
+
+                for (int i = 0; i < count; i++)
+                {
+                    matchingKnifes.Add(knife);
+                }
+            }
+        }
+
+        sortedKnifes = matchingKnifes
+            .OrderByDescending(knife => BigInteger.Parse(
+                knife.GetComponent<KnifeAttack>().GetAttackPointString()))
+            .ToList();
+    }
+
     public void GetKnifeInfo()
     {
         var knifeList = knifeBar.GetKnifesList();
@@ -140,7 +180,19 @@ public class PlayerAttack : BaseAttack
     {
         if (sortedKnifes.Count == 0) return;
 
+        if (currentKnifeIndex >= sortedKnifes.Count)
+        {
+            currentKnifeIndex = 0;
+        }
+
         var currentKnife = sortedKnifes[currentKnifeIndex];
+
+        if (currentKnife == null)
+        {
+            Debug.LogError("currentKnife is null, cannot get to pool!");
+            return;
+        }
+
         ObjectPoolManager.Instance.GetToPool(currentKnife, attackPos);
 
         if (attackSound != null && attackSound.Length > 0)
@@ -150,11 +202,6 @@ public class PlayerAttack : BaseAttack
         }
 
         currentKnifeIndex++;
-
-        if (currentKnifeIndex >= sortedKnifes.Count)
-        {
-            currentKnifeIndex = 0;
-        }
     }
 
     public BigInteger GetAtk() => atk;
@@ -163,6 +210,19 @@ public class PlayerAttack : BaseAttack
         atk = value;
         atkString = atk.ToString();
         return atk;
+    }
+
+    public void StartAttack()
+    {
+        isAttack = true;
+    }
+
+    public void StopAttack()
+    {
+        isAttack = false;
+
+        animator.SetBool(runText, true);
+        animator.SetBool(attackText, false);
     }
 
     public Transform GetAttackPos() => attackPos;

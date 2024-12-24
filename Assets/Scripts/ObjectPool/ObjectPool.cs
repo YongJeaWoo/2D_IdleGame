@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -8,6 +9,8 @@ public class ObjectPool : MonoBehaviour
 
     private int m_defaultCapacity = 10;
     private int m_maxSize = 30;
+
+    private List<GameObject> pooledObjects = new List<GameObject>();
 
     private void PoolInit()
     {
@@ -26,29 +29,48 @@ public class ObjectPool : MonoBehaviour
     #region PoolObject
     private GameObject CreatePooledItem()
     {
-        return Instantiate(poolObject);
+        var obj = Instantiate(poolObject);
+        pooledObjects.Add(obj);
+        return obj;
     }
 
     private void OnTakeFromPool(GameObject _poolObject)
     {
+        if (_poolObject == null) return;
         _poolObject.SetActive(true);
     }
 
     private void  OnReturnedToPool(GameObject _poolObject)
     {
+        if (_poolObject == null) return;
         _poolObject.SetActive(false);
     }
 
     private void OnDestroyPoolObject(GameObject _poolObject)
     {
+        if (_poolObject == null) return;
         Destroy(_poolObject);
+        pooledObjects.Remove(_poolObject);
     }
     #endregion
 
     #region Use Pool
     public GameObject GetPoolObject(Transform parentPos = null)
     {
-        var obj = poolList.Get();
+        GameObject obj;
+        try
+        {
+            obj = poolList.Get();
+        }
+        catch
+        {
+            obj = CreatePooledItem();
+        }
+
+        if (obj == null || obj.Equals(null))
+        {
+            obj = CreatePooledItem();
+        }
 
         if (parentPos != null)
         {
@@ -69,11 +91,33 @@ public class ObjectPool : MonoBehaviour
             poolList.Release(_poolObject);
         }
     }
+
+    public void ReleaseAllObjects()
+    {
+        List<GameObject> objectsToRelease = new(pooledObjects);
+
+        foreach (var pool in objectsToRelease)
+        {
+            if (pool != null && pool.activeInHierarchy)
+            {
+                poolList.Release(pool);
+            }
+            else
+            {
+                pooledObjects.Remove(pool);
+            }
+        }
+    }
     #endregion
 
     public GameObject SetPoolObject(GameObject poolObj)
     {
-        PoolInit();
+        if (poolList == null)
+        {
+            PoolInit();
+        }
+
+        poolObject = poolObj;
         return poolObject = poolObj;
     }
 }

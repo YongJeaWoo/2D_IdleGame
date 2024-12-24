@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ClickButtonComponent : MonoBehaviour
@@ -6,11 +7,16 @@ public class ClickButtonComponent : MonoBehaviour
     [Header("연결된 패널 이름")]
     [SerializeField] protected string panelName;
 
+    protected readonly string DungeonSceneName = $"DungeonScene";
+    protected readonly string DoNotFunctionPanel = $"Warning Panel";
+    protected readonly string DoNotFunctionAlramText = $"현재 기능은 수행할 수 없습니다.";
+
     protected FunctionBarComponent functionBar;
     protected Button myButton;
     protected ClickEffectButton effectButton;
     protected GameObject targetPanel;
-    private static ClickButtonComponent lastSelectButtonComponent = null;
+
+    protected ButtonCollector buttonCollector;
 
     protected virtual void Start()
     {
@@ -29,6 +35,7 @@ public class ClickButtonComponent : MonoBehaviour
         functionBar = UIObj.GetComponentInChildren<FunctionBarComponent>();
         myButton = GetComponent<Button>();
         effectButton = GetComponent<ClickEffectButton>();
+        buttonCollector = GetComponentInParent<ButtonCollector>();
     }
     protected virtual void AddListenerButton()
     {
@@ -41,6 +48,14 @@ public class ClickButtonComponent : MonoBehaviour
 
     public virtual void ClickButton()
     {
+        if (SceneStateManager.Instance.CurrentScene == DungeonSceneName)
+        {
+            var panel = PopupManager.Instance.InstantPopup(DoNotFunctionPanel);
+            var warningPanel = panel.GetComponent<WarningPanel>();
+            warningPanel.SetAlramPanelText(DoNotFunctionAlramText);
+            return;
+        }
+
         if (functionBar != null)
         {
             var objs = functionBar.GetOtherObjects();
@@ -50,29 +65,34 @@ public class ClickButtonComponent : MonoBehaviour
             {
                 bool isActive = !targetPanel.activeSelf;
 
-                functionBar.PanelOffButton(targetPanel);
+                buttonCollector.OnButtonSelected(this);
 
+                functionBar.PanelOffButton(targetPanel);
                 targetPanel.SetActive(isActive);
 
                 if (isActive)
                 {
-                    if (lastSelectButtonComponent != null && lastSelectButtonComponent != this)
-                    {
-                        lastSelectButtonComponent.effectButton.DeSelectButton(lastSelectButtonComponent.myButton);
-                    }
-
                     effectButton.SelectButton(myButton);
-
-                    lastSelectButtonComponent = this;
                 }
                 else
                 {
-                    effectButton.DeSelectButton(myButton);
-                    lastSelectButtonComponent = null;
+                    DeselectButton();
                 }
-
-                functionBar.ActiveObjectKnifeUIObject();
             }
+        }
+    }
+
+    public void DeselectButton()
+    {
+        effectButton.DeSelectButton(myButton);
+    }
+
+    public void CloseTargetPanel()
+    {
+        if (targetPanel != null && targetPanel.activeSelf)
+        {
+            targetPanel.SetActive(false);
+            DeselectButton();
         }
     }
 
@@ -88,6 +108,5 @@ public class ClickButtonComponent : MonoBehaviour
         return null;
     }
 
-    public GameObject SetTargetPanel(GameObject obj) => targetPanel = obj;
-    public GameObject GetTargetPanel() => targetPanel;
+    public ClickEffectButton GetEffectButton() => effectButton;
 }

@@ -9,14 +9,10 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private float mergeDistanceThreshold = 0.2f;
 
     private KnifeNextData nextData;
-
     private RectTransform myTransform;
-
     private bool isClicked = false;
-
     private RectTransform contentArea;
     private KnifeCollectionBar knifeCollectionBar;
-    private PlayerSystem playerSystem;
 
     public static event Action OnMerge;
 
@@ -28,31 +24,27 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private void InitActivator()
     {
         myTransform = GetComponent<RectTransform>();
-        contentArea = transform.parent.GetComponent<RectTransform>();
-
         knifeCollectionBar = UIManager.Instance.gameObject.GetComponentInChildren<KnifeCollectionBar>();
+        contentArea = knifeCollectionBar.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<RectTransform>();
         nextData = GetComponent<KnifeNextData>();
-        playerSystem = FindObjectOfType<PlayerSystem>();
+        isClicked = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!isClicked) return;
+        if (!isClicked || myTransform == null || contentArea == null) return;
 
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(eventData.position);
-        worldPosition.z = myTransform.position.z;
-
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(contentArea, eventData.position, Camera.main, out localPoint);
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(contentArea, eventData.position, Camera.main, out Vector2 localPoint))
+        {
+            return;
+        }
 
         Vector2 halfSize = myTransform.rect.size * 0.5f;
-
         Rect rect = contentArea.rect;
         localPoint.x = Mathf.Clamp(localPoint.x, rect.xMin + halfSize.x, rect.xMax - halfSize.x);
         localPoint.y = Mathf.Clamp(localPoint.y, rect.yMin + halfSize.y, rect.yMax - halfSize.y);
 
-        Vector3 clampedPosition = contentArea.TransformPoint(localPoint);
-        myTransform.position = clampedPosition;
+        myTransform.localPosition = localPoint;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -78,7 +70,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
                 float distance = Vector3.Distance(myRect.position, otherRect.position);
 
-                if (distance < mergeDistanceThreshold) 
+                if (distance < mergeDistanceThreshold)
                 {
                     MergeObjects(knifeObj);
                     return;
@@ -104,7 +96,7 @@ public class KnifeUIActivator : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         int newNextID = nextData.GetNextID(nextData.NextID);
 
-        var player = playerSystem.GetPlayer();
+        var player = PlayerManager.Instance.GetPlayer();
         var knifeData = player.GetComponent<KnifeData>();
         var knifeList = knifeData.GetUIKnifes();
 

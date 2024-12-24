@@ -6,19 +6,11 @@ public class SkillCollector : MonoBehaviour
     [Header("스킬 버튼 모음")]
     [SerializeField] private GameObject[] skillButtons;
     [Header("스킬 해제 기준")]
-    [SerializeField] private int[] requiredAttackPoint = { 10, 30, 50, 60 , 80 };
-
-    private PlayerSystem playerSystem;
+    [SerializeField] private int[] requiredAttackPoint = { 12, 30, 50, 60 , 80 };
 
     private void Start()
     {
-        FindSystem();
         InitSkillSetting();
-    }
-
-    private void FindSystem()
-    {
-        playerSystem = FindObjectOfType<PlayerSystem>();
     }
 
     private void InitSkillSetting()
@@ -27,21 +19,40 @@ public class SkillCollector : MonoBehaviour
         {
             skillButtons[i].SetActive(false);
         }
+
+        PlayerManager.Instance.OnPlayerReady += () =>
+        {
+            if (PlayerManager.Instance.GetPlayer() != null)
+            {
+                CheckOpenSkill();
+            }
+        };
     }
 
     public void CheckOpenSkill()
     {
-        BigInteger playerAttack = playerSystem.GetAttack();
+        BigInteger playerAttack = PlayerManager.Instance.GetAttack();
+
+        if (skillButtons.Length != requiredAttackPoint.Length)
+        {
+            Debug.LogError("스킬 버튼이 아직 활성화 되지 않음");
+            return;
+        }
 
         for (int i = 0; i < skillButtons.Length; i++)
         {
-            if (playerAttack >= requiredAttackPoint[i])
+            if (skillButtons[i] == null)
             {
-                skillButtons[i].SetActive(true);
+                continue; 
             }
-            else
+
+            try
             {
-                skillButtons[i].SetActive(false);
+                skillButtons[i].SetActive(playerAttack >= requiredAttackPoint[i]);
+            }
+            catch (MissingReferenceException ex)
+            {
+                Debug.LogError($"스킬 버튼의 {i} 부분이 Missing 에러가 남: {ex.Message}");
             }
         }
     }

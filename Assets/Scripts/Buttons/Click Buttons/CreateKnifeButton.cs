@@ -6,13 +6,15 @@ using UnityEngine.UI;
 
 public class CreateKnifeButton : MonoBehaviour
 {
-    private readonly string maxCountAlramText = $"Max Count Info Panel";
+    protected readonly string DoNotFunctionAlramText = $"현재 기능은 수행할 수 없습니다.";
+    protected readonly string maxCountAlramText = $"최대치를 넘길 수 없습니다.";
+    protected readonly string DungeonSceneName = $"DungeonScene";
+    protected readonly string DoNotFunctionPanel = $"Warning Panel";
 
     private List<GameObject> uiKnifeObjs;
     private List<int> unlockedIDs = new List<int>();
 
     private ObjectPoolManager poolManager;
-    private PlayerSystem playerSystem;
     private FunctionBarComponent functionBar;
     private KnifeCollectionBar knifeCollectBar;
     private Transform createPos;
@@ -23,16 +25,7 @@ public class CreateKnifeButton : MonoBehaviour
 
     private void Awake()
     {
-        GetComponents();
-    }
-
-    private void Start()
-    {
-        InitKnifeData();
-        InitPools();
-
-        unlockedIDs.Add(1);
-        UpdateCreatedText();
+        InitBehaviour();
     }
 
     private void OnEnable()
@@ -47,11 +40,13 @@ public class CreateKnifeButton : MonoBehaviour
         KnifeUIActivator.OnMerge -= UpdateCreatedText;
     }
 
-    private void GetComponents()
+    private void InitBehaviour()
     {
-        playerSystem = FindObjectOfType<PlayerSystem>();
         createdText = GetComponentInChildren<TextMeshProUGUI>();
         poolManager = ObjectPoolManager.Instance;
+
+        myButton = GetComponent<Button>();
+        myButton.onClick.AddListener(CreateButton);
     }
 
     private void UpdateCreatedText()
@@ -59,9 +54,9 @@ public class CreateKnifeButton : MonoBehaviour
         createdText.text = $"칼 제작\n({knifeCollectBar.GetCreatedCurrentCount()} / {knifeCollectBar.GetCreatedMaxCount()})";
     }
 
-    private void InitKnifeData()
+    public void InitKnifeData(PlayerManager playerManager)
     {
-        var player = playerSystem.GetPlayer();
+        var player = playerManager.GetPlayer();
         var knifeData = player.GetComponent<KnifeData>();
         uiKnifeObjs = knifeData.GetUIKnifes();
 
@@ -70,30 +65,41 @@ public class CreateKnifeButton : MonoBehaviour
         knifeCollectBar = functionBar.GetKnifeCollectBar();
 
         createPos = knifeCollectBar.transform.GetChild(1).GetChild(0).GetChild(0);
-
-        myButton = GetComponent<Button>();
-        myButton.onClick.AddListener(CreateButton);
     }
 
-    private void InitPools()
+    public void InitPools()
     {
         foreach (var knife in uiKnifeObjs)
         {
             poolManager.InitObjectPool(knife);
         }
+
+        unlockedIDs.Add(1);
+        UpdateCreatedText();
     }
 
     public void CreateButton()
     {
+        if (SceneStateManager.Instance.CurrentScene == DungeonSceneName)
+        {
+            var panel = PopupManager.Instance.InstantPopup(DoNotFunctionPanel);
+            var warningPanel = panel.GetComponent<WarningPanel>();
+            warningPanel.SetAlramPanelText(DoNotFunctionAlramText);
+            return;
+        }
+
         CreateRandomKnifes();
         OnCreateButton?.Invoke();
     }
-
+    
     private GameObject CreateRandomKnifes()
     {
         if (knifeCollectBar.GetCreatedCurrentCount() >= knifeCollectBar.GetCreatedMaxCount())
         {
-            PopupManager.Instance.InstantPopup(maxCountAlramText);
+            var panel = PopupManager.Instance.InstantPopup(DoNotFunctionPanel);
+            var warningPanel = panel.GetComponent<WarningPanel>();
+            warningPanel.SetAlramPanelText(maxCountAlramText);
+
             return null;
         }
 

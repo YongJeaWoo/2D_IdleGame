@@ -1,7 +1,11 @@
+using System.Collections;
 using System.Numerics;
+using UnityEngine;
 
 public class PlayerHealth : BaseHealth
 {
+    private bool isPlayerDead;
+
     protected override void Start()
     {
         base.Start();
@@ -13,7 +17,7 @@ public class PlayerHealth : BaseHealth
         InitializeHealth();
     }
 
-    private void SetValues()
+    protected override void SetValues()
     {
         myHealthBar = UIManager.Instance.GetHpBars()[0];
         myHealthText = UIManager.Instance.GetHpTexts()[0];
@@ -27,13 +31,46 @@ public class PlayerHealth : BaseHealth
 
     protected override void Death()
     {
-        // TODO : 페이드 처리 후 넣을 부분
+        StartCoroutine(DeathCoroutine());
+    }
+
+    private IEnumerator DeathCoroutine()
+    {
+        if (isPlayerDead) yield break;
+        isPlayerDead = true;
+
+        var pAttack = GetComponent<PlayerAttack>();
+
+        pAttack.enabled = false;
+        anim.SetTrigger("isDead");
+        anim.SetBool("isAttack", false);
+
+        var panel = PopupManager.Instance.InstantPopup("Info Panel");
+        var infoPanel = panel.GetComponent<InfoPanel>();
+        infoPanel.SetInfoText("플레이어가 죽었습니다.");
+        infoPanel.SetInsideInfoText("아무 키를 눌러 재시작");
+
+        while (!Input.anyKeyDown)
+        {
+            yield return null;
+        }
+
+        PopupManager.Instance.RemovePopup(panel.name);
+
         maxHp = BigInteger.Parse(maxHpString);
         SetCurrentHpToMaxHp();
 
         myHealthBar.fillAmount = (float)(double)currentHp / (float)(double)maxHp;
 
-        // TODO : 페이드 아웃처리하고 그 라운드 재시작
+        EnemiesSpawnerSystem spawner = FindObjectOfType<EnemiesSpawnerSystem>();
+        spawner.StopSpawningAndClearEnemies();
+
+        LevelManager.Instance.LoadSaveRound();
+        spawner.SpawnEnemies();
+
+        isPlayerDead = false;
+
+        pAttack.enabled = true;
     }
 
     public BigInteger SetMaxHp(BigInteger value)
@@ -42,4 +79,6 @@ public class PlayerHealth : BaseHealth
         maxHpString = maxHp.ToString();
         return maxHp;
     }
+
+    public bool GetIsPlayerDead() => isPlayerDead;
 }

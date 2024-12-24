@@ -6,11 +6,6 @@ public class EnemyHealth : BaseHealth
 {
     public event Action OnDeath;
 
-    protected override void Start()
-    {
-        base.Start();
-    }
-
     protected void OnEnable()
     {
         IncreaseHealthToRound();
@@ -20,19 +15,13 @@ public class EnemyHealth : BaseHealth
     protected override void Death()
     {
         base.Death();
-        var droppers = GetComponents<IItemDropper>();
+        var droppers = GetComponents<DropPossessItem>();
         foreach (var dropper in droppers)
         {
             dropper.DropItem();
         }
         // 재화 이벤트 등록
         OnDeath?.Invoke();
-    }
-
-    private void SetValues()
-    {
-        myHealthBar = UIManager.Instance.GetHpBars()[1];
-        myHealthText = UIManager.Instance.GetHpTexts()[1];
     }
 
     private void IncreaseHealthToRound()

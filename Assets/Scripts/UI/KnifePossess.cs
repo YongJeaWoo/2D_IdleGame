@@ -10,14 +10,14 @@ public class KnifePossess : MonoBehaviour
     private void OnEnable()
     {
         KnifeUIActivator.OnMerge += ChangeText;
-        KnifeCollectionBar.OnUpdateKnife += ChangeText;
+        knifeBar.OnUpdateKnife += ChangeText;
         CreateKnifeButton.OnCreateButton += ChangeText;
     }
 
     private void OnDisable()
     {
         KnifeUIActivator.OnMerge -= ChangeText;
-        KnifeCollectionBar.OnUpdateKnife -= ChangeText;
+        knifeBar.OnUpdateKnife -= ChangeText;
         CreateKnifeButton.OnCreateButton -= ChangeText;
     }
 

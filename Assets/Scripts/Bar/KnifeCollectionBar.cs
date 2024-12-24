@@ -9,7 +9,7 @@ public class KnifeCollectionBar : MonoBehaviour
 
     private List<GameObject> knifeList = new List<GameObject>();
 
-    public static event Action OnUpdateKnife;
+    public event Action OnUpdateKnife;
 
     public void AddAttackKnifes(GameObject addKnife)
     {

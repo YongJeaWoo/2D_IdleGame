@@ -16,7 +16,7 @@ namespace SingletonBase
                         instance = FindObjectOfType<T>();
                         if (instance == null)
                         {
-                            Debug.LogError($"_instance null");
+                            return null;
                         }
                     }
 
@@ -60,7 +60,7 @@ namespace SingletonBase
                         instance = FindObjectOfType<T>();
                         if (instance == null)
                         {
-                            Debug.LogError($"_instance null");
+                            return null;
                         }
                     }
 

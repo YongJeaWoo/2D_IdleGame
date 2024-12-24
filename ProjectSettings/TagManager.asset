@@ -8,6 +8,7 @@ TagManager:
   - Background
   - UI Camera
   - Ground
+  - Dungeon Object
   layers:
   - Default
   - TransparentFX

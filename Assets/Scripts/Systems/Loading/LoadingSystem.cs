@@ -4,7 +4,13 @@ using UnityEngine;
 public class LoadingSystem : MonoBehaviour
 {
     private readonly float duration = 2f;
-    public void FadeoutTheBGMVolume()
+
+    private void Start()
+    {
+        FadeoutTheBGMVolume();
+    }
+
+    private void FadeoutTheBGMVolume()
     {
         var volume = AudioManager.Instance.GetBGMSource();
 
@@ -18,13 +24,19 @@ public class LoadingSystem : MonoBehaviour
     {
         float startVolume = source.volume;
 
-        while (source.volume > 0)
+        while (source.volume > 0.2f)
         {
             source.volume -= startVolume * Time.deltaTime / duration;
+
+            if (source.volume <= 0.2f)
+            {
+                source.volume = 0.2f;
+                break;
+            }
+
             yield return null;
         }
 
-        source.volume = 0.2f;
         AudioManager.Instance.StopBGM();
     }
 }

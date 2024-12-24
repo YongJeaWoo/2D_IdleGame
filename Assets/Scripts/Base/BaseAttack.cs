@@ -34,11 +34,14 @@ public class BaseAttack : MonoBehaviour
 
     protected virtual void RefreshTargetHp(RaycastHit2D? target)
     {
-        if (target.HasValue)
+        if (target != null)
         {
-            var targetObj = target.Value.collider.gameObject;
-            targetHealth = targetObj.GetComponent<BaseHealth>();
-            UIManager.Instance.RefreshHpBar(targetHealth, targetHealth.GetCurrentHp(), targetHealth.GetMaxHp());
+            if (target.HasValue)
+            {
+                var targetObj = target.Value.collider.gameObject;
+                targetHealth = targetObj.GetComponent<BaseHealth>();
+                UIManager.Instance.RefreshHpBar(targetHealth, targetHealth.GetCurrentHp(), targetHealth.GetMaxHp());
+            }
         }
     }
 

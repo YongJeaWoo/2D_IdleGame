@@ -1,14 +1,14 @@
-using SingletonBase.DestroySingleton;
+using SingletonBase.DontDestroySingleton;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
 {
-    private Dictionary<GameObject, ObjectPool> poolDict = new();
+    private Dictionary<GameObject, ObjectPool> poolDic = new();
 
     public void InitObjectPool(GameObject poolObj)
     {
-        if (poolDict.ContainsKey(poolObj)) return;
+        if (poolDic.ContainsKey(poolObj)) return;
 
         Transform existingPool = transform.Find(poolObj.name);
 
@@ -32,7 +32,7 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
         }
 
         pool.SetPoolObject(poolObj);
-        poolDict[poolObj] = pool;
+        poolDic[poolObj] = pool;
     }
 
     public GameObject GetToPool(GameObject poolObj, Transform createPos = null)
@@ -58,7 +58,7 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
     {
         string cleanName = poolObj.name.Replace("(Clone)", "").Trim();
 
-        foreach (var pool in poolDict)
+        foreach (var pool in poolDic)
         {
             if (pool.Key.name == cleanName)
             {
@@ -67,10 +67,21 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
             }
         }
     }
+
+    public void ReleaseAllObjects()
+    {
+        foreach (var pool in poolDic)
+        {
+            if (!pool.Key.name.StartsWith("evo_"))
+            {
+                pool.Value.ReleaseAllObjects();
+            }
+        }
+    }
     
     private ObjectPool GetPool(GameObject poolObj)
     {
-        poolDict.TryGetValue(poolObj, out var pool);
+        poolDic.TryGetValue(poolObj, out var pool);
         return pool;
     }
 }
